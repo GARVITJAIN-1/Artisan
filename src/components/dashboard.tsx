@@ -3,7 +3,6 @@
 
 import type { ChecklistItem } from '@/lib/data';
 import { applicationStages, cscLocations, requiredDocuments } from '@/lib/data';
-import { userData } from '@/lib/schema';
 import ProgressTracker from './progress-tracker';
 import StatusChecklist from './status-checklist';
 import ReminderCard from './reminder-card';
@@ -14,6 +13,7 @@ import ApplicationForm from './application-form';
 import { Badge } from './ui/badge';
 import { Rocket } from 'lucide-react';
 import { useAppState } from '@/context/app-state-context';
+import { userData } from '@/lib/schema';
 
 export default function Dashboard() {
   const { 

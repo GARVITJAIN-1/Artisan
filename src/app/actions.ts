@@ -2,10 +2,15 @@
 
 import { pmKisanApplicationAutofill } from "@/ai/flows/pm-kisan-application-autofill";
 import { assistKycReminder } from "@/ai/flows/data-assisted-kyc-reminder";
-import { pmKisanFormJsonSchema, userData } from "@/lib/schema";
+import { pmKisanFormJsonSchema } from "@/lib/schema";
+import { db } from "@/lib/db";
 
 export async function autofillPmKisanFormAction(currentFormData?: object) {
   try {
+    const userData = await db.getFarmerById("FARMER12345");
+    if (!userData) {
+      throw new Error("User not found");
+    }
     const result = await pmKisanApplicationAutofill({
       formDataSchema: JSON.stringify(pmKisanFormJsonSchema),
       userData: JSON.stringify(userData),
@@ -20,6 +25,10 @@ export async function autofillPmKisanFormAction(currentFormData?: object) {
 
 export async function getKycAssistanceAction() {
     try {
+        const userData = await db.getFarmerById("FARMER12345");
+        if (!userData) {
+          throw new Error("User not found");
+        }
         const result = await assistKycReminder({
             farmerId: "FARMER12345",
             farmerName: userData.name,
