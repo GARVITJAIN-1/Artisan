@@ -14,6 +14,7 @@ import ApplicationForm from './application-form';
 import { Badge } from './ui/badge';
 import { Rocket } from 'lucide-react';
 import { useAppState } from '@/context/app-state-context';
+import { useEffect } from 'react';
 
 export default function Dashboard() {
   const { 
@@ -34,6 +35,12 @@ export default function Dashboard() {
     if (stage >= 3) return <Badge className="bg-primary text-primary-foreground">Active Beneficiary</Badge>
     return null;
   }
+
+  useEffect(() => {
+    console.log(`[CLIENT] Dashboard component mounted.`);
+  }, []);
+
+  console.log(`[${typeof window === 'undefined' ? 'SERVER' : 'CLIENT'}] Rendering Dashboard`);
 
   return (
     <div className="space-y-8">

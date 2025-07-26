@@ -16,6 +16,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const bodyClassName = 'font-body antialiased';
+  console.log(`[${typeof window === 'undefined' ? 'SERVER' : 'CLIENT'}] RootLayout body.className:`, bodyClassName);
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -23,7 +25,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet" />
       </head>
-      <body className='font-body antialiased' suppressHydrationWarning>
+      <body className={bodyClassName} suppressHydrationWarning>
         <AppStateProvider>
           <div className="min-h-screen w-full bg-background">
             <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-2 border-b bg-background/80 px-4 backdrop-blur md:px-6">
