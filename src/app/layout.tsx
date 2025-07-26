@@ -1,23 +1,35 @@
+"use client";
+
 import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
 import { AppStateProvider } from '@/context/app-state-context';
 import { Leaf } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
-export const metadata: Metadata = {
-  title: 'PM-KISAN Saathi',
-  description: 'AI-powered assistance for the PM-KISAN scheme.',
-};
+// export const metadata: Metadata = {
+//   title: 'PM-KISAN Saathi',
+//   description: 'AI-powered assistance for the PM-KISAN scheme.',
+// };
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
+  console.log('body className on server/client initial render:', 'font-body antialiased');
+
+  useEffect(() => {
+    console.log('body className on client after hydration:', document.body.className);
+  }, []);
+
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <title>PM-KISAN Saathi</title>
+        <meta name="description" content="AI-powered assistance for the PM-KISAN scheme." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet" />
