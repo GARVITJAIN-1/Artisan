@@ -59,7 +59,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
         setIsAutofilled(true);
         toast({
           title: 'Form Auto-filled!',
-          description: 'The AI has filled the form. Please review the details.',
+          description: 'The AI has filled the form. Please review and edit if necessary.',
         });
       } else {
         toast({
@@ -122,7 +122,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
         )}
        
         {isAutofilled && !isOtpStep && (
-            <Card className="bg-secondary/50">
+            <Card>
                 <CardContent className="p-6">
                     <h3 className="text-lg font-semibold mb-2">Personal & Location Details</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -130,7 +130,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
                         <FormField key={f.name} control={form.control} name={f.name as keyof PmKisanFormValues} render={({ field }) => (
                             <FormItem>
                                 <FormLabel>{f.label}</FormLabel>
-                                <FormControl><Input {...field} readOnly /></FormControl>
+                                <FormControl><Input {...field} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
@@ -139,7 +139,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
                         <FormField key={f.name} control={form.control} name={f.name as keyof PmKisanFormValues} render={({ field }) => (
                             <FormItem>
                                 <FormLabel>{f.label}</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value} disabled>
+                                <Select onValueChange={field.onChange} defaultValue={field.value} >
                                     <FormControl><SelectTrigger><SelectValue/></SelectTrigger></FormControl>
                                     <SelectContent>
                                         {f.options.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
@@ -157,7 +157,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
                             <FormField key={f.name} control={form.control} name={f.name as keyof PmKisanFormValues} render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{f.label}</FormLabel>
-                                    <FormControl><Input {...field} readOnly /></FormControl>
+                                    <FormControl><Input {...field} /></FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )} />
