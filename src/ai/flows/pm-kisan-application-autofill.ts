@@ -2,7 +2,7 @@
 'use server';
 
 /**
- * @fileOverview An AI agent to auto-fill PM-KISAN application forms.
+ * @fileOverview An AI agent to auto-fill PM-KISAN application forms by fetching user data.
  *
  * - pmKisanApplicationAutofill - A function that handles the auto-filling process.
  * - PmKisanApplicationAutofillInput - The input type for the pmKisanApplicationAutofill function.
@@ -10,12 +10,32 @@
  */
 
 import {ai} from '@/ai/genkit';
+import {db} from '@/lib/db';
 import {z} from 'genkit';
 
+// 1. Define the tool for the AI to fetch farmer data.
+const getFarmerDetails = ai.defineTool(
+  {
+    name: 'getFarmerDetails',
+    description: 'Get the details of a farmer from the database using their ID.',
+    inputSchema: z.object({
+      farmerId: z.string().describe('The unique ID of the farmer.'),
+    }),
+    outputSchema: z.any().describe('The farmer data as a JSON object.'),
+  },
+  async input => {
+    return db.getFarmerById(input.farmerId);
+  }
+);
+
+// 2. Update the input schema for the flow. It now takes farmerId.
 const PmKisanApplicationAutofillInputSchema = z.object({
+  farmerId: z.string().describe('The ID of the farmer to fill the application for.'),
   formDataSchema: z.string().describe('The JSON schema of the form to be filled.'),
-  currentFormData: z.string().optional().describe('The current form data as a JSON string, to be used for multi-form filling, should be an empty object if not available.'),
-  userData: z.string().describe('The user data as a JSON string, including Aadhaar details, bank details, land records etc.'),
+  currentFormData: z
+    .string()
+    .optional()
+    .describe('The current form data as a JSON string, to be used for multi-form filling, should be an empty object if not available.'),
 });
 export type PmKisanApplicationAutofillInput = z.infer<typeof PmKisanApplicationAutofillInputSchema>;
 
@@ -28,6 +48,7 @@ export async function pmKisanApplicationAutofill(input: PmKisanApplicationAutofi
   return pmKisanApplicationAutofillFlow(input);
 }
 
+// 3. Update the prompt to use the new tool and logic.
 const prompt = ai.definePrompt({
   name: 'pmKisanApplicationAutofillPrompt',
   input: {
@@ -36,15 +57,18 @@ const prompt = ai.definePrompt({
   output: {
     schema: PmKisanApplicationAutofillOutputSchema,
   },
+  // Provide the new tool to the AI.
+  tools: [getFarmerDetails],
   prompt: `You are an AI assistant specialized in auto-filling application forms for the PM-KISAN scheme.
 
-  Your task is to populate a form with the provided user data, adhering to the given form schema.
+  Your task is to populate a form with the user's data. First, you must fetch the user's data using the provided farmer ID.
 
-  Here is the JSON schema of the form:
+  Farmer ID: {{{farmerId}}}
+
+  Use the 'getFarmerDetails' tool to fetch the data for this farmer.
+
+  Once you have the user data, use it to populate the form that adheres to the following JSON schema:
   {{formDataSchema}}
-
-  Here is the user data:
-  {{{userData}}}
 
   Here is the existing form data, which you should use as a base if available:
   {{#if currentFormData}}
@@ -52,22 +76,8 @@ const prompt = ai.definePrompt({
   {{else}}
   {}
   {{/if}}
-
-  Please fill the form using the following mapping:
-  - 'state' should be mapped from 'userData.address.state'.
-  - 'district' should be mapped from 'userData.address.district'.
-  - 'subDistrict' should be mapped from 'userData.address.subDistrict'.
-  - 'block' should be mapped from 'userData.address.block'.
-  - 'village' should be mapped from 'userData.address.village'.
-  - 'farmerName' should be mapped from 'userData.name'.
-  - 'gender' should be mapped from 'userData.gender'.
-  - 'category' should be mapped from 'userData.category'.
-  - 'farmerType' should be mapped from 'userData.farmerType'.
-  - 'aadhaarNumber' should be mapped from 'userData.aadhaarNumber'.
-  - 'bankName' should be mapped from 'userData.bank.name'.
-  - 'ifscCode' should be mapped from 'userData.bank.ifsc'.
-  - 'accountNumber' should be mapped from 'userData.bank.accountNumber'.
-
+  
+  Please map the data from the fetched user details to the form fields.
   If a value is not found in the user data, leave the corresponding form field as it is (if it has a default value) or set it to null.
   Return the completed form data as a valid JSON string in the 'filledFormData' field.
   `,

@@ -7,13 +7,10 @@ import { db } from "@/lib/db";
 
 export async function autofillPmKisanFormAction(currentFormData?: object) {
   try {
-    const userData = await db.getFarmerById("FARMER12345");
-    if (!userData) {
-      throw new Error("User not found");
-    }
+    const farmerId = "FARMER12345"; // In a real app, this would come from the user's session
     const result = await pmKisanApplicationAutofill({
+      farmerId: farmerId,
       formDataSchema: JSON.stringify(pmKisanFormJsonSchema),
-      userData: JSON.stringify(userData),
       currentFormData: currentFormData ? JSON.stringify(currentFormData) : '{}',
     });
     return { success: true, data: JSON.parse(result.filledFormData) };
