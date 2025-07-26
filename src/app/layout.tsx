@@ -4,6 +4,7 @@ import './globals.css';
 import { AppStateProvider } from '@/context/app-state-context';
 import { Leaf } from 'lucide-react';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'PM-KISAN Saathi',
@@ -22,7 +23,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased">
+      <body className='font-body antialiased' suppressHydrationWarning>
         <AppStateProvider>
           <div className="min-h-screen w-full bg-background">
             <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-2 border-b bg-background/80 px-4 backdrop-blur md:px-6">
