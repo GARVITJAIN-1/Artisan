@@ -76,8 +76,22 @@ const prompt = ai.definePrompt({
   {{else}}
   {}
   {{/if}}
-  
-  Please map the data from the fetched user details to the form fields.
+
+  Please map the data from the fetched user details to the form fields according to these specific instructions:
+  - 'state' should be mapped from 'address.state'.
+  - 'district' should be mapped from 'address.district'.
+  - 'subDistrict' should be mapped from 'address.subDistrict'.
+  - 'block' should be mapped from 'address.block'.
+  - 'village' should be mapped from 'address.village'.
+  - 'farmerName' should be mapped from 'name'.
+  - 'gender' should be mapped from 'gender'.
+  - 'category' should be mapped from 'category'.
+  - 'farmerType' should be mapped from 'farmerType'.
+  - 'aadhaarNumber' should be mapped from 'aadhaarNumber'.
+  - 'bankName' should be mapped from 'bank.name'.
+  - 'ifscCode' should be mapped from 'bank.ifsc'.
+  - 'accountNumber' should be mapped from 'bank.accountNumber'.
+
   If a value is not found in the user data, leave the corresponding form field as it is (if it has a default value) or set it to null.
   Return the completed form data as a valid JSON string in the 'filledFormData' field.
   `,
