@@ -36,27 +36,40 @@ const prompt = ai.definePrompt({
   output: {
     schema: PmKisanApplicationAutofillOutputSchema,
   },
-  prompt: `You are an AI assistant specialized in auto-filling application forms.
+  prompt: `You are an AI assistant specialized in auto-filling application forms for the PM-KISAN scheme.
 
-  Your task is to understand the structure of a given form, and populate it with the provided user data.
+  Your task is to populate a form with the provided user data, adhering to the given form schema.
 
   Here is the JSON schema of the form:
   {{formDataSchema}}
 
-  Here is the existing form data, to be used if available, otherwise populate with empty object:
+  Here is the user data:
+  {{{userData}}}
+
+  Here is the existing form data, which you should use as a base if available:
   {{#if currentFormData}}
   {{{currentFormData}}}
   {{else}}
   {}
   {{/if}}
 
-  Here is the user data:
-  {{{userData}}}
+  Please fill the form using the following mapping:
+  - 'state' should be mapped from 'userData.address.state'.
+  - 'district' should be mapped from 'userData.address.district'.
+  - 'subDistrict' should be mapped from 'userData.address.subDistrict'.
+  - 'block' should be mapped from 'userData.address.block'.
+  - 'village' should be mapped from 'userData.address.village'.
+  - 'farmerName' should be mapped from 'userData.name'.
+  - 'gender' should be mapped from 'userData.gender'.
+  - 'category' should be mapped from 'userData.category'.
+  - 'farmerType' should be mapped from 'userData.farmerType'.
+  - 'aadhaarNumber' should be mapped from 'userData.aadhaarNumber'.
+  - 'bankName' should be mapped from 'userData.bank.name'.
+  - 'ifscCode' should be mapped from 'userData.bank.ifsc'.
+  - 'accountNumber' should be mapped from 'userData.bank.accountNumber'.
 
-  Based on the schema and the user data, fill the form. Ensure that the filled form data adheres to the specified schema.
-  Return the filled form data as a JSON string.
-  If you cannot find the corresponding value from user data, leave it as is if there is a default value in form schema, otherwise make it null.
-  Ensure the final filledFormData value is valid JSON.
+  If a value is not found in the user data, leave the corresponding form field as it is (if it has a default value) or set it to null.
+  Return the completed form data as a valid JSON string in the 'filledFormData' field.
   `,
 });
 
