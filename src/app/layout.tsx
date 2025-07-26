@@ -6,7 +6,8 @@ import './globals.css';
 import { AppStateProvider } from '@/context/app-state-context';
 import { Leaf } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 // export const metadata: Metadata = {
 //   title: 'PM-KISAN Saathi',
@@ -18,12 +19,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
-  console.log('body className on server/client initial render:', 'font-body antialiased');
-
-  useEffect(() => {
-    console.log('body className on client after hydration:', document.body.className);
-  }, []);
+  const pathname = usePathname();
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -44,8 +40,11 @@ export default function RootLayout({
                   PM-KISAN Saathi
                 </h1>
               </Link>
-              <nav>
-                <Link href="/admin" className="text-sm font-medium text-primary hover:underline">
+              <nav className='flex items-center gap-4'>
+                <Link href="/" className={cn("text-sm font-medium hover:underline", pathname === '/' ? 'text-accent' : 'text-primary')}>
+                  User Dashboard
+                </Link>
+                <Link href="/admin" className={cn("text-sm font-medium hover:underline", pathname === '/admin' ? 'text-accent' : 'text-primary')}>
                   Admin Panel
                 </Link>
               </nav>
