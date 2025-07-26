@@ -1,21 +1,22 @@
 "use server";
 
-import { pmKisanApplicationAutofill } from "@/ai/flows/pm-kisan-application-autofill";
 import { assistKycReminder } from "@/ai/flows/data-assisted-kyc-reminder";
-import { pmKisanFormJsonSchema } from "@/lib/schema";
 import { db } from "@/lib/db";
+import { mapFarmerDataToForm } from "@/lib/utils";
+
 
 export async function autofillPmKisanFormAction(currentFormData?: object) {
   try {
     const farmerId = "FARMER12345"; // In a real app, this would come from the user's session
-    const result = await pmKisanApplicationAutofill({
-      farmerId: farmerId,
-      formDataSchema: JSON.stringify(pmKisanFormJsonSchema),
-      currentFormData: currentFormData ? JSON.stringify(currentFormData) : '{}',
-    });
-    return { success: true, data: JSON.parse(result.filledFormData) };
+    const farmerData = await db.getFarmerById(farmerId);
+    if (!farmerData) {
+      return { success: false, error: "Farmer data not found." };
+    }
+    const filledData = mapFarmerDataToForm(farmerData);
+    return { success: true, data: filledData };
+
   } catch (error) {
-    console.error("Error in AI autofill action:", error);
+    console.error("Error in autofill action:", error);
     return { success: false, error: "Failed to autofill form. Please try again." };
   }
 }
