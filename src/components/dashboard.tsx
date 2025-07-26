@@ -86,7 +86,7 @@ export default function Dashboard() {
       </div>
 
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="max-w-4xl">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-headline text-2xl text-primary">New Beneficiary Registration</DialogTitle>
           </DialogHeader>
