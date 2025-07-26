@@ -42,8 +42,8 @@ const prompt = ai.definePrompt({
   Bank Account Number: {{{bankAccountNumber}}}
   Land Records: {{{landRecords}}}
 
-  Instructions:
-  `, // Intentionally left open for AI to fill in the prompt instructions.
+  Provide assistance to the farmer for completing e-KYC.
+  `,
 });
 
 const assistKycReminderFlow = ai.defineFlow(
