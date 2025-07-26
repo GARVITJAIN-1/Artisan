@@ -1,9 +1,8 @@
 
 "use client";
 
-import { useState } from 'react';
 import type { ChecklistItem } from '@/lib/data';
-import { applicationStages, initialChecklist, cscLocations, requiredDocuments } from '@/lib/data';
+import { applicationStages, cscLocations, requiredDocuments } from '@/lib/data';
 import { userData } from '@/lib/schema';
 import ProgressTracker from './progress-tracker';
 import StatusChecklist from './status-checklist';
@@ -12,102 +11,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import ApplicationForm from './application-form';
-import { Switch } from './ui/switch';
-import { Label } from './ui/label';
-import { useToast } from '@/hooks/use-toast';
 import { Badge } from './ui/badge';
 import { Rocket } from 'lucide-react';
-
-type ApplicationStage = 0 | 1 | 2 | 3 | 4;
+import { useAppState } from '@/context/app-state-context';
 
 export default function Dashboard() {
-  const { toast } = useToast();
-  const [stage, setStage] = useState<ApplicationStage>(0);
-  const [checklist, setChecklist] = useState<ChecklistItem[]>(initialChecklist);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isAdminApproved, setIsAdminApproved] = useState(false);
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [form1Data, setForm1Data] = useState<object | null>(null);
+  const { 
+    stage, 
+    checklist, 
+    isFormOpen, 
+    setIsFormOpen,
+    isFormSubmitted,
+    isAdminApproved,
+    handleFormSubmit,
+    startApplication,
+  } = useAppState();
 
-  const handleFormSubmit = (data: object) => {
-    setForm1Data(data);
-    setStage(2);
-    setIsFormSubmitted(true);
-    setChecklist(prev =>
-      prev.map(item =>
-        item.text === 'Provide Aadhaar & Bank Details' ||
-        item.text === 'Upload Land Records' ||
-        item.text === 'Application Auto-Filled & Submitted'
-          ? { ...item, status: 'completed' }
-          : item.text === 'Undergoing Verification by Government Officials'
-          ? { ...item, status: 'current' }
-          : item
-      )
-    );
-    setIsFormOpen(false);
-    toast({
-      title: "Application Submitted!",
-      description: "Your form has been submitted and is now pending admin approval.",
-    });
-  };
-  
-  const handleAdminApproval = (approved: boolean) => {
-    setIsAdminApproved(approved);
-    if (approved) {
-      setStage(3);
-      setChecklist(prev =>
-        prev.map(item =>
-          item.text === 'Undergoing Verification by Government Officials'
-            ? { ...item, status: 'completed' }
-            : item.text === 'Awaiting Inclusion in Beneficiary List'
-            ? { ...item, status: 'current' }
-            : item
-        )
-      );
-      toast({
-        title: "Application Approved!",
-        description: "Admin has approved. Finalizing beneficiary status...",
-      });
-
-      // Simulate final inclusion and payment disbursement
-      setTimeout(() => {
-        setStage(4);
-        setChecklist(prev =>
-          prev.map(item => (item.status !== 'completed' ? { ...item, status: 'completed' } : item))
-        );
-        toast({
-          title: "Congratulations! You are now a Beneficiary.",
-          description: "First installment has been disbursed.",
-          className: "bg-primary text-primary-foreground border-primary",
-        });
-      }, 2000);
-    } else {
-      // Logic for when admin "un-approves"
-      setStage(2);
-      setChecklist(prev =>
-        prev.map(item => {
-          if (item.text === 'Undergoing Verification by Government Officials') {
-            return { ...item, status: 'current' };
-          }
-          if (['Awaiting Inclusion in Beneficiary List', 'First Installment Disbursed'].includes(item.text)) {
-            return { ...item, status: 'upcoming' };
-          }
-          return item;
-        })
-      );
-      toast({
-        variant: 'destructive',
-        title: 'Approval Retracted',
-        description: 'Application approval has been reset to "Pending".',
-      });
-    }
-  };
-
-  const startApplication = () => {
-    setStage(1);
-    setChecklist(prev => prev.map(item => item.text === 'Provide Aadhaar & Bank Details' ? {...item, status: 'current'} : item));
-    setIsFormOpen(true);
-  }
 
   const getStatusBadge = () => {
     if (stage < 2) return <Badge variant="outline">Not Started</Badge>
@@ -151,27 +70,6 @@ export default function Dashboard() {
                     </CardContent>
                  </Card>
             )}
-
-            {isFormSubmitted && stage < 4 && (
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Admin Approval</CardTitle>
-                        <CardDescription>This section simulates an administrator approving the submitted form.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex items-center space-x-4">
-                        <Label htmlFor="admin-approval" className={`font-bold ${isAdminApproved ? 'text-primary' : 'text-accent'}`}>
-                            {isAdminApproved ? "Approved" : "Pending"}
-                        </Label>
-                        <Switch
-                            id="admin-approval"
-                            checked={isAdminApproved}
-                            onCheckedChange={handleAdminApproval}
-                            aria-label="Admin Approval Switch"
-                        />
-                    </CardContent>
-                </Card>
-            )}
-
         </div>
         <div className="space-y-8">
             <ReminderCard
