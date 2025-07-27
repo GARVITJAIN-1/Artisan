@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview An AI agent to help farmers complete their e-KYC.
@@ -16,6 +17,7 @@ const AssistKycReminderInputSchema = z.object({
   aadhaarNumber: z.string().describe('The Aadhaar number of the farmer.'),
   bankAccountNumber: z.string().describe('The bank account number of the farmer.'),
   landRecords: z.string().describe('The land records of the farmer.'),
+  language: z.enum(['en', 'hi']).describe('The language for the response.'),
 });
 export type AssistKycReminderInput = z.infer<typeof AssistKycReminderInputSchema>;
 
@@ -33,7 +35,7 @@ const prompt = ai.definePrompt({
   input: {schema: AssistKycReminderInputSchema},
   output: {schema: AssistKycReminderOutputSchema},
   prompt: `You are an AI assistant helping farmers complete their e-KYC for the PM-KISAN scheme.
-  Based on the farmer's information, provide clear and concise instructions on how to complete the e-KYC process either online or by visiting a Common Service Center (CSC).
+  Based on the farmer's information, provide clear and concise instructions in {{language}} on how to complete the e-KYC process either online or by visiting a Common Service Center (CSC).
   Include the necessary documents and information required for both methods.
 
   Farmer ID: {{{farmerId}}}
@@ -42,7 +44,7 @@ const prompt = ai.definePrompt({
   Bank Account Number: {{{bankAccountNumber}}}
   Land Records: {{{landRecords}}}
 
-  Provide assistance to the farmer for completing e-KYC.
+  Provide assistance to the farmer for completing e-KYC in {{language}}.
   `,
 });
 

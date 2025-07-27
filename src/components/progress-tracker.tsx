@@ -3,6 +3,7 @@
 import { cn } from '@/lib/utils';
 import type { LucideIcon } from 'lucide-react';
 import { Progress } from './ui/progress';
+import { useLanguage } from '@/context/language-context';
 
 type ProgressTrackerProps = {
   stages: { name: string; icon: LucideIcon }[];
@@ -11,6 +12,7 @@ type ProgressTrackerProps = {
 
 export default function ProgressTracker({ stages, currentStage }: ProgressTrackerProps) {
   const progressPercentage = currentStage > 0 ? ((currentStage-1) / (stages.length - 1)) * 100 : 0;
+  const { t } = useLanguage();
   
   return (
     <div className="w-full">
@@ -36,7 +38,7 @@ export default function ProgressTracker({ stages, currentStage }: ProgressTracke
                   isActive ? 'text-primary' : 'text-muted-foreground'
                 )}
               >
-                {stage.name}
+                {t(stage.name)}
               </p>
             </div>
           );

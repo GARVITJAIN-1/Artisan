@@ -1,10 +1,10 @@
-import { Circle, CircleCheck, CircleDollarSign, ClipboardPenLine, Gavel, LoaderCircle, Send } from "lucide-react";
+import { ClipboardPenLine, Send, Gavel, CircleDollarSign } from "lucide-react";
 
 export const applicationStages = [
-  { name: 'Eligibility & Data Collection', icon: ClipboardPenLine },
-  { name: 'Application Submitted', icon: Send },
-  { name: 'Verification & Approval', icon: Gavel },
-  { name: 'Beneficiary & Payment', icon: CircleDollarSign },
+  { name: 'eligibilityDataCollection', icon: ClipboardPenLine },
+  { name: 'applicationSubmittedStage', icon: Send },
+  { name: 'verificationApproval', icon: Gavel },
+  { name: 'beneficiaryPayment', icon: CircleDollarSign },
 ];
 
 export type ChecklistItemStatus = 'completed' | 'current' | 'upcoming';
@@ -15,15 +15,13 @@ export type ChecklistItem = {
 };
 
 export const initialChecklist: ChecklistItem[] = [
-    { text: 'Provide Aadhaar & Bank Details', status: 'upcoming' },
-    { text: 'Upload Land Records', status: 'upcoming' },
-    { text: 'Application Auto-Filled & Submitted', status: 'upcoming' },
-    { text: 'Undergoing Verification by Government Officials', status: 'upcoming' },
-    { text: 'Awaiting Inclusion in Beneficiary List', status: 'upcoming' },
-    { text: 'First Installment Disbursed', status: 'upcoming' },
+    { text: 'provideAadhaar', status: 'upcoming' },
+    { text: 'uploadLandRecords', status: 'upcoming' },
+    { text: 'appAutofilled', status: 'upcoming' },
+    { text: 'undergoingVerification', status: 'upcoming' },
+    { text: 'awaitingInclusion', status: 'upcoming' },
+    { text: 'firstInstallment', status: 'upcoming' },
 ];
-
-
 
 export const cscLocations = [
     { name: 'CSC Center Rampur', address: '123, Main Market, Rampur, Sitapur', hours: '9 AM - 6 PM' },

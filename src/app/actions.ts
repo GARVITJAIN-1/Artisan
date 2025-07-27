@@ -1,3 +1,4 @@
+
 "use server";
 
 import { assistKycReminder } from "@/ai/flows/data-assisted-kyc-reminder";
@@ -7,7 +8,7 @@ import { mapFarmerDataToForm } from "@/lib/utils";
 
 export async function autofillPmKisanFormAction(currentFormData?: object) {
   try {
-    const farmerId = "FARMER12345"; // In a real app, this would come from the user's session
+    const farmerId = "FARMER12345";
     const farmerData = await db.getFarmerById(farmerId);
     if (!farmerData) {
       return { success: false, error: "Farmer data not found." };
@@ -21,7 +22,7 @@ export async function autofillPmKisanFormAction(currentFormData?: object) {
   }
 }
 
-export async function getKycAssistanceAction() {
+export async function getKycAssistanceAction(language: 'en' | 'hi' = 'en') {
     try {
         const userData = await db.getFarmerById("FARMER12345");
         if (!userData) {
@@ -33,6 +34,7 @@ export async function getKycAssistanceAction() {
             aadhaarNumber: userData.aadhaarNumber,
             bankAccountNumber: userData.bank.accountNumber,
             landRecords: JSON.stringify(userData.landRecords),
+            language,
         });
         return { success: true, data: result.eKycAssistance };
     } catch (error) {

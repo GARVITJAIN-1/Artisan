@@ -4,6 +4,7 @@ import type { PmKisanFormValues } from "@/lib/schema";
 import { initialChecklist, type ChecklistItem } from "@/lib/data";
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "./language-context";
 
 type ApplicationStage = 0 | 1 | 2 | 3 | 4;
 
@@ -29,6 +30,7 @@ const AppStateContext = createContext<AppState | undefined>(undefined);
 
 export function AppStateProvider({ children }: { children: ReactNode }) {
     const { toast } = useToast();
+    const { t } = useLanguage();
     const [stage, setStage] = useState<ApplicationStage>(0);
     const [checklist, setChecklist] = useState<ChecklistItem[]>(initialChecklist);
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -42,19 +44,19 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         setIsFormSubmitted(true);
         setChecklist(prev =>
             prev.map(item =>
-                item.text === 'Provide Aadhaar & Bank Details' ||
-                item.text === 'Upload Land Records' ||
-                item.text === 'Application Auto-Filled & Submitted'
+                item.text === 'provideAadhaar' ||
+                item.text === 'uploadLandRecords' ||
+                item.text === 'appAutofilled'
                     ? { ...item, status: 'completed' }
-                    : item.text === 'Undergoing Verification by Government Officials'
+                    : item.text === 'undergoingVerification'
                         ? { ...item, status: 'current' }
                         : item
             )
         );
         setIsFormOpen(false);
         toast({
-            title: "Application Submitted!",
-            description: "Your form has been submitted and is now pending admin approval.",
+            title: t('applicationSubmitted'),
+            description: t('applicationSubmittedDesc'),
         });
     };
 
@@ -64,9 +66,9 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
             setStage(3);
             setChecklist(prev =>
                 prev.map(item =>
-                    item.text === 'Undergoing Verification by Government Officials'
+                    item.text === 'undergoingVerification'
                         ? { ...item, status: 'completed' }
-                        : item.text === 'Awaiting Inclusion in Beneficiary List'
+                        : item.text === 'awaitingInclusion'
                             ? { ...item, status: 'current' }
                             : item
                 )
@@ -78,8 +80,8 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
                     prev.map(item => (item.status !== 'completed' ? { ...item, status: 'completed' } : item))
                 );
                 toast({
-                    title: "Congratulations! You are now a Beneficiary.",
-                    description: "First installment has been disbursed.",
+                    title: t('congratulationsBeneficiary'),
+                    description: t('firstInstallmentDisbursed'),
                     className: "bg-primary text-primary-foreground border-primary",
                 });
             }, 2000);
@@ -88,10 +90,10 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
             setStage(2);
             setChecklist(prev =>
                 prev.map(item => {
-                    if (item.text === 'Undergoing Verification by Government Officials') {
+                    if (item.text === 'undergoingVerification') {
                         return { ...item, status: 'current' };
                     }
-                    if (['Awaiting Inclusion in Beneficiary List', 'First Installment Disbursed'].includes(item.text)) {
+                    if (['awaitingInclusion', 'firstInstallment'].includes(item.text)) {
                         return { ...item, status: 'upcoming' };
                     }
                     return item;
@@ -102,7 +104,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
 
      const startApplication = () => {
         setStage(1);
-        setChecklist(prev => prev.map(item => item.text === 'Provide Aadhaar & Bank Details' ? {...item, status: 'current'} : item));
+        setChecklist(prev => prev.map(item => item.text === 'provideAadhaar' ? {...item, status: 'current'} : item));
         setIsFormOpen(true);
     }
 

@@ -15,6 +15,7 @@ import { autofillPmKisanFormAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent } from './ui/card';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
+import { useLanguage } from '@/context/language-context';
 
 type ApplicationFormProps = {
   userData: any;
@@ -27,6 +28,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
   const [isAutofilled, setIsAutofilled] = useState(false);
   const [isOtpStep, setIsOtpStep] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const form = useForm<PmKisanFormValues>({
     resolver: zodResolver(pmKisanFormSchema),
@@ -52,19 +54,18 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
     startTransition(async () => {
       const result = await autofillPmKisanFormAction();
       if (result.success && result.data) {
-        // Using `any` to bypass strict type checking for dynamic key setting
         Object.keys(result.data).forEach((key: any) => {
           form.setValue(key, result.data[key], { shouldValidate: true });
         });
         setIsAutofilled(true);
         toast({
-          title: 'Form Auto-filled!',
-          description: 'The AI has filled the form. Please review and edit if necessary.',
+          title: t('formAutofilled'),
+          description: t('formAutofilledDesc'),
         });
       } else {
         toast({
           variant: 'destructive',
-          title: 'AI Autofill Failed',
+          title: t('autofillFailed'),
           description: result.error,
         });
       }
@@ -76,31 +77,30 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
         setIsOtpStep(true);
         return;
     }
-    // Simulate OTP validation
     if(data.otp !== '123456'){
-        form.setError('otp', {type: 'manual', message: 'Invalid OTP. Please enter 123456.'});
+        form.setError('otp', {type: 'manual', message: t('invalidOtp')});
         return;
     }
     onFormSubmit(data);
   };
   
   const formFields = [
-      { name: 'state', label: 'State' }, { name: 'district', label: 'District' },
-      { name: 'subDistrict', label: 'Sub-District/Tehsil' }, { name: 'block', label: 'Block' },
-      { name: 'village', label: 'Village' }, { name: 'farmerName', label: 'Farmer Name' }
+      { name: 'state', label: t('state') }, { name: 'district', label: t('district') },
+      { name: 'subDistrict', label: t('subDistrict') }, { name: 'block', label: t('block') },
+      { name: 'village', label: t('village') }, { name: 'farmerName', label: t('farmerName') }
   ];
 
   const selectFields = [
-      { name: 'gender', label: 'Gender', options: ['Male', 'Female', 'Other']},
-      { name: 'category', label: 'Category', options: ['General', 'SC', 'ST', 'OBC']},
-      { name: 'farmerType', label: 'Farmer Type', options: ['Small (1-2 Ha)', 'Marginal (<1 Ha)', 'Other']}
+      { name: 'gender', label: t('gender'), options: [{value: 'Male', label: t('male')}, {value: 'Female', label: t('female')}, {value: 'Other', label: t('other')}]},
+      { name: 'category', label: t('category'), options: [{value: 'General', label: t('general')}, {value: 'SC', label: t('sc')}, {value: 'ST', label: t('st')}, {value: 'OBC', label: t('obc')}]},
+      { name: 'farmerType', label: t('farmerType'), options: [{value: 'Small (1-2 Ha)', label: t('smallFarmer')}, {value: 'Marginal (<1 Ha)', label: t('marginalFarmer')}, {value: 'Other', label: t('otherFarmer')}]}
   ];
   
   const bankFields = [
-      { name: 'aadhaarNumber', label: 'Aadhaar Number (XXXX-XXXX-XXXX)'},
-      { name: 'bankName', label: 'Bank Name'},
-      { name: 'ifscCode', label: 'IFSC Code'},
-      { name: 'accountNumber', label: 'Account Number'}
+      { name: 'aadhaarNumber', label: t('aadhaarNumber')},
+      { name: 'bankName', label: t('bankName')},
+      { name: 'ifscCode', label: t('ifscCode')},
+      { name: 'accountNumber', label: t('accountNumber')}
   ];
 
   return (
@@ -110,12 +110,12 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
         {!isAutofilled && (
              <Alert className="border-primary bg-primary/5">
                 <Sparkles className="h-4 w-4 text-primary" />
-                <AlertTitle className="text-primary font-bold">Save Time with AI!</AlertTitle>
+                <AlertTitle className="text-primary font-bold">{t('saveTimeAi')}</AlertTitle>
                 <AlertDescription>
-                    Click the button below to let our AI assistant fill in your application based on your profile data.
+                    {t('saveTimeAiDesc')}
                     <Button type="button" onClick={handleAutofill} disabled={isPending} className="mt-4 w-full">
                         {isPending ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                        Auto-fill with AI
+                        {t('autofillWithAi')}
                     </Button>
                 </AlertDescription>
             </Alert>
@@ -124,7 +124,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
         {isAutofilled && !isOtpStep && (
             <Card>
                 <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-2">Personal & Location Details</h3>
+                    <h3 className="text-lg font-semibold mb-2">{t('personalLocationDetails')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {formFields.map(f => (
                         <FormField key={f.name} control={form.control} name={f.name as keyof PmKisanFormValues} render={({ field }) => (
@@ -142,7 +142,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
                                 <Select onValueChange={field.onChange} defaultValue={field.value} >
                                     <FormControl><SelectTrigger><SelectValue/></SelectTrigger></FormControl>
                                     <SelectContent>
-                                        {f.options.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
+                                        {f.options.map(opt => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
                                     </SelectContent>
                                 </Select>
                                 <FormMessage />
@@ -151,7 +151,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
                      ))}
                     </div>
                     <Separator className="my-6" />
-                    <h3 className="text-lg font-semibold mb-2">Bank & Aadhaar Details</h3>
+                    <h3 className="text-lg font-semibold mb-2">{t('bankAadhaarDetails')}</h3>
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {bankFields.map(f => (
                             <FormField key={f.name} control={form.control} name={f.name as keyof PmKisanFormValues} render={({ field }) => (
@@ -169,14 +169,11 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
 
         {isOtpStep && (
              <Alert className="border-accent bg-accent/5">
-                <AlertTitle className="text-accent font-bold">One Final Step: OTP Verification</AlertTitle>
-                <AlertDescription>
-                   We've sent an OTP to your registered mobile number ending in {userData.mobileNumber.slice(-4)}. 
-                   For this demo, please use <strong>123456</strong>.
-                </AlertDescription>
+                <AlertTitle className="text-accent font-bold">{t('otpVerification')}</AlertTitle>
+                <AlertDescription dangerouslySetInnerHTML={{ __html: t('otpSent').replace('{last4Digits}', userData.mobileNumber.slice(-4)) }} />
                  <FormField control={form.control} name="otp" render={({ field }) => (
                     <FormItem className="mt-4">
-                        <FormLabel>Enter OTP</FormLabel>
+                        <FormLabel>{t('enterOtp')}</FormLabel>
                         <FormControl><Input {...field} placeholder="******" /></FormControl>
                         <FormMessage />
                     </FormItem>
@@ -186,10 +183,10 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
 
         <div className="flex justify-end gap-4">
           <Button type="button" variant="outline" onClick={onClose}>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button type="submit" disabled={!isAutofilled}>
-            {isOtpStep ? 'Confirm & Submit Application' : 'Proceed to OTP Verification'}
+            {isOtpStep ? t('confirmAndSubmit') : t('proceedToOtp')}
           </Button>
         </div>
       </form>

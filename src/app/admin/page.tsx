@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/context/language-context";
 
 export default function AdminPage() {
     const { 
@@ -15,12 +16,13 @@ export default function AdminPage() {
         formData 
     } = useAppState();
     const { toast } = useToast();
+    const { t } = useLanguage();
 
     const onApprove = () => {
         handleAdminApproval(true);
         toast({
-            title: "Application Approved!",
-            description: "Admin has approved. Finalizing beneficiary status...",
+            title: t('applicationApproved'),
+            description: t('applicationApprovedDesc'),
         });
     };
 
@@ -28,8 +30,8 @@ export default function AdminPage() {
         handleAdminApproval(false);
         toast({
             variant: 'destructive',
-            title: 'Application Rejected',
-            description: 'Application approval has been reset to "Pending".',
+            title: t('applicationRejected'),
+            description: t('applicationRejectedDesc'),
         });
     }
 
@@ -38,15 +40,15 @@ export default function AdminPage() {
             <div className="space-y-8">
                 <Card>
                     <CardHeader>
-                        <CardTitle className="font-headline text-3xl text-primary">Admin Approval Panel</CardTitle>
-                        <CardDescription>Review and approve submitted applications.</CardDescription>
+                        <CardTitle className="font-headline text-3xl text-primary">{t('adminApprovalPanel')}</CardTitle>
+                        <CardDescription>{t('adminApprovalPanelDesc')}</CardDescription>
                     </CardHeader>
                 </Card>
 
                 {!isFormSubmitted ? (
                      <Card>
                         <CardContent className="p-6 text-center">
-                            <p>No applications submitted yet.</p>
+                            <p>{t('noApplications')}</p>
                         </CardContent>
                     </Card>
                 ) : (
@@ -54,33 +56,33 @@ export default function AdminPage() {
                         <CardHeader>
                              <div className="flex justify-between items-start">
                                 <div>
-                                    <CardTitle>Application from {formData?.farmerName}</CardTitle>
-                                    <CardDescription>Submitted for PM-KISAN Scheme</CardDescription>
+                                    <CardTitle>{t('applicationFrom').replace('{farmerName}', formData?.farmerName || '')}</CardTitle>
+                                    <CardDescription>{t('applicationFor')}</CardDescription>
                                 </div>
                                 <Badge className={isAdminApproved ? 'bg-primary text-primary-foreground' : 'bg-accent text-accent-foreground'}>
-                                    {isAdminApproved ? 'Approved' : 'Pending Approval'}
+                                    {isAdminApproved ? t('statusApproved') : t('statusPending')}
                                 </Badge>
                              </div>
                         </CardHeader>
                         <CardContent className="space-y-4">
                            <div>
-                            <h4 className="font-semibold">Personal Details</h4>
-                             <p><strong>State:</strong> {formData?.state}</p>
-                             <p><strong>District:</strong> {formData?.district}</p>
-                             <p><strong>Village:</strong> {formData?.village}</p>
+                            <h4 className="font-semibold">{t('personalDetails')}</h4>
+                             <p><strong>{t('state')}:</strong> {formData?.state}</p>
+                             <p><strong>{t('district')}:</strong> {formData?.district}</p>
+                             <p><strong>{t('village')}:</strong> {formData?.village}</p>
                            </div>
                            <div>
-                            <h4 className="font-semibold">Bank Details</h4>
-                            <p><strong>Bank Name:</strong> {formData?.bankName}</p>
-                            <p><strong>Account Number:</strong> {formData?.accountNumber}</p>
-                            <p><strong>Aadhaar:</strong> {formData?.aadhaarNumber}</p>
+                            <h4 className="font-semibold">{t('bankDetails')}</h4>
+                            <p><strong>{t('bankName')}:</strong> {formData?.bankName}</p>
+                            <p><strong>{t('accountNumber')}:</strong> {formData?.accountNumber}</p>
+                            <p><strong>{t('aadhaarNumber')}:</strong> {formData?.aadhaarNumber}</p>
                            </div>
                            <div className="flex gap-4 pt-4">
                                <Button onClick={onApprove} disabled={isAdminApproved}>
-                                   <Check className="mr-2 h-4 w-4"/>Approve
+                                   <Check className="mr-2 h-4 w-4"/>{t('approve')}
                                </Button>
                                <Button onClick={onReject} variant="destructive" disabled={!isFormSubmitted || !isAdminApproved}>
-                                   <X className="mr-2 h-4 w-4"/>Reject
+                                   <X className="mr-2 h-4 w-4"/>{t('reject')}
                                </Button>
                            </div>
                         </CardContent>

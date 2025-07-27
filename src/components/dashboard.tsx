@@ -14,6 +14,7 @@ import { Badge } from './ui/badge';
 import { Rocket } from 'lucide-react';
 import { useAppState } from '@/context/app-state-context';
 import { userData } from '@/lib/schema';
+import { useLanguage } from '@/context/language-context';
 
 export default function Dashboard() {
   const { 
@@ -26,12 +27,13 @@ export default function Dashboard() {
     handleFormSubmit,
     startApplication,
   } = useAppState();
+  const { t } = useLanguage();
 
 
   const getStatusBadge = () => {
-    if (stage < 2) return <Badge variant="outline">Not Started</Badge>
-    if (stage === 2 && !isAdminApproved) return <Badge className="bg-accent text-accent-foreground">Pending Approval</Badge>
-    if (stage >= 3) return <Badge className="bg-primary text-primary-foreground">Active Beneficiary</Badge>
+    if (stage < 2) return <Badge variant="outline">{t('statusNotStarted')}</Badge>
+    if (stage === 2 && !isAdminApproved) return <Badge className="bg-accent text-accent-foreground">{t('statusPendingApproval')}</Badge>
+    if (stage >= 3) return <Badge className="bg-primary text-primary-foreground">{t('statusActiveBeneficiary')}</Badge>
     return null;
   }
 
@@ -41,8 +43,8 @@ export default function Dashboard() {
         <CardHeader>
             <div className="flex justify-between items-start">
                 <div>
-                    <CardTitle className="font-headline text-3xl text-primary">Your Application Journey</CardTitle>
-                    <CardDescription>Track your PM-KISAN application status from start to finish.</CardDescription>
+                    <CardTitle className="font-headline text-3xl text-primary">{t('applicationJourney')}</CardTitle>
+                    <CardDescription>{t('applicationJourneyDesc')}</CardDescription>
                 </div>
                 {getStatusBadge()}
             </div>
@@ -59,13 +61,13 @@ export default function Dashboard() {
             {stage < 2 && !isFormSubmitted && (
                  <Card className="bg-primary text-primary-foreground text-center">
                     <CardHeader>
-                        <CardTitle className="font-headline text-2xl flex items-center justify-center gap-2">Ready to start?</CardTitle>
+                        <CardTitle className="font-headline text-2xl flex items-center justify-center gap-2">{t('readyToStart')}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="mb-4">Begin your journey to becoming a PM-KISAN beneficiary with our AI assistant.</p>
+                        <p className="mb-4">{t('readyToStartDesc')}</p>
                         <Button variant="secondary" size="lg" onClick={startApplication}>
                             <Rocket className="mr-2 h-5 w-5"/>
-                            Start New Application
+                            {t('startNewApplication')}
                         </Button>
                     </CardContent>
                  </Card>
@@ -73,13 +75,13 @@ export default function Dashboard() {
         </div>
         <div className="space-y-8">
             <ReminderCard
-                title="e-KYC Reminder"
-                description="e-KYC is mandatory for all PM-KISAN beneficiaries. Complete it online or at a nearby CSC."
+                title={t('eKycReminder')}
+                description={t('eKycReminderDesc')}
                 cscLocations={cscLocations}
             />
             <ReminderCard
-                title="Required Documents"
-                description="Ensure you have these documents ready for a smooth application process."
+                title={t('requiredDocs')}
+                description={t('requiredDocsDesc')}
                 documents={requiredDocuments}
             />
         </div>
@@ -88,7 +90,7 @@ export default function Dashboard() {
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="font-headline text-2xl text-primary">New Beneficiary Registration</DialogTitle>
+            <DialogTitle className="font-headline text-2xl text-primary">{t('newBeneficiaryReg')}</DialogTitle>
           </DialogHeader>
           <ApplicationForm
             userData={userData}
