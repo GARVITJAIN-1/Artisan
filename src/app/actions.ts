@@ -4,6 +4,7 @@
 import { assistKycReminder } from "@/ai/flows/data-assisted-kyc-reminder";
 import { db } from "@/lib/db";
 import { mapFarmerDataToForm } from "@/lib/utils";
+import { sendWhatsAppMessage } from "@/services/twilio";
 
 
 export async function autofillPmKisanFormAction(currentFormData?: object) {
@@ -40,5 +41,20 @@ export async function getKycAssistanceAction(language: 'en' | 'hi' = 'en') {
     } catch (error) {
         console.error("Error in KYC assistance action:", error);
         return { success: false, error: "Failed to get KYC assistance. Please try again." };
+    }
+}
+
+export async function sendWhatsAppNotificationAction(message: string) {
+    const recipient = process.env.RECIPIENT_PHONE_NUMBER;
+    if (!recipient) {
+        console.error("RECIPIENT_PHONE_NUMBER not set in .env");
+        return { success: false, error: "Recipient phone number not configured." };
+    }
+    try {
+        await sendWhatsAppMessage(recipient, message);
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to send WhatsApp message:", error);
+        return { success: false, error: "Failed to send WhatsApp notification." };
     }
 }

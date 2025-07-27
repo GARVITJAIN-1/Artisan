@@ -89,5 +89,9 @@
     "appAutofilled": "Application Auto-Filled & Submitted",
     "undergoingVerification": "Undergoing Verification by Government Officials",
     "awaitingInclusion": "Awaiting Inclusion in Beneficiary List",
-    "firstInstallment": "First Installment Disbursed"
+    "firstInstallment": "First Installment Disbursed",
+    "whatsappApplicationStarted": "Hello from Krishak Mitra! Your PM-KISAN application process has started. We will keep you updated.",
+    "whatsappApplicationSubmitted": "Your PM-KISAN application has been submitted and is now under verification.",
+    "whatsappApplicationApproved": "Good news! Your PM-KISAN application has been approved. You will soon be added to the beneficiary list.",
+    "whatsappFirstInstallment": "Congratulations! Your first PM-KISAN installment has been disbursed to your bank account."
 }

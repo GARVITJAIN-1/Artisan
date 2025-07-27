@@ -5,6 +5,7 @@ import { initialChecklist, type ChecklistItem } from "@/lib/data";
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "./language-context";
+import { sendWhatsAppNotificationAction } from "@/app/actions";
 
 type ApplicationStage = 0 | 1 | 2 | 3 | 4;
 
@@ -38,9 +39,15 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [formData, setFormData] = useState<PmKisanFormValues | null>(null);
 
+    const notify = (messageKey: string) => {
+        const message = t(messageKey);
+        sendWhatsAppNotificationAction(message);
+    }
+
     const handleFormSubmit = (data: PmKisanFormValues) => {
         setFormData(data);
         setStage(2);
+        notify('whatsappApplicationSubmitted');
         setIsFormSubmitted(true);
         setChecklist(prev =>
             prev.map(item =>
@@ -64,6 +71,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         setIsAdminApproved(approved);
         if (approved) {
             setStage(3);
+            notify('whatsappApplicationApproved');
             setChecklist(prev =>
                 prev.map(item =>
                     item.text === 'undergoingVerification'
@@ -76,6 +84,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
             
             setTimeout(() => {
                 setStage(4);
+                notify('whatsappFirstInstallment');
                 setChecklist(prev =>
                     prev.map(item => (item.status !== 'completed' ? { ...item, status: 'completed' } : item))
                 );
@@ -88,6 +97,8 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
 
         } else {
             setStage(2);
+            // Optionally send a rejection notification
+            // notify('whatsappApplicationRejected'); 
             setChecklist(prev =>
                 prev.map(item => {
                     if (item.text === 'undergoingVerification') {
@@ -104,6 +115,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
 
      const startApplication = () => {
         setStage(1);
+        notify('whatsappApplicationStarted');
         setChecklist(prev => prev.map(item => item.text === 'provideAadhaar' ? {...item, status: 'current'} : item));
         setIsFormOpen(true);
     }
