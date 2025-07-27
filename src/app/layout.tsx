@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 // export const metadata: Metadata = {
-//   title: 'PM-KISAN Saathi',
+//   title: 'Krishak Mitra',
 //   description: 'AI-powered assistance for the PM-KISAN scheme.',
 // };
 
@@ -71,7 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <title>PM-KISAN Saathi</title>
+        <title>Krishak Mitra</title>
         <meta name="description" content="AI-powered assistance for the PM-KISAN scheme." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
