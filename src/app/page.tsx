@@ -157,26 +157,59 @@ const HomePage: NextPage = () => {
 
       {/* --- Main Content --- */}
       <main>
-        {/* ## Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center bg-amber-50 overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/path-to-subtle-pattern.svg')] opacity-5"></div>
-          <div className="relative container mx-auto px-6 text-center z-10">
-            <h1 className="text-4xl md:text-6xl font-bold text-stone-900 leading-tight mb-4">
-              Empowering Local Artisans,
-              <br /> One Creation at a Time.
-            </h1>
-            <p className="text-lg md:text-xl text-stone-600 max-w-2xl mx-auto mb-8">
-              Discover opportunities, connect with communities, and grow with
-              the right tools.
-            </p>
-            <a
-              href="#features"
-              className="inline-block bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-            >
-              Get Started
-            </a>
+        {/* ## Hero Section (Static & Beautiful Version) */}
+        <section className="relative w-full bg-amber-50 overflow-hidden">
+          <div className="container mx-auto px-6 lg:px-8">
+            <div className="relative min-h-screen flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between gap-12 z-10">
+              {/* --- Text Content --- */}
+              <div className="text-center lg:text-left max-w-xl">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-stone-900 leading-tight mb-4">
+                  Empowering Local Artisans,{" "}
+                  <span className="text-orange-600">One Creation</span> at a
+                  Time.
+                </h1>
+                <p className="text-lg md:text-xl text-stone-600 max-w-2xl mx-auto lg:mx-0 mb-8">
+                  Discover opportunities, connect with communities, and grow
+                  with the right tools.
+                </p>
+                <a
+                  href="#features"
+                  className="inline-flex items-center justify-center bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-orange-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
+                >
+                  Get Started
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="w-5 h-5 ml-2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                    />
+                  </svg>
+                </a>
+              </div>
+
+              {/* --- Illustration & Decorative Blobs --- */}
+              <div className="relative lg:w-1/2 flex items-center justify-center mt-16 lg:mt-0">
+                {/* Decorative Blobs (Static) */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg">
+                  <div className="absolute top-0 -left-4 w-72 h-72 bg-amber-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
+                  <div className="absolute top-0 -right-4 w-72 h-72 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
+                  <div className="absolute -bottom-8 left-20 w-72 h-72 bg-stone-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
+                </div>
+
+                {/* Artisan Illustration SVG */}
+                <div className="relative w-full max-w-md">
+                  
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-stone-50 to-transparent"></div>
         </section>
 
         {/* ## Features Section */}
@@ -271,8 +304,6 @@ const HomePage: NextPage = () => {
                   Open Journal &rarr;
                 </a>
               </div>
-
-              
             </div>
           </div>
         </section>
@@ -292,8 +323,6 @@ const HomePage: NextPage = () => {
             </p>
           </div>
         </section>
-
-        
       </main>
 
       {/* ## Footer */}
