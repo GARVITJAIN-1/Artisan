@@ -201,7 +201,7 @@ const HomePage: NextPage = () => {
                   craft.
                 </p>
                 <a
-                  href="#"
+                  href="/schemes"
                   className="font-semibold text-orange-600 hover:text-orange-700"
                 >
                   Learn More &rarr;
@@ -217,7 +217,7 @@ const HomePage: NextPage = () => {
                   rewards.
                 </p>
                 <a
-                  href="#"
+                  href="/challenges"
                   className="font-semibold text-orange-600 hover:text-orange-700"
                 >
                   View Challenges &rarr;
@@ -233,7 +233,7 @@ const HomePage: NextPage = () => {
                   artisans.
                 </p>
                 <a
-                  href="#"
+                  href="/community"
                   className="font-semibold text-orange-600 hover:text-orange-700"
                 >
                   Connect Now &rarr;
@@ -249,7 +249,7 @@ const HomePage: NextPage = () => {
                   tool.
                 </p>
                 <a
-                  href="#"
+                  href="/postCreator"
                   className="font-semibold text-orange-600 hover:text-orange-700"
                 >
                   Start Designing &rarr;
@@ -265,28 +265,14 @@ const HomePage: NextPage = () => {
                   story.
                 </p>
                 <a
-                  href="#"
+                  href="/journal"
                   className="font-semibold text-orange-600 hover:text-orange-700"
                 >
                   Open Journal &rarr;
                 </a>
               </div>
 
-              {/* Card 6: Profile */}
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                <Icon name="profile" />
-                <h3 className="text-xl font-bold mb-2">Your Artisan Profile</h3>
-                <p className="text-stone-600 mb-4">
-                  Create a stunning portfolio to showcase your work to the
-                  world.
-                </p>
-                <a
-                  href="#"
-                  className="font-semibold text-orange-600 hover:text-orange-700"
-                >
-                  Build Profile &rarr;
-                </a>
-              </div>
+              
             </div>
           </div>
         </section>
@@ -307,20 +293,7 @@ const HomePage: NextPage = () => {
           </div>
         </section>
 
-        {/* ## Call-to-Action Banner */}
-        <section className="py-20 bg-stone-800">
-          <div className="container mx-auto px-6 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Ready to Showcase Your Craft?
-            </h2>
-            <a
-              href="#"
-              className="inline-block bg-orange-600 text-white font-bold py-4 px-10 rounded-full text-lg hover:bg-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-            >
-              Join Artisian Gully Today
-            </a>
-          </div>
-        </section>
+        
       </main>
 
       {/* ## Footer */}
