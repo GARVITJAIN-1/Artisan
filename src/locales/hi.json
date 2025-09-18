@@ -141,5 +141,35 @@
     "pageDescription": "अपनी रचनात्मक सोच, कहानियाँ और विचार यहाँ लिखें और साझा करें।",
     "noEntries": "अभी तक कोई जर्नल प्रविष्टि नहीं है",
     "noEntriesDescription": "लिखना शुरू करें और अपनी पहली जर्नल प्रविष्टि जोड़ें।"
+  },
+  "create": {
+    "pageTitle": "कला बनाएँ",
+    "pageDescription": "अपनी कला अपलोड करें और समुदाय के साथ साझा करें।",
+    "titleLabel": "शीर्षक",
+    "titlePlaceholder": "कला का शीर्षक दर्ज करें",
+    "typeLabel": "प्रकार",
+    "typeSelectPlaceholder": "कला का प्रकार चुनें",
+    "typeImage": "चित्र",
+    "typeVideo": "वीडियो",
+    "typeText": "पाठ",
+    "mediaUploadLabel": "मीडिया अपलोड करें",
+    "mediaDropzone": "अपनी फ़ाइल अपलोड करने के लिए क्लिक या खींचें",
+    "contentLabel": "विवरण",
+    "contentPlaceholder": "अपनी कहानी या विवरण लिखें...",
+    "tagsLabel": "टैग्स",
+    "tagsPlaceholder": "कॉमा से अलग टैग जोड़ें",
+    "tagsDescription": "टैग दूसरों को आपकी कला खोजने में मदद करते हैं",
+    "suggestTagsButton": "टैग सुझाएँ",
+    "submitButton": "कला प्रकाशित करें",
+
+    "missingInfoTitle": "जानकारी अधूरी है",
+    "missingInfoDescription": "कृपया पहले चित्र अपलोड करें और शीर्षक दर्ज करें।",
+    "suggestingTags": "टैग सुझाए जा रहे हैं...",
+    "tagsSuggestedTitle": "टैग सुझाए गए",
+    "tagsSuggestedDescription": "एआई द्वारा उत्पन्न टैग जोड़े गए हैं।",
+    "tagGenerationFailedTitle": "टैग उत्पन्न करने में विफल",
+    "tagGenerationFailedDescription": "टैग उत्पन्न नहीं किए जा सके। कृपया पुनः प्रयास करें।",
+    "submitSuccessTitle": "कला प्रकाशित हुई",
+    "submitSuccessDescription": "आपकी कला सफलतापूर्वक साझा की गई है।"
   }
 }

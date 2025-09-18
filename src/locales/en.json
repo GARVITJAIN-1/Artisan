@@ -141,5 +141,35 @@
     "pageDescription": "Write and share your creative thoughts, stories, and ideas here.",
     "noEntries": "No journal entries yet",
     "noEntriesDescription": "Start writing and be the first to add your journal entry."
+  },
+  "create": {
+    "pageTitle": "Create Artwork",
+    "pageDescription": "Upload your artwork and share it with the community.",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Enter artwork title",
+    "typeLabel": "Type",
+    "typeSelectPlaceholder": "Select artwork type",
+    "typeImage": "Image",
+    "typeVideo": "Video",
+    "typeText": "Text",
+    "mediaUploadLabel": "Upload Media",
+    "mediaDropzone": "Click or drag to upload your file",
+    "contentLabel": "Content",
+    "contentPlaceholder": "Write your story or description...",
+    "tagsLabel": "Tags",
+    "tagsPlaceholder": "Add tags separated by commas",
+    "tagsDescription": "Tags help others find your artwork",
+    "suggestTagsButton": "Suggest Tags",
+    "submitButton": "Publish Artwork",
+
+    "missingInfoTitle": "Missing Information",
+    "missingInfoDescription": "Please upload an image and enter a title first.",
+    "suggestingTags": "Suggesting tags...",
+    "tagsSuggestedTitle": "Tags Suggested",
+    "tagsSuggestedDescription": "AI generated tags have been added.",
+    "tagGenerationFailedTitle": "Tag Generation Failed",
+    "tagGenerationFailedDescription": "Could not generate tags. Please try again.",
+    "submitSuccessTitle": "Artwork Published",
+    "submitSuccessDescription": "Your artwork has been successfully shared."
   }
 }
