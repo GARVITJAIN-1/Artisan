@@ -93,5 +93,53 @@
     "whatsappApplicationStarted": "Hello from Krishak Mitra! Your PM-KISAN application process has started. We will keep you updated.",
     "whatsappApplicationSubmitted": "Your PM-KISAN application has been submitted and is now under verification.",
     "whatsappApplicationApproved": "Good news! Your PM-KISAN application has been approved. You will soon be added to the beneficiary list.",
-    "whatsappFirstInstallment": "Congratulations! Your first PM-KISAN installment has been disbursed to your bank account."
+    "whatsappFirstInstallment": "Congratulations! Your first PM-KISAN installment has been disbursed to your bank account.",
+    "profile": {
+    "pageTitle": "My Profile",
+    "pageDescription": "Here you can see all the artworks you have submitted.",
+    "noSubmissions": "No Submissions Yet",
+    "noSubmissionsDescription": "You haven’t submitted any artworks yet. Start creating and share your work!"
+  },
+  "challenges": {
+    "pageTitle": "Community Challenges",
+    "currentChallenge": {
+      "title": "Green Cities Challenge",
+      "description": "Design a sustainable, eco-friendly city with innovative green solutions."
+    },
+    "submissionsTitle": "Challenge Submissions",
+    "noSubmissions": "No submissions yet",
+    "beTheFirst": "Be the first to submit for",
+    "challenge": "challenge"
+  },
+  "home": {
+    "searchPlaceholder": "Search artworks...",
+    "searchAriaLabel": "Search artworks",
+    "voiceSearchAriaLabel": "Voice search",
+    "noArtworksFound": "No artworks found",
+    "adjustSearchTerms": "Try adjusting your search terms."
+  },
+  "toasts": {
+    "transcribing": {
+      "title": "Transcribing...",
+      "description": "Converting your voice into text."
+    },
+    "transcribedSuccess": {
+      "title": "Success!",
+      "description": "Voice converted to text successfully."
+    },
+    "transcribingError": {
+      "title": "Error",
+      "description": "Could not transcribe your voice."
+    },
+    "micAccessDenied": {
+      "title": "Microphone blocked",
+      "description": "Please allow microphone access."
+    }
+  },
+  "journal": {
+    "pageTitle": "Journal",
+    "pageDescription": "Write and share your creative thoughts, stories, and ideas here.",
+    "noEntries": "No journal entries yet",
+    "noEntriesDescription": "Start writing and be the first to add your journal entry."
+  }
 }

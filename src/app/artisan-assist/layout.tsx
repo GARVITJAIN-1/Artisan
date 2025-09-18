@@ -34,52 +34,5 @@ export default function ArtisanAssistLayout({
         { href: "/artisan-assist?tab=events", icon: CalendarDays, label: "Events & Fairs", tab: "events" },
     ];
     
-    return (
-        <SidebarProvider>
-            <Sidebar>
-                <SidebarHeader>
-                    <div className="flex items-center gap-2">
-                        <ArtisanAssistIcon className="h-8 w-8 text-primary" />
-                        <h1 className="text-xl font-semibold font-headline text-primary">
-                            ArtisanAssist
-                        </h1>
-                    </div>
-                </SidebarHeader>
-                <SidebarContent>
-                    <SidebarMenu>
-                        {menuItems.map((item) => (
-                             <SidebarMenuItem key={item.href}>
-                                <Link href={item.href}>
-                                    <SidebarMenuButton
-                                        isActive={currentTab === item.tab}
-                                        tooltip={item.label}
-                                    >
-                                        <item.icon />
-                                        <span>{item.label}</span>
-                                    </SidebarMenuButton>
-                                </Link>
-                            </SidebarMenuItem>
-                        ))}
-                    </SidebarMenu>
-                </SidebarContent>
-                <SidebarFooter>
-                    {/* Can add footer content here if needed */}
-                </SidebarFooter>
-            </Sidebar>
-            <SidebarInset>
-                <header className="flex h-12 items-center justify-start border-b bg-background p-2 md:hidden">
-                    <SidebarTrigger />
-                     <div className="flex items-center gap-2 ml-2">
-                        <ArtisanAssistIcon className="h-6 w-6 text-primary" />
-                        <h1 className="text-lg font-semibold font-headline text-primary">
-                            ArtisanAssist
-                        </h1>
-                    </div>
-                </header>
-                <main className="flex-grow flex flex-col">
-                    {children}
-                </main>
-            </SidebarInset>
-        </SidebarProvider>
-    )
+    return <main className="flex-grow flex flex-col">{children}</main>;
 }

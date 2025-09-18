@@ -85,6 +85,22 @@ const Icon = ({ name }: { name: string }) => {
         />
       </svg>
     ),
+    insights: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-8 h-8 mb-4 text-orange-600"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
+        />
+      </svg>
+    ),
     profile: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -147,7 +163,7 @@ const HomePage: NextPage = () => {
   return (
     <div className="bg-stone-50 text-stone-800 font-sans">
       <Head>
-        <title>Artisian Gully - Empowering Local Artisans</title>
+        <title>Artisan Gully - Empowering Local Artisans</title>
         <meta
           name="description"
           content="Discover opportunities, connect with communities, and grow with the right tools."
@@ -157,58 +173,45 @@ const HomePage: NextPage = () => {
 
       {/* --- Main Content --- */}
       <main>
-        {/* ## Hero Section (Static & Beautiful Version) */}
-        <section className="relative w-full bg-amber-50 overflow-hidden">
-          <div className="container mx-auto px-6 lg:px-8">
-            <div className="relative min-h-screen flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between gap-12 z-10">
-              {/* --- Text Content --- */}
-              <div className="text-center lg:text-left max-w-xl">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-stone-900 leading-tight mb-4">
-                  Empowering Local Artisans,{" "}
-                  <span className="text-orange-600">One Creation</span> at a
-                  Time.
-                </h1>
-                <p className="text-lg md:text-xl text-stone-600 max-w-2xl mx-auto lg:mx-0 mb-8">
-                  Discover opportunities, connect with communities, and grow
-                  with the right tools.
-                </p>
-                <a
-                  href="#features"
-                  className="inline-flex items-center justify-center bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-orange-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
-                >
-                  Get Started
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-5 h-5 ml-2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                    />
-                  </svg>
-                </a>
-              </div>
-
-              {/* --- Illustration & Decorative Blobs --- */}
-              <div className="relative lg:w-1/2 flex items-center justify-center mt-16 lg:mt-0">
-                {/* Decorative Blobs (Static) */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg">
-                  <div className="absolute top-0 -left-4 w-72 h-72 bg-amber-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
-                  <div className="absolute top-0 -right-4 w-72 h-72 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
-                  <div className="absolute -bottom-8 left-20 w-72 h-72 bg-stone-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
-                </div>
-
-                {/* Artisan Illustration SVG */}
-                <div className="relative w-full max-w-md">
-                  
-                </div>
-              </div>
-            </div>
+        {/* ## Hero Section (Professional and Image-Centric) */}
+        <section
+          className="relative w-full h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage:
+              "url('/images/Gemini_Generated_Image_ihmocyihmocyihmo.png')",
+          }}
+        >
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <div className="relative z-10 text-center text-white p-6 max-w-4xl mx-auto">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold leading-tight mb-4 drop-shadow-lg">
+              Empowering Local Artisans,{" "}
+              <span className="text-orange-400">One Creation</span> at a Time.
+            </h1>
+            <p className="text-lg md:text-xl text-stone-200 max-w-2xl mx-auto mb-8 drop-shadow-md">
+              Discover opportunities, connect with communities, and grow with
+              the right tools.
+            </p>
+            <a
+              href="#features"
+              className="inline-flex items-center justify-center bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-lg 
+                         hover:bg-orange-700 transition-all duration-300 shadow-xl hover:scale-105 hover:shadow-2xl group"
+            >
+              Get Started
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                />
+              </svg>
+            </a>
           </div>
         </section>
 
@@ -304,6 +307,22 @@ const HomePage: NextPage = () => {
                   Open Journal &rarr;
                 </a>
               </div>
+
+              {/* Card 6: Market Insights - NEWLY ADDED */}
+              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                <Icon name="insights" />
+                <h3 className="text-xl font-bold mb-2">Market Insights</h3>
+                <p className="text-stone-600 mb-4">
+                  Get AI-powered insights on trending products, pricing
+                  strategies, and customer demands.
+                </p>
+                <a
+                  href="/insights"
+                  className="font-semibold text-orange-600 hover:text-orange-700"
+                >
+                  Discover Trends &rarr;
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -315,7 +334,7 @@ const HomePage: NextPage = () => {
               Our Mission
             </h2>
             <p className="text-lg text-stone-700">
-              Artisian Gully is dedicated to bridging the gap between local
+              Artisan Gully is dedicated to bridging the gap between local
               artisans and the digital world. We believe in preserving
               traditional crafts by providing modern tools and a supportive
               community, ensuring that every artisan has the opportunity to
@@ -331,7 +350,7 @@ const HomePage: NextPage = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-center md:text-left mb-4 md:mb-0">
               <p>
-                &copy; {new Date().getFullYear()} Artisian Gully. All rights
+                &copy; {new Date().getFullYear()} Artisan Gully. All rights
                 reserved.
               </p>
             </div>
