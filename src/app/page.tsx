@@ -349,7 +349,7 @@ const HomePage: NextPage = () => {
                   strategies, and customer demands.
                 </p>
                 <a
-                  href="/insights"
+                  href="/artisan-assist"
                   className="font-semibold text-orange-600 hover:text-orange-700"
                 >
                   Discover Trends &rarr;
