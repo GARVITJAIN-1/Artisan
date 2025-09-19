@@ -3,13 +3,48 @@
 import { ArtworkCard } from "@/components/artwork-card";
 import { PenSquare } from "lucide-react";
 import { useArtworks } from "@/context/artwork-context";
-import { useLanguage } from "@/context/language-context"; // ✅ use hook
+import { useLanguage } from "@/context/language-context";
 
 export default function JournalPage() {
   const { artworks } = useArtworks();
-  const { t, locale, setLocale } = useLanguage(); // ✅ translation + locale state
+  const { t, locale, setLocale } = useLanguage();
 
   const textArtworks = artworks.filter((artwork) => artwork.type === "text");
+
+  // ✅ Demo journal entries
+  const demoTextArtworks = [
+    {
+      id: "journal1",
+      title: "Seeds of Hope",
+      description:
+        "Every seed I plant feels like a promise to tomorrow. The soil remembers our touch, and the rains bring blessings.",
+      tags: ["journal"],
+      artist: "Ananya Singh",
+      type: "text",
+    },
+    {
+      id: "journal2",
+      title: "Morning in the Fields",
+      description:
+        "The mist rises slowly over the fields. Dew on the crops feels like pearls gifted by nature.",
+      tags: ["journal"],
+      artist: "Rajesh Kumar",
+      type: "text",
+    },
+    {
+      id: "journal3",
+      title: "A Farmer’s Dream",
+      description:
+        "One day, technology and tradition will walk hand in hand, helping farmers prosper without losing our roots.",
+      tags: ["journal"],
+      artist: "Meera Iyer",
+      type: "text",
+    },
+  ];
+
+  // ✅ Use real text artworks if present, otherwise fall back to demo
+  const displayTextArtworks =
+    textArtworks.length > 0 ? textArtworks : demoTextArtworks;
 
   return (
     <div className="container py-8">
@@ -23,6 +58,7 @@ export default function JournalPage() {
         </button>
       </div>
 
+      {/* Page header */}
       <div className="flex flex-col items-center mb-12 text-center">
         <PenSquare className="h-16 w-16 mb-4 text-primary" />
         <h1 className="text-4xl font-headline font-bold">
@@ -33,10 +69,14 @@ export default function JournalPage() {
         </p>
       </div>
 
-      {textArtworks.length > 0 ? (
+      {/* Entries */}
+      {displayTextArtworks.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in-5 duration-500 max-w-5xl mx-auto">
-          {textArtworks.map((artwork) => (
-            <ArtworkCard key={artwork.id} artwork={artwork} />
+          {displayTextArtworks.map((artwork) => (
+            <div key={artwork.id} className="flex flex-col">
+              <ArtworkCard artwork={artwork} />
+              
+            </div>
           ))}
         </div>
       ) : (

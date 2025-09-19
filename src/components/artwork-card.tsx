@@ -1,8 +1,7 @@
-
 "use client";
 
 import Image from "next/image";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import {
   Heart,
   MessageCircle,
@@ -40,8 +39,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { LanguageContext } from "@/context/language-context1";
-import { translations } from "@/lib/translations";
+import { useLanguage } from "@/context/language-context"; // ✅
 
 interface ArtworkCardProps {
   artwork: Artwork;
@@ -52,42 +50,33 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
   const [likes, setLikes] = useState(artwork.likes);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const { toast } = useToast();
-  const { language } = useContext(LanguageContext);
-  const t = translations[language];
 
-  // Fallback to artwork's own data if translation doesn't exist
-  const artworkT = t.artworks[artwork.id] || artwork;
-  const artworkTitle = artworkT.title;
-  const artworkArtist = artworkT.artist;
-  const artworkContent = artworkT.content;
-
+  const { t } = useLanguage(); // ✅ get translation helper
 
   const handleLike = () => {
-    if (isLiked) {
-      setLikes(likes - 1);
-    } else {
-      setLikes(likes + 1);
-    }
+    setLikes((prev) => (isLiked ? prev - 1 : prev + 1));
     setIsLiked(!isLiked);
   };
-  
+
   const handleReport = () => {
     setIsReportDialogOpen(false);
     toast({
-      title: t.toasts.reportSuccess.title,
-      description: `${t.toasts.reportSuccess.description1}"${artworkTitle}". ${t.toasts.reportSuccess.description2}`,
+      title: t("toasts.reportSuccess.title"),
+      description: `${t("toasts.reportSuccess.description1")}"${
+        artwork.title
+      }". ${t("toasts.reportSuccess.description2")}`,
     });
   };
 
   const renderMedia = () => {
     switch (artwork.type) {
-      case 'image':
+      case "image":
         return (
           artwork.imageUrl && (
             <div className="aspect-[4/3] relative">
               <Image
                 src={artwork.imageUrl}
-                alt={artworkTitle}
+                alt={artwork.title}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -96,7 +85,7 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
             </div>
           )
         );
-      case 'video':
+      case "video":
         return (
           <div className="aspect-video relative bg-black">
             {artwork.videoUrl && (
@@ -108,15 +97,15 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
               />
             )}
             <div className="absolute top-2 right-2 bg-black/50 p-1.5 rounded-full">
-                <Video className="h-4 w-4 text-white" />
+              <Video className="h-4 w-4 text-white" />
             </div>
           </div>
         );
-      case 'text':
+      case "text":
         return (
-            <div className="aspect-[4/3] p-6 flex items-center justify-center bg-secondary/50">
-                <FileText className="h-16 w-16 text-muted-foreground/50" />
-            </div>
+          <div className="aspect-[4/3] p-6 flex items-center justify-center bg-secondary/50">
+            <FileText className="h-16 w-16 text-muted-foreground/50" />
+          </div>
         );
       default:
         return null;
@@ -126,16 +115,18 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
   return (
     <>
       <Card className="overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 flex flex-col h-full">
-        <CardHeader className="p-0">
-         {renderMedia()}
-        </CardHeader>
+        <CardHeader className="p-0">{renderMedia()}</CardHeader>
         <CardContent className="p-4 flex-grow">
           <CardTitle className="text-xl font-headline mb-1 leading-tight">
-            {artworkTitle}
+            {artwork.title}
           </CardTitle>
-          <p className="text-sm text-muted-foreground">{t.artworkCard.by} {artworkArtist}</p>
-          {artwork.type === 'text' && artworkContent && (
-             <p className="text-sm text-foreground/80 mt-3 line-clamp-3">{artworkContent}</p>
+          <p className="text-sm text-muted-foreground">
+            {t("artworkCard.by")} {artwork.artist}
+          </p>
+          {artwork.type === "text" && artwork.content && (
+            <p className="text-sm text-foreground/80 mt-3 line-clamp-3">
+              {artwork.content}
+            </p>
           )}
           <div className="mt-3 flex flex-wrap gap-2">
             {artwork.tags.map((tag) => (
@@ -150,7 +141,7 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
             <button
               onClick={handleLike}
               className="flex items-center space-x-1.5 hover:text-primary transition-colors focus:outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-ring"
-              aria-label={t.artworkCard.likeAriaLabel}
+              aria-label={t("artworkCard.likeAriaLabel")}
             >
               <Heart
                 className={cn(
@@ -162,23 +153,35 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
             </button>
             <div className="flex items-center space-x-1.5">
               <MessageCircle className="h-5 w-5" />
-              <span className="text-sm font-medium">{artwork.commentsCount}</span>
+              <span className="text-sm font-medium">
+                {artwork.commentsCount}
+              </span>
             </div>
           </div>
           <div className="flex items-center">
-            <Button variant="ghost" size="icon" className="h-8 w-8" aria-label={t.artworkCard.shareAriaLabel}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              aria-label={t("artworkCard.shareAriaLabel")}
+            >
               <Share2 className="h-5 w-5" />
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8" aria-label={t.artworkCard.moreOptionsAriaLabel}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  aria-label={t("artworkCard.moreOptionsAriaLabel")}
+                >
                   <MoreVertical className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setIsReportDialogOpen(true)}>
                   <Flag className="mr-2 h-4 w-4" />
-                  <span>{t.artworkCard.report}</span>
+                  <span>{t("artworkCard.report")}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -186,17 +189,26 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
         </CardFooter>
       </Card>
 
-      <AlertDialog open={isReportDialogOpen} onOpenChange={setIsReportDialogOpen}>
+      <AlertDialog
+        open={isReportDialogOpen}
+        onOpenChange={setIsReportDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t.reportDialog.title}</AlertDialogTitle>
+            <AlertDialogTitle>{t("reportDialog.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              {t.reportDialog.description1} "{artworkTitle}"? {t.reportDialog.description2}
+              {t("reportDialog.description1")} "{artwork.title}"?{" "}
+              {t("reportDialog.description2")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>{t.reportDialog.cancel}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleReport} className="bg-destructive hover:bg-destructive/90">{t.reportDialog.report}</AlertDialogAction>
+            <AlertDialogCancel>{t("reportDialog.cancel")}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleReport}
+              className="bg-destructive hover:bg-destructive/90"
+            >
+              {t("reportDialog.report")}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

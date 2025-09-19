@@ -244,6 +244,36 @@ const HomePage: NextPage = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Card 4: Social Media Posts */}
+              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                <Icon name="social" />
+                <h3 className="text-xl font-bold mb-2">Create Social Posts</h3>
+                <p className="text-stone-600 mb-4">
+                  Design beautiful posts for your social media with our simple
+                  tool.
+                </p>
+                <a
+                  href="/postCreator"
+                  className="font-semibold text-orange-600 hover:text-orange-700"
+                >
+                  Start Designing &rarr;
+                </a>
+              </div>
+              {/* Card 6: Market Insights - NEWLY ADDED */}
+              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                <Icon name="insights" />
+                <h3 className="text-xl font-bold mb-2">Market Insights</h3>
+                <p className="text-stone-600 mb-4">
+                  Get AI-powered insights on trending products, pricing
+                  strategies, and customer demands.
+                </p>
+                <a
+                  href="/artisan-assist"
+                  className="font-semibold text-orange-600 hover:text-orange-700"
+                >
+                  Discover Trends &rarr;
+                </a>
+              </div>
               {/* Card 1: Government Schemes */}
               <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
                 <Icon name="scheme" />
@@ -308,22 +338,6 @@ const HomePage: NextPage = () => {
                 </a>
               </div>
 
-              {/* Card 4: Social Media Posts */}
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                <Icon name="social" />
-                <h3 className="text-xl font-bold mb-2">Create Social Posts</h3>
-                <p className="text-stone-600 mb-4">
-                  Design beautiful posts for your social media with our simple
-                  tool.
-                </p>
-                <a
-                  href="/postCreator"
-                  className="font-semibold text-orange-600 hover:text-orange-700"
-                >
-                  Start Designing &rarr;
-                </a>
-              </div>
-
               {/* Card 5: Journal */}
               <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
                 <Icon name="journal" />
@@ -337,22 +351,6 @@ const HomePage: NextPage = () => {
                   className="font-semibold text-orange-600 hover:text-orange-700"
                 >
                   Open Journal &rarr;
-                </a>
-              </div>
-
-              {/* Card 6: Market Insights - NEWLY ADDED */}
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                <Icon name="insights" />
-                <h3 className="text-xl font-bold mb-2">Market Insights</h3>
-                <p className="text-stone-600 mb-4">
-                  Get AI-powered insights on trending products, pricing
-                  strategies, and customer demands.
-                </p>
-                <a
-                  href="/artisan-assist"
-                  className="font-semibold text-orange-600 hover:text-orange-700"
-                >
-                  Discover Trends &rarr;
                 </a>
               </div>
             </div>

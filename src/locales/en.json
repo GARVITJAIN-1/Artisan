@@ -134,7 +134,13 @@
     "micAccessDenied": {
       "title": "Microphone blocked",
       "description": "Please allow microphone access."
-    }
+    },
+    "reportSuccess": {
+        "title": "Artwork Reported",
+        "description1": "Thank you for your feedback on ",
+        "description2": "Our team will review it."
+      }
+
   },
   "journal": {
     "pageTitle": "Journal",
@@ -171,5 +177,25 @@
     "tagGenerationFailedDescription": "Could not generate tags. Please try again.",
     "submitSuccessTitle": "Artwork Published",
     "submitSuccessDescription": "Your artwork has been successfully shared."
-  }
+  },
+  "artworkCard": {
+      "view": "View",
+      "readMore": "Read More",
+      "createdBy": "Created by",
+      "publishedOn": "Published on",
+       "by": "by",
+      "likeAriaLabel": "Like this artwork",
+      "shareAriaLabel": "Share this artwork",
+      "moreOptionsAriaLabel": "More options",
+      "report": "Report"
+  },
+
+    "reportDialog": {
+      "title": "Report Artwork?",
+      "description1": "Are you sure you want to report",
+      "description2": "This action will submit the content for review by our team.",
+      "cancel": "Cancel",
+      "report": "Report"
+    }
+
 }

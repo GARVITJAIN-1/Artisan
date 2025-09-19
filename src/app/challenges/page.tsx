@@ -4,22 +4,61 @@ import { Trophy } from "lucide-react";
 import Image from "next/image";
 import { ArtworkCard } from "@/components/artwork-card";
 import { useArtworks } from "@/context/artwork-context";
-import { useLanguage } from "@/context/language-context"; // ✅ same hook as ProfilePage
+import { useLanguage } from "@/context/language-context";
 
 export default function ChallengesPage() {
   const { artworks } = useArtworks();
-  const { t, locale, setLocale } = useLanguage(); // ✅ destructure t + locale + setLocale
+  const { t, locale, setLocale } = useLanguage();
 
+  // Filter challenge-tagged artworks
   const challengeArtworks = artworks.filter((artwork) =>
     artwork.tags.includes("challenge")
   );
 
+  // Current challenge info
   const currentChallenge = {
     title: t("challenges.currentChallenge.title"),
     description: t("challenges.currentChallenge.description"),
     imageUrl: "https://picsum.photos/1200/400?random=100",
     aiHint: "city plants",
   };
+
+  const demoArtworks = [
+    {
+      id: "demo1",
+      title: "Green Future City",
+      description: "A futuristic eco-friendly city with rooftop gardens.",
+      imageUrl: "https://picsum.photos/400/400?random=201",
+      tags: ["challenge"],
+      artist: "Aarav Sharma",
+      isUserSubmission: false,
+      type: "image",
+    },
+    {
+      id: "demo2",
+      title: "Nature Meets Architecture",
+      description: "Buildings blending with giant trees and rivers.",
+      imageUrl: "https://picsum.photos/400/400?random=202",
+      tags: ["challenge"],
+      artist: "Isha Verma",
+      isUserSubmission: false,
+      type: "image",
+    },
+    {
+      id: "demo3",
+      title: "Urban Jungle",
+      description: "A busy street transformed into a lush garden.",
+      imageUrl: "https://picsum.photos/400/400?random=203",
+      tags: ["challenge"],
+      artist: "Rohan Patel",
+      isUserSubmission: false,
+      type: "image",
+    },
+  ];
+
+  // If no real submissions, show demo
+  const displayArtworks =
+    challengeArtworks.length > 0 ? challengeArtworks : demoArtworks;
 
   return (
     <div>
@@ -33,6 +72,7 @@ export default function ChallengesPage() {
         </button>
       </div>
 
+      {/* Challenge Header */}
       <div className="relative mb-12 bg-secondary/50">
         <div className="absolute inset-0">
           <Image
@@ -57,27 +97,20 @@ export default function ChallengesPage() {
         </div>
       </div>
 
+      {/* Submissions */}
       <div className="container pb-8">
         <h3 className="text-3xl font-headline font-semibold mb-8 text-center">
           {t("challenges.submissionsTitle")}
         </h3>
-        {challengeArtworks.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in-5 duration-500">
-            {challengeArtworks.map((artwork) => (
-              <ArtworkCard key={artwork.id} artwork={artwork} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-20 border-2 border-dashed rounded-lg bg-secondary/50">
-            <h2 className="text-2xl font-headline">
-              {t("challenges.noSubmissions")}
-            </h2>
-            <p className="text-muted-foreground mt-2">
-              {t("challenges.beTheFirst")} "{currentChallenge.title}"{" "}
-              {t("challenges.challenge")}.
-            </p>
-          </div>
-        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in-5 duration-500">
+          {displayArtworks.map((artwork) => (
+            <div key={artwork.id} className="flex flex-col">
+              <ArtworkCard artwork={artwork} />
+              
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

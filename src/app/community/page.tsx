@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { type Artwork } from "@/lib/data";
+// We'll define the Artwork type here for the demo, but in a real app, you'd import it.
+// import { type Artwork } from "@/lib/data";
 import { ArtworkCard } from "@/components/artwork-card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,11 +10,82 @@ import { Search, Mic, MicOff } from "lucide-react";
 import { speechToText } from "@/ai/community_flow/speech-to-text";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { useLanguage } from "@/context/language-context"; // ✅ use hook
-import { useArtworks } from "@/context/artwork-context";
+import { useLanguage } from "@/context/language-context";
+// Removed useArtworks as we are using static demo data below
+// import { useArtworks } from "@/context/artwork-context";
+
+// =================================================================
+// DEMO CONTENT ADDED HERE
+// =================================================================
+
+// Define the type for an artwork object
+export type Artwork = {
+  id: number;
+  title: string;
+  artist: string;
+  year: string;
+  imageUrl: string; // Assuming ArtworkCard uses this prop
+  tags: string[];
+};
+
+// Create an array of dummy artworks
+const demoArtworks: Artwork[] = [
+  {
+    id: 1,
+    title: "The Starry Night",
+    artist: "Vincent van Gogh",
+    year: "1889",
+    imageUrl: "/artworks/starry-night.jpg", // Example path
+    tags: ["post-impressionism", "landscape", "famous", "oil on canvas"],
+  },
+  {
+    id: 2,
+    title: "Mona Lisa",
+    artist: "Leonardo da Vinci",
+    year: "c. 1503–1506",
+    imageUrl: "/artworks/mona-lisa.jpg",
+    tags: ["renaissance", "portrait", "famous", "louvre"],
+  },
+  {
+    id: 3,
+    title: "The Persistence of Memory",
+    artist: "Salvador Dalí",
+    year: "1931",
+    imageUrl: "/artworks/persistence-of-memory.jpg",
+    tags: ["surrealism", "modern art", "clocks"],
+  },
+  {
+    id: 4,
+    title: "The Great Wave off Kanagawa",
+    artist: "Hokusai",
+    year: "c. 1829–1833",
+    imageUrl: "/artworks/great-wave.jpg",
+    tags: ["ukiyo-e", "japanese art", "landscape", "woodblock print"],
+  },
+  {
+    id: 5,
+    title: "Girl with a Pearl Earring",
+    artist: "Johannes Vermeer",
+    year: "c. 1665",
+    imageUrl: "/artworks/girl-pearl-earring.jpg",
+    tags: ["dutch golden age", "portrait", "baroque"],
+  },
+  {
+    id: 6,
+    title: "Guernica",
+    artist: "Pablo Picasso",
+    year: "1937",
+    imageUrl: "/artworks/guernica.jpg",
+    tags: ["cubism", "war", "mural", "black and white"],
+  },
+];
+// =================================================================
+// END OF DEMO CONTENT
+// =================================================================
 
 export default function Home() {
-  const { artworks } = useArtworks();
+  // Use the static demo content instead of the context hook
+  const artworks = demoArtworks;
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredArtworks, setFilteredArtworks] = useState<Artwork[]>(artworks);
   const [isRecording, setIsRecording] = useState(false);
@@ -21,7 +93,7 @@ export default function Home() {
   const audioChunksRef = useRef<Blob[]>([]);
   const { toast } = useToast();
 
-  const { t, locale, setLocale } = useLanguage(); // ✅ access t + locale
+  const { t, locale, setLocale } = useLanguage();
 
   useEffect(() => {
     const allArtworks = artworks;
@@ -50,7 +122,7 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [searchTerm, artworks, t]);
 
-  // Reset artworks when data changes
+  // Reset artworks when data changes (useful if artworks were dynamic)
   useEffect(() => {
     setFilteredArtworks(artworks);
   }, [artworks]);
