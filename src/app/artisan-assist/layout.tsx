@@ -24,15 +24,15 @@ export default function ArtisanAssistLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-    const currentTab = searchParams.get('tab') || 'sourcing';
+//     const pathname = usePathname();
+//     const searchParams = useSearchParams();
+//     const currentTab = searchParams.get('tab') || 'sourcing';
 
-    const menuItems = [
-        { href: "/artisan-assist?tab=sourcing", icon: Store, label: "Sourcing & Selling", tab: "sourcing" },
-        { href: "/artisan-assist?tab=ideas", icon: Lightbulb, label: "Product Ideas", tab: "ideas" },
-        { href: "/artisan-assist?tab=events", icon: CalendarDays, label: "Events & Fairs", tab: "events" },
-    ];
+//     const menuItems = [
+//         { href: "/artisan-assist?tab=sourcing", icon: Store, label: "Sourcing & Selling", tab: "sourcing" },
+//         { href: "/artisan-assist?tab=ideas", icon: Lightbulb, label: "Product Ideas", tab: "ideas" },
+//         { href: "/artisan-assist?tab=events", icon: CalendarDays, label: "Events & Fairs", tab: "events" },
+//     ];
     
     return <main className="flex-grow flex flex-col">{children}</main>;
 }
