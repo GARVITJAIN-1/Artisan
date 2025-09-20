@@ -58,14 +58,13 @@ import { useSearchParams } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import { useDefaultTab } from "./DefaultTabProvider";
 
 const defaultProductToSell = "handmade ceramic mugs";
 const defaultMaterialToBuy = "pottery clay";
 
 export default function ArtisanAssistPage() {
   const { toast } = useToast();
-  const searchParams = useSearchParams();
-  const defaultTab = searchParams.get("tab") || "sourcing";
 
   const [isFindingPlaces, startFindingPlaces] = useTransition();
   const [isFindingEvents, startFindingEvents] = useTransition();
@@ -229,6 +228,8 @@ export default function ArtisanAssistPage() {
     });
   };
 
+  const { defaultTab } = useDefaultTab(); 
+
   useEffect(() => {
     if (defaultTab === "ideas" && trendingProducts.length === 0) {
       handleFetchTrends();
@@ -237,6 +238,7 @@ export default function ArtisanAssistPage() {
 
   return (
     <>
+
       <Tabs defaultValue={defaultTab} className="flex flex-col flex-grow">
         <TabsList className="grid w-full grid-cols-3 bg-transparent py-2">
           <TabsTrigger
@@ -792,6 +794,7 @@ export default function ArtisanAssistPage() {
           </div>
         </TabsContent>
       </Tabs>
+
     </>
   );
 }
