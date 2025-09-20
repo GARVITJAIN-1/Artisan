@@ -1,4 +1,5 @@
 
+"use client";
 
 import ArtisanAssistPage from '@/components/artisan-assistance-page';
 import ArtisanAssistLayout from './layout';
