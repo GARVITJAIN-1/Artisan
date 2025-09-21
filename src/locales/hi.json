@@ -1,9 +1,9 @@
 {
-  "title": "कृषक मित्र",
+  "title": "कौशल साथी",
   "userDashboard": "उपयोगकर्ता डैशबोर्ड",
   "adminPanel": "एडमिन पैनल",
-  "applicationJourney": "आपकी आवेदन यात्रा",
-  "applicationJourneyDesc": "अपने पीएम-किसान आवेदन की स्थिति को शुरू से अंत तक ट्रैक करें।",
+  "applicationJourney": "प्रधानमंत्री विश्वकर्मा के लिए आपका आवेदन यात्रा",
+  "applicationJourneyDesc": "अपनी आवेदन की स्थिति को शुरू से अंत तक ट्रैक करें।",
   "statusNotStarted": "शुरू नहीं हुआ",
   "statusPendingApproval": "अनुमोदन लंबित",
   "statusActiveBeneficiary": "सक्रिय लाभार्थी",
