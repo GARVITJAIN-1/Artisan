@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
 import { AppStateProvider } from "@/context/app-state-context";
 import { LanguageProvider } from "@/context/language-context";
+import { SessionProvider } from "@/context/session-context";
+import { ProtectedLayout } from "@/components/protected-layout";
 import "./globals.css";
 
 export default function RootLayout({
@@ -11,7 +13,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // The lang attribute will be managed by your LanguageProvider if needed
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,10 +27,11 @@ export default function RootLayout({
         />
       </head>
       <body className={"font-body antialiased"} suppressHydrationWarning>
-        {/* Providers wrap everything to make state globally available */}
         <LanguageProvider>
           <AppStateProvider>
-            {children}
+            <SessionProvider>
+              <ProtectedLayout>{children}</ProtectedLayout>
+            </SessionProvider>
             <Toaster />
           </AppStateProvider>
         </LanguageProvider>
