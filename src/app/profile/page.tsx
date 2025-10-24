@@ -10,6 +10,8 @@ export default function ProfilePage() {
   const { session } = useSession();
   const username = session.username as keyof typeof artisanProfiles;
 
+  console.log(session)
+
   if (!session.isLoggedIn || !username || !artisanProfiles[username]) {
     return <div>Please log in to view this page.</div>;
   }
