@@ -5,6 +5,7 @@ import { AppStateProvider } from "@/context/app-state-context";
 import { LanguageProvider } from "@/context/language-context";
 import { SessionProvider } from "@/context/session-context";
 import { ProtectedLayout } from "@/components/protected-layout";
+import { FirebaseClientProvider } from "@/firebase/client-provider";
 import "./globals.css";
 
 export default function RootLayout({
@@ -29,9 +30,11 @@ export default function RootLayout({
       <body className={"font-body antialiased"} suppressHydrationWarning>
         <LanguageProvider>
           <AppStateProvider>
-            <SessionProvider>
-              <ProtectedLayout>{children}</ProtectedLayout>
-            </SessionProvider>
+            <FirebaseClientProvider>
+              <SessionProvider>
+                <ProtectedLayout>{children}</ProtectedLayout>
+              </SessionProvider>
+            </FirebaseClientProvider>
             <Toaster />
           </AppStateProvider>
         </LanguageProvider>

@@ -347,7 +347,7 @@ const HomePage: NextPage = () => {
                   story.
                 </p>
                 <a
-                  href="/journal"
+                  href="/artconnect"
                   className="font-semibold text-orange-600 hover:text-orange-700"
                 >
                   Open Journal &rarr;
