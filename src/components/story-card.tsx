@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
 import type { StoryPost } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -40,7 +39,7 @@ function CommentCounter({ storyId }: { storyId: string }) {
 
   return (
     <Link
-      href={`/stories/${storyId}#comments`}
+      href={`/artconnect/stories/${storyId}`}
       className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
     >
       <MessageSquare className="h-5 w-5" />
@@ -56,7 +55,7 @@ export function StoryCard({ story }: StoryCardProps) {
 
   return (
     <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-xl">
-      <Link href={`/stories/${story.id}`} className="block">
+      <Link href={`/artconnect/stories/${story.id}`} className="block">
         <CardHeader className="flex flex-row items-center space-x-4">
           <Avatar>
             <AvatarImage src={story.author.avatarUrl} alt={story.author.name} />
@@ -71,17 +70,6 @@ export function StoryCard({ story }: StoryCardProps) {
           <h2 className="mb-4 font-headline text-3xl font-bold">
             {story.title}
           </h2>
-          {story.imageUrl && (
-            <div className="relative mb-4 aspect-video w-full overflow-hidden rounded-lg">
-              <Image
-                src={story.imageUrl}
-                alt={story.title}
-                fill
-                className="object-cover"
-                data-ai-hint={story.imageHint}
-              />
-            </div>
-          )}
           <p className="line-clamp-3 text-lg leading-relaxed text-foreground/80">
             {story.content}
           </p>

@@ -20,7 +20,7 @@ type ChallengeCardProps = {
 
 export function ChallengeCard({ challenge }: ChallengeCardProps) {
   return (
-    <Link href={`/challenges/${challenge.id}`} className="group block">
+    <Link href={`/artconnect/challenges/${challenge.id}`} className="group block">
       <Card className="flex flex-col h-full overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
         <CardHeader>
           <div className="relative mb-4 aspect-video w-full overflow-hidden rounded-lg">

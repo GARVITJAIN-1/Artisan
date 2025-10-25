@@ -1,0 +1,57 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper function to check if a user is an authenticated artisan
+    function isArtisan(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    // Rules for the 'stories' collection
+    match /stories/{storyId} {
+      // Anyone can read a story
+      allow read: if true;
+
+      // Only authenticated artisans can create stories
+      allow create: if request.auth != null;
+
+      // Only the author of the story can update or delete it
+      allow update, delete: if isArtisan(resource.data.authorId);
+
+      // Rules for comments on a story
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if request.auth != null;
+        allow update, delete: if isArtisan(resource.data.authorId);
+      }
+
+      // Rules for reactions to a story
+      match /reactions/{reactionId} {
+        allow read: if true;
+        allow create, update, delete: if request.auth != null;
+      }
+    }
+
+    // Rules for the 'creativeChallenges' collection
+    match /creativeChallenges/{challengeId} {
+      allow read: if true;
+      allow create: if request.auth != null; // Or a more specific admin/moderator role
+      allow update, delete: if request.auth != null; // Or a more specific admin/moderator role
+
+      // Rules for submissions to a challenge
+      match /submissions/{submissionId} {
+        allow read: if true;
+        allow create: if request.auth != null;
+        allow update, delete: if isArtisan(resource.data.authorId);
+
+        // Rules for votes on a submission
+        match /votes/{voteId} {
+          allow read: if true;
+          // Users can only manage their own vote
+          allow create, update, delete: if isArtisan(voteId);
+        }
+      }
+    }
+  }
+}

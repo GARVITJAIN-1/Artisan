@@ -1,8 +1,7 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
-
-const SESSION_KEY = "artisan_session";
+import { createContext, useContext, ReactNode } from "react";
+import { useUser } from "@/firebase";
 
 interface Session {
   isLoggedIn: boolean;
@@ -12,53 +11,20 @@ interface Session {
 interface SessionContextType {
   session: Session;
   loading: boolean;
-  login: (username: string) => void;
-  logout: () => void;
 }
 
 const SessionContext = createContext<SessionContextType | undefined>(undefined);
 
 export function SessionProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session>({
-    isLoggedIn: false,
-    username: null,
-  });
-  const [loading, setLoading] = useState(true);
+  const { user, isUserLoading } = useUser();
 
-  useEffect(() => {
-    try {
-      const savedSession = localStorage.getItem(SESSION_KEY);
-      if (savedSession) {
-        setSession(JSON.parse(savedSession));
-      }
-    } catch (e) {
-      console.error("Failed to parse session from localStorage", e);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const login = (username: string) => {
-    const newSession = { isLoggedIn: true, username };
-    try {
-      localStorage.setItem(SESSION_KEY, JSON.stringify(newSession));
-    } catch (e) {
-      console.error("Failed to save session to localStorage", e);
-    }
-    setSession(newSession);
-  };
-
-  const logout = () => {
-    try {
-      localStorage.removeItem(SESSION_KEY);
-    } catch (e) {
-      console.error("Failed to remove session from localStorage", e);
-    }
-    setSession({ isLoggedIn: false, username: null });
+  const session: Session = {
+    isLoggedIn: !!user,
+    username: user ? user.displayName || user.email : null,
   };
 
   return (
-    <SessionContext.Provider value={{ session, loading, login, logout }}>
+    <SessionContext.Provider value={{ session, loading: isUserLoading }}>
       {children}
     </SessionContext.Provider>
   );

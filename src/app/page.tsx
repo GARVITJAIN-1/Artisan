@@ -299,7 +299,7 @@ const HomePage: NextPage = () => {
                   rewards.
                 </p>
                 <a
-                  href="/challenges"
+                  href="/artconnect/challenges"
                   className="font-semibold text-orange-600 hover:text-orange-700"
                 >
                   View Challenges &rarr;
@@ -347,7 +347,7 @@ const HomePage: NextPage = () => {
                   story.
                 </p>
                 <a
-                  href="/artconnect"
+                  href="/artconnect/stories"
                   className="font-semibold text-orange-600 hover:text-orange-700"
                 >
                   Open Journal &rarr;
