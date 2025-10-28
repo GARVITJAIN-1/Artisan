@@ -1,17 +1,18 @@
+
 "use client";
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import type { PmKisanFormValues } from '@/lib/schema';
-import { pmKisanFormSchema } from '@/lib/schema';
+import type { PmVishwakarmaFormValues } from '@/lib/schema';
+import { pmVishwakarmaFormSchema } from '@/lib/schema';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from './ui/separator';
-import { Loader, Sparkles } from 'lucide-react';
-import { useState, useTransition } from 'react';
-import { autofillPmKisanFormAction } from '@/app/actions';
+import { Loader, Sparkles, Upload } from 'lucide-react';
+import { useState, useTransition, useRef } from 'react';
+import { autofillPmKisanFormAction, extractCardDetailsAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent } from './ui/card';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
@@ -19,29 +20,39 @@ import { useLanguage } from '@/context/language-context';
 
 type ApplicationFormProps = {
   userData: any;
-  onFormSubmit: (data: PmKisanFormValues) => void;
+  onFormSubmit: (data: PmVishwakarmaFormValues) => void;
   onClose: () => void;
 };
 
+type OcrStatus = {
+    loading: boolean;
+    error: string | null;
+    message: string | null;
+}
+
 export default function ApplicationForm({ userData, onFormSubmit, onClose }: ApplicationFormProps) {
-  const [isPending, startTransition] = useTransition();
+  const [isAutofillPending, startAutofillTransition] = useTransition();
+  const [isOcrPending, startOcrTransition] = useTransition();
   const [isAutofilled, setIsAutofilled] = useState(false);
   const [isOtpStep, setIsOtpStep] = useState(false);
   const { toast } = useToast();
   const { t } = useLanguage();
+  const aadharFileInputRef = useRef<HTMLInputElement>(null);
+  const [ocrStatus, setOcrStatus] = useState<OcrStatus>({ loading: false, error: null, message: null});
 
-  const form = useForm<PmKisanFormValues>({
-    resolver: zodResolver(pmKisanFormSchema),
+
+  const form = useForm<PmVishwakarmaFormValues>({
+    resolver: zodResolver(pmVishwakarmaFormSchema),
     defaultValues: {
       state: '',
       district: '',
       subDistrict: '',
       block: '',
       village: '',
-      farmerName: '',
+      artisanName: '',
       gender: undefined,
       category: undefined,
-      farmerType: undefined,
+      artisanType: undefined,
       aadhaarNumber: '',
       bankName: '',
       ifscCode: '',
@@ -51,7 +62,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
   });
 
   const handleAutofill = () => {
-    startTransition(async () => {
+    startAutofillTransition(async () => {
       const result = await autofillPmKisanFormAction();
       if (result.success && result.data) {
         Object.keys(result.data).forEach((key: any) => {
@@ -72,7 +83,39 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
     });
   };
 
-  const onSubmit = (data: PmKisanFormValues) => {
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+        const imageDataUri = reader.result as string;
+        startOcrTransition(async () => {
+            setOcrStatus({ loading: true, error: null, message: 'Analyzing document...' });
+            const result = await extractCardDetailsAction(imageDataUri);
+            if (result.success && result.data) {
+                const { aadhaarNumber, imageQuality } = result.data;
+                if (imageQuality.isBlurry) {
+                    setOcrStatus({ loading: false, error: "Image is too blurry. Please upload a clearer picture.", message: null });
+                } else if (imageQuality.isDark) {
+                     setOcrStatus({ loading: false, error: "Image is too dark. Please upload a picture with better lighting.", message: null });
+                } else if (aadhaarNumber) {
+                    form.setValue('aadhaarNumber', aadhaarNumber, { shouldValidate: true });
+                    setOcrStatus({ loading: false, error: null, message: "Aadhaar number extracted successfully!" });
+                    toast({ title: "OCR Success", description: "Aadhaar number has been auto-filled." });
+                } else {
+                    setOcrStatus({ loading: false, error: "Could not extract Aadhaar number. Please enter it manually.", message: null });
+                }
+
+            } else {
+                 setOcrStatus({ loading: false, error: result.error || "Failed to process image.", message: null });
+            }
+        });
+    };
+  }
+
+  const onSubmit = (data: PmVishwakarmaFormValues) => {
     if(!isOtpStep) {
         setIsOtpStep(true);
         return;
@@ -87,17 +130,16 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
   const formFields = [
       { name: 'state', label: t('state') }, { name: 'district', label: t('district') },
       { name: 'subDistrict', label: t('subDistrict') }, { name: 'block', label: t('block') },
-      { name: 'village', label: t('village') }, { name: 'farmerName', label: t('farmerName') }
+      { name: 'village', label: t('village') }, { name: 'artisanName', label: t('artisanName') }
   ];
 
   const selectFields = [
       { name: 'gender', label: t('gender'), options: [{value: 'Male', label: t('male')}, {value: 'Female', label: t('female')}, {value: 'Other', label: t('other')}]},
       { name: 'category', label: t('category'), options: [{value: 'General', label: t('general')}, {value: 'SC', label: t('sc')}, {value: 'ST', label: t('st')}, {value: 'OBC', label: t('obc')}]},
-      { name: 'farmerType', label: t('farmerType'), options: [{value: 'Small (1-2 Ha)', label: t('smallFarmer')}, {value: 'Marginal (<1 Ha)', label: t('marginalFarmer')}, {value: 'Other', label: t('otherFarmer')}]}
+      { name: 'artisanType', label: t('artisanType'), options: [{value: 'Carpenter', label: t('carpenter')}, {value: 'Blacksmith', label: t('blacksmith')}, {value: 'Potter', label: t('potter')}, {value: 'Other', label: t('otherArtisan')}]}
   ];
   
   const bankFields = [
-      { name: 'aadhaarNumber', label: t('aadhaarNumber')},
       { name: 'bankName', label: t('bankName')},
       { name: 'ifscCode', label: t('ifscCode')},
       { name: 'accountNumber', label: t('accountNumber')}
@@ -113,8 +155,8 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
                 <AlertTitle className="text-primary font-bold">{t('saveTimeAi')}</AlertTitle>
                 <AlertDescription>
                     {t('saveTimeAiDesc')}
-                    <Button type="button" onClick={handleAutofill} disabled={isPending} className="mt-4 w-full">
-                        {isPending ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                    <Button type="button" onClick={handleAutofill} disabled={isAutofillPending} className="mt-4 w-full">
+                        {isAutofillPending ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
                         {t('autofillWithAi')}
                     </Button>
                 </AlertDescription>
@@ -127,7 +169,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
                     <h3 className="text-lg font-semibold mb-2">{t('personalLocationDetails')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {formFields.map(f => (
-                        <FormField key={f.name} control={form.control} name={f.name as keyof PmKisanFormValues} render={({ field }) => (
+                        <FormField key={f.name} control={form.control} name={f.name as keyof PmVishwakarmaFormValues} render={({ field }) => (
                             <FormItem>
                                 <FormLabel>{f.label}</FormLabel>
                                 <FormControl><Input {...field} /></FormControl>
@@ -136,7 +178,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
                         )} />
                     ))}
                      {selectFields.map(f => (
-                        <FormField key={f.name} control={form.control} name={f.name as keyof PmKisanFormValues} render={({ field }) => (
+                        <FormField key={f.name} control={form.control} name={f.name as keyof PmVishwakarmaFormValues} render={({ field }) => (
                             <FormItem>
                                 <FormLabel>{f.label}</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value} >
@@ -153,8 +195,23 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
                     <Separator className="my-6" />
                     <h3 className="text-lg font-semibold mb-2">{t('bankAadhaarDetails')}</h3>
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField control={form.control} name="aadhaarNumber" render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{t('aadhaarNumber')}</FormLabel>
+                                <div className="flex gap-2">
+                                    <FormControl><Input {...field} /></FormControl>
+                                    <Button type="button" variant="outline" onClick={() => aadharFileInputRef.current?.click()} disabled={isOcrPending}>
+                                        {isOcrPending ? <Loader className="animate-spin" /> : <Upload />}
+                                    </Button>
+                                    <input type="file" ref={aadharFileInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
+                                </div>
+                                {ocrStatus.loading && <p className="text-sm text-muted-foreground">{ocrStatus.message}</p>}
+                                {ocrStatus.error && <p className="text-sm text-destructive">{ocrStatus.error}</p>}
+                                <FormMessage />
+                            </FormItem>
+                        )} />
                         {bankFields.map(f => (
-                            <FormField key={f.name} control={form.control} name={f.name as keyof PmKisanFormValues} render={({ field }) => (
+                            <FormField key={f.name} control={form.control} name={f.name as keyof PmVishwakarmaFormValues} render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{f.label}</FormLabel>
                                     <FormControl><Input {...field} /></FormControl>
@@ -185,7 +242,7 @@ export default function ApplicationForm({ userData, onFormSubmit, onClose }: App
           <Button type="button" variant="outline" onClick={onClose}>
             {t('cancel')}
           </Button>
-          <Button type="submit" disabled={!isAutofilled}>
+          <Button type="submit" disabled={!isAutofilled || isAutofillPending || isOcrPending}>
             {isOtpStep ? t('confirmAndSubmit') : t('proceedToOtp')}
           </Button>
         </div>

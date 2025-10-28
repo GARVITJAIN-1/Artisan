@@ -1,8 +1,9 @@
+
 "use client";
 
-import type { PmKisanFormValues } from "@/lib/schema";
-import { initialChecklist, type ChecklistItem } from "@/lib/data";
-import { createContext, useContext, useState, type ReactNode } from "react";
+import type { PmVishwakarmaFormValues } from "@/lib/schema";
+import { artisanSchemes, type ChecklistItem } from "@/lib/data";
+import { createContext, useContext, useState, type ReactNode, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "./language-context";
 import { sendWhatsAppNotificationAction } from "@/app/actions";
@@ -20,11 +21,19 @@ type AppState = {
     setIsFormSubmitted: (isSubmitted: boolean) => void;
     isAdminApproved: boolean;
     setIsAdminApproved: (isApproved: boolean) => void;
-    formData: PmKisanFormValues | null;
-    setFormData: (data: PmKisanFormValues | null) => void;
-    handleFormSubmit: (data: PmKisanFormValues) => void;
+    formData: PmVishwakarmaFormValues | null;
+    setFormData: (data: PmVishwakarmaFormValues | null) => void;
+    handleFormSubmit: (data: PmVishwakarmaFormValues) => void;
     handleAdminApproval: (approved: boolean) => void;
     startApplication: () => void;
+    selectedSchemeId: string;
+    setSelectedSchemeId: (id: string) => void;
+    isComparisonOpen: boolean;
+    setIsComparisonOpen: (isOpen: boolean) => void;
+    comparisonScheme1Id: string | undefined;
+    setComparisonScheme1Id: (id: string) => void;
+    comparisonScheme2Id: string | undefined;
+    setComparisonScheme2Id: (id: string) => void;
 };
 
 const AppStateContext = createContext<AppState | undefined>(undefined);
@@ -32,19 +41,37 @@ const AppStateContext = createContext<AppState | undefined>(undefined);
 export function AppStateProvider({ children }: { children: ReactNode }) {
     const { toast } = useToast();
     const { t } = useLanguage();
+    const [selectedSchemeId, setSelectedSchemeId] = useState<string>('pm-vishwakarma');
+    
     const [stage, setStage] = useState<ApplicationStage>(0);
-    const [checklist, setChecklist] = useState<ChecklistItem[]>(initialChecklist);
+    const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isAdminApproved, setIsAdminApproved] = useState(false);
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-    const [formData, setFormData] = useState<PmKisanFormValues | null>(null);
+    const [formData, setFormData] = useState<PmVishwakarmaFormValues | null>(null);
+
+    const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+    const [comparisonScheme1Id, setComparisonScheme1Id] = useState<string | undefined>();
+    const [comparisonScheme2Id, setComparisonScheme2Id] = useState<string | undefined>();
+
+    useEffect(() => {
+      const currentScheme = artisanSchemes.find(s => s.id === selectedSchemeId);
+      if (currentScheme) {
+        setStage(0);
+        setChecklist(currentScheme.checklist);
+        setIsFormOpen(false);
+        setIsFormSubmitted(false);
+        setIsAdminApproved(false);
+        setFormData(null);
+      }
+    }, [selectedSchemeId]);
 
     const notify = (messageKey: string) => {
         const message = t(messageKey);
         sendWhatsAppNotificationAction(message);
     }
 
-    const handleFormSubmit = (data: PmKisanFormValues) => {
+    const handleFormSubmit = (data: PmVishwakarmaFormValues) => {
         setFormData(data);
         setStage(2);
         notify('whatsappApplicationSubmitted');
@@ -52,7 +79,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         setChecklist(prev =>
             prev.map(item =>
                 item.text === 'provideAadhaar' ||
-                item.text === 'uploadLandRecords' ||
+                item.text === 'uploadTradeCertificate' ||
                 item.text === 'appAutofilled'
                     ? { ...item, status: 'completed' }
                     : item.text === 'undergoingVerification'
@@ -129,7 +156,12 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         formData, setFormData,
         handleFormSubmit,
         handleAdminApproval,
-        startApplication
+        startApplication,
+        selectedSchemeId,
+        setSelectedSchemeId,
+        isComparisonOpen, setIsComparisonOpen,
+        comparisonScheme1Id, setComparisonScheme1Id,
+        comparisonScheme2Id, setComparisonScheme2Id
     };
 
     return (

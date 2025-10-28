@@ -2,45 +2,46 @@
 "use server";
 
 import { assistKycReminder } from "@/ai/flows/data-assisted-kyc-reminder";
+import { extractCardDetails } from "@/ai/flows/extract-card-details";
 import { db } from "@/lib/db";
-import { mapFarmerDataToForm } from "@/lib/utils";
+import { mapArtisanDataToForm } from "@/lib/utils";
 import { sendWhatsAppMessage } from "@/services/twilio";
 
 
 export async function autofillPmKisanFormAction(currentFormData?: object) {
   try {
-    const farmerId = "FARMER12345";
-    const farmerData = await db.getFarmerById(farmerId);
-    if (!farmerData) {
-      return { success: false, error: "Farmer data not found." };
+    const artisanId = "ARTISAN12345";
+    const artisanData = await db.getArtisanById(artisanId);
+    if (!artisanData) {
+      return { success: false, error: "Artisan data not found." };
     }
-    const filledData = mapFarmerDataToForm(farmerData);
+    const filledData = mapArtisanDataToForm(artisanData);
     return { success: true, data: filledData };
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error in autofill action:", error);
-    return { success: false, error: "Failed to autofill form. Please try again." };
+    return { success: false, error: error.message || "Failed to autofill form. Please try again." };
   }
 }
 
 export async function getKycAssistanceAction(language: 'en' | 'hi' = 'en') {
     try {
-        const userData = await db.getFarmerById("FARMER12345");
+        const userData = await db.getArtisanById("ARTISAN12345");
         if (!userData) {
           throw new Error("User not found");
         }
         const result = await assistKycReminder({
-            farmerId: "FARMER12345",
-            farmerName: userData.name,
+            artisanId: "ARTISAN12345",
+            artisanName: userData.name,
             aadhaarNumber: userData.aadhaarNumber,
             bankAccountNumber: userData.bank.accountNumber,
-            landRecords: JSON.stringify(userData.landRecords),
+            artisanTrade: userData.artisanTrade,
             language,
         });
         return { success: true, data: result.eKycAssistance };
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error in KYC assistance action:", error);
-        return { success: false, error: "Failed to get KYC assistance. Please try again." };
+        return { success: false, error: error.message || "Failed to get KYC assistance. Please try again." };
     }
 }
 
@@ -56,5 +57,25 @@ export async function sendWhatsAppNotificationAction(message: string) {
     } catch (error) {
         console.error("Failed to send WhatsApp message:", error);
         return { success: false, error: "Failed to send WhatsApp notification." };
+    }
+}
+
+export async function extractCardDetailsAction(imageDataUri: string) {
+    try {
+        const result = await extractCardDetails({ imageDataUri });
+        return { success: true, data: result };
+    } catch (error: any) {
+        console.error("Error in extractCardDetailsAction:", error);
+        return { success: false, error: error.message || "Failed to extract card details." };
+    }
+}
+
+export async function updateAadhaarAction(artisanId: string, aadhaarNumber: string) {
+    try {
+        await db.updateArtisanData(artisanId, { aadhaarNumber });
+        return { success: true };
+    } catch (error: any) {
+        console.error("Error in updateAadhaarAction:", error);
+        return { success: false, error: error.message || "Failed to update Aadhaar number." };
     }
 }

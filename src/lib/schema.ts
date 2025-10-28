@@ -1,15 +1,15 @@
 import { z } from 'zod';
 
-export const pmKisanFormSchema = z.object({
+export const pmVishwakarmaFormSchema = z.object({
   state: z.string().min(1, 'State is required.'),
   district: z.string().min(1, 'District is required.'),
   subDistrict: z.string().min(1, 'Sub-District is required.'),
   block: z.string().min(1, 'Block is required.'),
   village: z.string().min(1, 'Village is required.'),
-  farmerName: z.string().min(1, "Farmer's Name is required."),
+  artisanName: z.string().min(1, "Artisan's Name is required."),
   gender: z.enum(['Male', 'Female', 'Other']),
   category: z.enum(['General', 'SC', 'ST', 'OBC']),
-  farmerType: z.enum(['Small (1-2 Ha)', 'Marginal (<1 Ha)', 'Other']),
+  artisanType: z.enum(['Carpenter', 'Blacksmith', 'Potter', 'Other']),
   aadhaarNumber: z.string().regex(/^\d{4}-\d{4}-\d{4}$/, 'Invalid Aadhaar format.'),
   bankName: z.string().min(1, 'Bank Name is required.'),
   ifscCode: z.string().min(1, 'IFSC Code is required.'),
@@ -17,7 +17,8 @@ export const pmKisanFormSchema = z.object({
   otp: z.string().optional(),
 });
 
-export type PmKisanFormValues = z.infer<typeof pmKisanFormSchema>;
+export type PmVishwakarmaFormValues = z.infer<typeof pmVishwakarmaFormSchema>;
+
 
 export const pmKisanFormJsonSchema = {
   type: 'object',

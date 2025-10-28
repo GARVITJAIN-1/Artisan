@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import type { PmKisanFormValues } from "./schema";
+import type { PmVishwakarmaFormValues } from "./schema";
 
 
 /**
@@ -14,25 +14,25 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function mapFarmerDataToForm(farmerData: any): Partial<PmKisanFormValues> {
-  if (!farmerData) {
+export function mapArtisanDataToForm(artisanData: any): Partial<PmVishwakarmaFormValues> {
+  if (!artisanData) {
     return {};
   }
   
   return {
-    state: farmerData.address?.state,
-    district: farmerData.address?.district,
-    subDistrict: farmerData.address?.subDistrict,
-    block: farmerData.address?.block,
-    village: farmerData.address?.village,
-    farmerName: farmerData.name,
-    gender: farmerData.gender,
-    category: farmerData.category,
-    farmerType: farmerData.farmerType,
-    aadhaarNumber: farmerData.aadhaarNumber,
-    bankName: farmerData.bank?.name,
-    ifscCode: farmerData.bank?.ifsc,
-    accountNumber: farmerData.bank?.accountNumber,
+    state: artisanData.address?.state,
+    district: artisanData.address?.district,
+    subDistrict: artisanData.address?.subDistrict,
+    block: artisanData.address?.block,
+    village: artisanData.address?.village,
+    artisanName: artisanData.name,
+    gender: artisanData.gender,
+    category: artisanData.category,
+    artisanType: artisanData.artisanType,
+    aadhaarNumber: artisanData.aadhaarNumber,
+    bankName: artisanData.bank?.name,
+    ifscCode: artisanData.bank?.ifsc,
+    accountNumber: artisanData.bank?.accountNumber,
   };
 }
 
