@@ -1,7 +1,7 @@
 
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BadgeDollarSign, Lightbulb, Calendar } from 'lucide-react';
+import { BadgeDollarSign, Lightbulb, Calendar, CheckSquare } from 'lucide-react';
 
 export default function ArtisanAssistPage() {
   const services = [
@@ -22,6 +22,12 @@ export default function ArtisanAssistPage() {
       description: 'Find local and national events to showcase your work.',
       href: '/artisan-assist/events',
       icon: <Calendar className="h-8 w-8 text-primary" />,
+    },
+    {
+      title: 'To-Do List',
+      description: 'Manage your tasks and get reminders.',
+      href: '/artisan-assist/to-do',
+      icon: <CheckSquare className="h-8 w-8 text-primary" />,
     },
   ];
 

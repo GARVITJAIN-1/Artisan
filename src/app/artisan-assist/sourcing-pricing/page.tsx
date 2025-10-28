@@ -110,6 +110,7 @@ export default function SourcingPricingPage() {
             productToSell,
             currency
           );
+          console.log('getPriceSuggestionAction result:', priceResult);
           if (priceResult.error) {
             toast({
               variant: "destructive",
@@ -123,6 +124,7 @@ export default function SourcingPricingPage() {
       }
 
       const placesResult = await findPlacesAction(query, city, sourcingMode);
+      console.log('findPlacesAction result:', placesResult);
       if (placesResult.error) {
         toast({
           variant: "destructive",

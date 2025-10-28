@@ -59,6 +59,7 @@ export default function IdeasTrendsPage() {
     setEnhancementIdeas([]);
     startGeneratingIdeas(async () => {
       const result = await getEnhancementIdeasAction(productName, ""); // Empty description
+      console.log('getEnhancementIdeasAction result:', result);
       if (result.error) {
         toast({
           variant: "destructive",
@@ -75,6 +76,7 @@ export default function IdeasTrendsPage() {
     setTrendingProducts([]);
     startFetchingTrends(async () => {
       const result = await getTrendingProductsAction();
+      console.log('getTrendingProductsAction result:', result);
       if (result.error) {
         toast({
           variant: "destructive",
