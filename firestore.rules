@@ -55,9 +55,5 @@ service cloud.firestore {
       }
     }
 
-    // Rules for the 'todos' collection, under each user
-    match /users/{userId}/todos/{todoId} {
-        allow read, write: if isArtisan(userId);
-    }
   }
 }
