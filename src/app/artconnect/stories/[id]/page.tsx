@@ -127,7 +127,7 @@ export default function StoryPage({ params: paramsProp }: StoryPageProps) {
                 <h1 className="mb-4 font-headline text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl min-w-0">
                     {story.title}
                 </h1>
-                {user && (
+                {user && story.authorId === user.uid && (
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <Button variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-destructive">
@@ -171,7 +171,7 @@ export default function StoryPage({ params: paramsProp }: StoryPageProps) {
           <div className="relative mb-8 aspect-video w-full overflow-hidden rounded-xl shadow-lg">
             <Image
               src={story.imageUrl}
-              alt={story.title}
+              alt={story.imageHint ?? story.title}
               fill
               className="object-cover"
               data-ai-hint={story.imageHint}

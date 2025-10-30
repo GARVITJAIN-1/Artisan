@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,13 +24,68 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { PenSquare, Sparkles } from 'lucide-react';
+import { PenSquare, Sparkles, Image as ImageIcon, Upload } from 'lucide-react';
 import { Textarea } from './ui/textarea';
 import { useFirestore, useUser } from '@/firebase';
 import { collection, serverTimestamp, addDoc } from 'firebase/firestore';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { useSession } from '@/context/session-context';
+import { generateStoryImage } from '@/ai/artcommunity_flow/generate-story-image-flow';
+import Image from 'next/image';
+// import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage'; // <-- REMOVED
+
+const MAX_IMAGE_SIZE_MB = 1;
+
+async function compressImage(dataUrl: string, fileType?: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const image = new window.Image();
+    image.src = dataUrl;
+    image.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        return reject(new Error('Failed to get canvas context'));
+      }
+
+      let { width, height } = image;
+      const MAX_WIDTH = 1024;
+      const MAX_HEIGHT = 1024;
+
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(image, 0, 0, width, height);
+
+      // Start with high quality
+      let quality = 0.9;
+      let compressedDataUrl = canvas.toDataURL(fileType || 'image/jpeg', quality);
+
+      // Reduce quality if size is too large
+      while (compressedDataUrl.length > MAX_IMAGE_SIZE_MB * 1024 * 1024 && quality > 0.1) {
+        quality -= 0.1;
+        compressedDataUrl = canvas.toDataURL(fileType || 'image/jpeg', quality);
+      }
+
+      resolve(compressedDataUrl);
+    };
+    image.onerror = (error) => {
+      reject(error);
+    };
+  });
+}
+
 
 const formSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
@@ -42,6 +97,10 @@ type Step = 'write' | 'publishing';
 export function CreateStory() {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<Step>('write');
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const [generatedImage, setGeneratedImage] = useState<{ url: string; hint: string } | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { session } = useSession();
   const { user } = useUser();
@@ -51,6 +110,51 @@ export function CreateStory() {
     resolver: zodResolver(formSchema),
     defaultValues: { title: '', content: '' },
   });
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        if (e.target?.result) {
+          const originalDataUrl = e.target.result as string;
+          const compressedDataUrl = await compressImage(originalDataUrl, file.type);
+          setUploadedImage(compressedDataUrl);
+          setGeneratedImage(null); // Clear generated image if user uploads one
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  async function handleGenerateImage() {
+    const content = form.getValues('content');
+    if (content.length < 20) {
+      toast({
+        variant: 'destructive',
+        title: 'Story is too short',
+        description: 'Please write at least 20 characters to generate an image.',
+      });
+      return;
+    }
+
+    setIsGeneratingImage(true);
+    try {
+      const { imageUrl, imageHint } = await generateStoryImage({ storyContent: content });
+      const compressedImageUrl = await compressImage(imageUrl);
+      setGeneratedImage({ url: compressedImageUrl, hint: imageHint });
+      setUploadedImage(null); // Clear uploaded image if user generates one
+    } catch (error) {
+      console.error('Failed to generate image:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Image Generation Failed',
+        description: 'Could not generate an image for the story. Please try again.',
+      });
+    } finally {
+      setIsGeneratingImage(false);
+    }
+  }
 
   async function onPublish() {
     if (!user || !firestore) return;
@@ -65,12 +169,29 @@ export function CreateStory() {
         avatarUrl: user.photoURL || `https://i.pravatar.cc/150?u=${user.uid}`,
       };
 
+      let imageUrl: string | null = null;
+      let imageHint: string | null = null;
+      // const storage = getStorage(); // <-- REMOVED
+
+      if (uploadedImage) {
+        // --- Storage logic removed ---
+        imageUrl = uploadedImage; // <-- CHANGED
+        imageHint = 'User uploaded image';
+      } else if (generatedImage) {
+        // --- Storage logic removed ---
+        imageUrl = generatedImage.url; // <-- CHANGED
+        imageHint = generatedImage.hint;
+      }
+
+
       const storyData = {
         ...values,
         authorId: user.uid,
         author: authorData,
         createdAt: serverTimestamp(),
         commentCount: 0,
+        ...(imageUrl && { imageUrl }), // <-- Saves the Data URL to Firestore
+        ...(imageHint && { imageHint }),
       };
 
       const storiesColRef = collection(firestore, `stories`);
@@ -107,6 +228,8 @@ export function CreateStory() {
   const resetForm = () => {
     form.reset();
     setStep('write');
+    setGeneratedImage(null);
+    setUploadedImage(null);
   };
 
   const closeDialog = () => {
@@ -142,8 +265,7 @@ export function CreateStory() {
             Share Your Story
           </DialogTitle>
           <DialogDescription>
-            {'What have you been creating? Share your process, inspiration, or latest work.'}
-          </DialogDescription>
+            {'What have you been creating? Share your process, inspiration, or latest work.'}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -155,6 +277,7 @@ export function CreateStory() {
               style={{ display: step === 'write' ? 'grid' : 'none' }}
               className="gap-4"
             >
+              {/* Title Field */}
               <FormField
                 control={form.control}
                 name="title"
@@ -171,6 +294,8 @@ export function CreateStory() {
                   </FormItem>
                 )}
               />
+
+              {/* Content Field */}
               <FormField
                 control={form.control}
                 name="content"
@@ -188,15 +313,53 @@ export function CreateStory() {
                   </FormItem>
                 )}
               />
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+                className="hidden"
+                accept="image/*"
+              />
+              {(uploadedImage || generatedImage) && (
+
+                <div className="rounded-md border border-input">
+                  <Image
+                    src={uploadedImage || generatedImage!.url}
+                    alt={generatedImage?.hint || 'User uploaded image'}
+                    width={512}
+                    height={512}
+                    className="rounded-md"
+                  />
+                </div>
+              )}
             </div>
 
             <DialogFooter className="sticky bottom-0 bg-background pt-4 -mx-1 -mb-1 pb-1">
               {step === 'write' && (
                 <>
+                  {/* <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isGeneratingImage || isSubmitting}
+                  >
+                    <Upload className="mr-2" />
+                    Upload Image
+                  </Button> */}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleGenerateImage}
+                    disabled={isGeneratingImage || isSubmitting}
+                  >
+                    <ImageIcon className="mr-2" />
+
+                    {isGeneratingImage ? 'Generating...' : 'Generate Image'}
+                  </Button>
                   <Button type="button" variant="ghost" onClick={closeDialog}>
                     Cancel
                   </Button>
-                  <Button type="submit" disabled={isSubmitting}>
+                  <Button type="submit" disabled={isSubmitting || isGeneratingImage}>
                     <Sparkles className="mr-2" /> Publish Story
                   </Button>
                 </>
@@ -205,6 +368,7 @@ export function CreateStory() {
                 <p className="text-sm text-muted-foreground animate-pulse">
                   Publishing your story...
                 </p>
+
               )}
             </DialogFooter>
           </form>

@@ -14,6 +14,7 @@ import { ReactionBar } from './reaction-bar';
 import { MessageSquare } from 'lucide-react';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection, query, Timestamp } from 'firebase/firestore';
+import Image from 'next/image';
 
 type StoryCardProps = {
   story: StoryPost;
@@ -55,6 +56,19 @@ export function StoryCard({ story }: StoryCardProps) {
 
   return (
     <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-xl">
+      {story.imageUrl && (
+        <Link href={`/artconnect/stories/${story.id}`} className="block">
+          <div className="aspect-video w-full overflow-hidden">
+            <Image
+              src={story.imageUrl}
+              alt={story.imageHint ?? story.title}
+              width={512}
+              height={288}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          </div>
+        </Link>
+      )}
       <Link href={`/artconnect/stories/${story.id}`} className="block">
         <CardHeader className="flex flex-row items-center space-x-4">
           <Avatar>
