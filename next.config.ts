@@ -8,10 +8,13 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    // unoptimized: true,
     remotePatterns: [
       { protocol: 'https', hostname: 'placehold.co', port: '', pathname: '/**' },
       { protocol: 'https', hostname: 'picsum.photos', port: '', pathname: '/**' },
       { protocol: 'https', hostname: 'i.ibb.co', port: '', pathname: '/**' },
+      { protocol: 'https', hostname: 'i.etsystatic.com', port: '', pathname: '/**' },
+      { protocol: 'https', hostname: 'source.unsplash.com', port: '', pathname: '/**' },
     ],
   },
   // cast the whole experimental object to 'any'

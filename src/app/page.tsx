@@ -331,7 +331,7 @@ const HomePage: NextPage = () => {
                   with fellow artisans.
                 </p>
                 <a
-                  href="/create"
+                  href="/inspiration-corner"
                   className="font-semibold text-orange-600 hover:text-orange-700"
                 >
                   Create a Post &rarr;

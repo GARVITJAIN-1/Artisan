@@ -94,7 +94,7 @@ export async function findEventsAction(country: string, state?: string) {
 
 export async function getEnhancementIdeasAction(productName: string, productDescription: string) {
     try {
-      const result = await getEnhancementIdeas({ productName, productDescription });
+      const result = await getEnhancementIdeas({productName, productDescription});
       return { ideas: result.ideas };
     } catch (error) {
       console.error(error);

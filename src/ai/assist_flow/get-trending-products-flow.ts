@@ -15,7 +15,7 @@ const GetTrendingProductsOutputSchema = z.object({
     z.object({
       name: z.string().describe("The name of the trending product."),
       description: z.string().describe("A brief (1-sentence) explanation of why this product is currently trending."),
-      imageUrl: z.string().url().describe("A URL for a high-quality, inspirational image of the product."),
+      googleSearchQuery: z.string().describe("A concise Google search query that will return inspirational images for this product."),
     })
   ).describe("A list of 5 currently trending handmade or artisan products."),
 });
@@ -33,7 +33,7 @@ const prompt = ai.definePrompt({
 Your task is to identify 5 products that are currently trending. For each product, provide:
 1.  Its name.
 2.  A concise, one-sentence explanation for its popularity (e.g., "Custom Pet Portraits - Driven by the 'pet humanization' trend and social media sharing.").
-3.  A URL for a real, high-quality, and inspirational image of the product from a platform like Etsy or Pinterest. The image should be visually appealing and representative of the trend.
+3.  A concise Google search query that will return inspirational images for this product. For example, if the product is "chunky knit blankets", a good query would be "chunky knit throw blanket home decor".
 
 Scan for popular items on platforms like Etsy, Pinterest, Instagram, and craft market reports. Focus on what's popular right now.
 `,
