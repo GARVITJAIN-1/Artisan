@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { formatDistanceToNow } from 'date-fns';
-import type { StoryPost } from '@/lib/types';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Link from "next/link";
+import { formatDistanceToNow } from "date-fns";
+import type { StoryPost } from "@/lib/types";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from '@/components/ui/card';
-import { ReactionBar } from './reaction-bar';
-import { MessageSquare } from 'lucide-react';
-import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, query, Timestamp } from 'firebase/firestore';
-import Image from 'next/image';
+} from "@/components/ui/card";
+import { ReactionBar } from "./reaction-bar";
+import { MessageSquare } from "lucide-react";
+import { useCollection, useFirestore, useMemoFirebase } from "@/firebase";
+import { collection, query, Timestamp } from "firebase/firestore";
+import Image from "next/image";
 
 type StoryCardProps = {
   story: StoryPost;
@@ -41,7 +41,8 @@ function CommentCounter({ storyId }: { storyId: string }) {
   return (
     <Link
       href={`/artconnect/stories/${storyId}`}
-      className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      // ## Updated Comment Link Style ##
+      className="flex items-center gap-2 text-sm text-stone-500 transition-colors hover:text-amber-600"
     >
       <MessageSquare className="h-5 w-5" />
       <span>{comments?.length ?? 0} Comments</span>
@@ -55,7 +56,8 @@ export function StoryCard({ story }: StoryCardProps) {
   });
 
   return (
-    <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-xl">
+    // ## Updated Card Style ##
+    <Card className="overflow-hidden transition-all duration-300 hover:shadow-2xl bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg group">
       {story.imageUrl && (
         <Link href={`/artconnect/stories/${story.id}`} className="block">
           <div className="aspect-video w-full overflow-hidden">
@@ -76,20 +78,23 @@ export function StoryCard({ story }: StoryCardProps) {
             <AvatarFallback>{story.author.name.charAt(0)}</AvatarFallback>
           </Avatar>
           <div>
-            <p className="font-semibold">{story.author.name}</p>
-            <p className="text-sm text-muted-foreground">{timeAgo}</p>
+            {/* ## Updated Author Text ## */}
+            <p className="font-semibold text-stone-800">{story.author.name}</p>
+            <p className="text-sm text-stone-500">{timeAgo}</p>
           </div>
         </CardHeader>
         <CardContent>
-          <h2 className="mb-4 font-headline text-3xl font-bold">
+          {/* ## Updated Story Text ## */}
+          <h2 className="mb-4 font-headline text-3xl font-bold text-stone-900">
             {story.title}
           </h2>
-          <p className="line-clamp-3 text-lg leading-relaxed text-foreground/80">
+          <p className="line-clamp-3 text-lg leading-relaxed text-stone-700">
             {story.content}
           </p>
         </CardContent>
       </Link>
-      <CardFooter className="flex items-center justify-between bg-muted/50 p-4">
+      {/* ## Updated Card Footer ## */}
+      <CardFooter className="flex items-center justify-between bg-stone-50/50 p-4">
         <ReactionBar storyId={story.id} collectionName="stories" />
         <CommentCounter storyId={story.id} />
       </CardFooter>

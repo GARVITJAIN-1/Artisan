@@ -83,12 +83,14 @@ export default function InputForm({
   };
 
   return (
-    <Card className="max-w-2xl mx-auto border-2 border-dashed border-primary/20 shadow-lg bg-card">
+    // ## Updated Card Style ##
+    <Card className="max-w-2xl mx-auto border-2 border-dashed border-amber-300/50 shadow-lg bg-white/70 backdrop-blur-lg">
       <CardHeader>
-        <CardTitle className="font-headline text-2xl text-accent">
+        {/* ## Updated Header Colors ## */}
+        <CardTitle className="font-headline text-2xl text-amber-700">
           Describe Your Product
         </CardTitle>
-        <CardDescription className="font-body">
+        <CardDescription className="font-body text-stone-600">
           Provide a photo and some details to get started.
         </CardDescription>
       </CardHeader>
@@ -100,11 +102,12 @@ export default function InputForm({
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-headline text-lg">
+                  <FormLabel className="font-headline text-lg text-stone-700">
                     Product Photo
                   </FormLabel>
                   <FormControl>
-                    <div className="relative border-2 border-dashed border-muted-foreground/30 rounded-lg p-4 text-center hover:border-primary transition-colors cursor-pointer">
+                    {/* ## Updated Upload Box ## */}
+                    <div className="relative border-2 border-dashed border-stone-300/80 rounded-lg p-4 text-center hover:border-amber-500 transition-colors cursor-pointer bg-stone-50/50">
                       <Input
                         type="file"
                         accept="image/*"
@@ -114,7 +117,7 @@ export default function InputForm({
                           handleImageChange(e);
                         }}
                       />
-                      <div className="flex flex-col items-center justify-center space-y-2 text-muted-foreground">
+                      <div className="flex flex-col items-center justify-center space-y-2 text-stone-500">
                         {imagePreview ? (
                           <Image
                             src={imagePreview}
@@ -125,9 +128,10 @@ export default function InputForm({
                           />
                         ) : (
                           <>
-                            <UploadCloud className="w-12 h-12 text-primary" />
+                            {/* ## Updated Icon Color ## */}
+                            <UploadCloud className="w-12 h-12 text-amber-600" />
                             <p className="font-body">
-                              <span className="text-primary font-semibold">
+                              <span className="text-amber-600 font-semibold">
                                 Click to upload
                               </span>{" "}
                               or drag and drop
@@ -149,7 +153,7 @@ export default function InputForm({
                 name="language"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-headline text-lg flex items-center gap-2">
+                    <FormLabel className="font-headline text-lg flex items-center gap-2 text-stone-700">
                       <Languages className="w-5 h-5" /> Post Language
                     </FormLabel>
                     <Select
@@ -157,16 +161,17 @@ export default function InputForm({
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="font-body">
+                        {/* ## Updated Select Style ## */}
+                        <SelectTrigger className="font-body bg-white/50 border-stone-300 focus:ring-amber-500">
                           <SelectValue placeholder="Select a language" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent className="bg-white/90 backdrop-blur-lg border-stone-200">
                         {languages.map((lang) => (
                           <SelectItem
                             key={lang.value}
                             value={lang.value}
-                            className="font-body"
+                            className="font-body hover:bg-amber-50/50"
                           >
                             {lang.label}
                           </SelectItem>
@@ -184,13 +189,14 @@ export default function InputForm({
               name="prompt"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-headline text-lg">
+                  <FormLabel className="font-headline text-lg text-stone-700">
                     What's special about this item? (Optional)
                   </FormLabel>
                   <FormControl>
+                    {/* ## Updated Textarea Style ## */}
                     <Textarea
                       placeholder="e.g., Made from recycled materials, a family tradition, perfect for weddings..."
-                      className="resize-none font-body"
+                      className="resize-none font-body bg-white/50 border-stone-300 focus:border-amber-500 focus:ring-amber-500"
                       {...field}
                     />
                   </FormControl>
@@ -199,9 +205,10 @@ export default function InputForm({
               )}
             />
 
+            {/* ## Updated CTA Button ## */}
             <Button
               type="submit"
-              className="w-full text-lg py-6 font-headline"
+              className="w-full text-lg py-6 font-headline bg-gradient-to-r from-amber-500 to-rose-600 text-white hover:opacity-95 shadow-md hover:shadow-lg transition-all"
               size="lg"
               disabled={isLoading}
             >

@@ -82,12 +82,14 @@ export default function ArtisanAssistPage() {
   };
 
   return (
+    // Page inherits the gradient background from the layout
     <div className="container mx-auto px-4 py-8 md:py-12">
       <header className="text-center mb-8 md:mb-12">
-        <h1 className="font-headline text-4xl md:text-6xl font-bold text-primary">
+        {/* ## Updated Header Colors ## */}
+        <h1 className="font-headline text-4xl md:text-6xl font-bold text-amber-700">
           Artisan Assist
         </h1>
-        <p className="font-body text-muted-foreground text-lg md:text-xl mt-2">
+        <p className="font-body text-stone-600 text-lg md:text-xl mt-2">
           Create beautiful social media posts in seconds
         </p>
       </header>

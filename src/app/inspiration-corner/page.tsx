@@ -37,8 +37,12 @@ export default function InspirationCornerPage() {
   const [isFetchingTrends, startFetchingTrends] = useTransition();
 
   const [productName, setProductName] = useState<string>("Mugs");
-  const [enhancementIdeas, setEnhancementIdeas] = useState<EnhancementIdea[]>([]);
-  const [trendingProducts, setTrendingProducts] = useState<TrendingProduct[]>([]);
+  const [enhancementIdeas, setEnhancementIdeas] = useState<EnhancementIdea[]>(
+    []
+  );
+  const [trendingProducts, setTrendingProducts] = useState<TrendingProduct[]>(
+    []
+  );
 
   // cache: query -> array of image objects [{link, contextLink, title}, ...]
   const [imageCache, setImageCache] = useState<Record<string, any[]>>({});
@@ -49,7 +53,9 @@ export default function InspirationCornerPage() {
     if (imageCache[query]) return imageCache[query];
 
     try {
-      const res = await fetch(`/api/imageSearch?q=${encodeURIComponent(query)}&num=${num}`);
+      const res = await fetch(
+        `/api/imageSearch?q=${encodeURIComponent(query)}&num=${num}`
+      );
       const data = await res.json();
       const images = data?.imageUrls || [];
       setImageCache((prev) => ({ ...prev, [query]: images }));
@@ -86,7 +92,9 @@ export default function InspirationCornerPage() {
         const ideasWithImages = await Promise.all(
           result.ideas.map(async (idea: EnhancementIdea) => {
             // Prefer searching by productName + idea query to get more relevant images
-            const query = `${productName} ${idea.googleSearchQuery || ""}`.trim();
+            const query = `${productName} ${
+              idea.googleSearchQuery || ""
+            }`.trim();
             const imgs = await fetchImagesForQuery(query, 3);
             return { ...idea, imageResults: imgs };
           })
@@ -112,7 +120,9 @@ export default function InspirationCornerPage() {
       if (result.products) {
         const productsWithImages = await Promise.all(
           result.products.map(async (product: TrendingProduct) => {
-            const query = `${product.name} ${product.googleSearchQuery || ""}`.trim();
+            const query = `${product.name} ${
+              product.googleSearchQuery || ""
+            }`.trim();
             const imgs = await fetchImagesForQuery(query, 3);
             return { ...product, imageResults: imgs };
           })
@@ -125,33 +135,52 @@ export default function InspirationCornerPage() {
   useEffect(() => {
     handleFetchTrends();
     handleGetEnhancementIdeas();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks-exhaustive-deps
   }, []);
 
   return (
-    <div className="flex-grow flex flex-col gap-6 p-4 md:p-6">
+    // Page inherits background, just add padding
+    <div className="flex-grow flex flex-col gap-6 p-4 md:p-8">
       {/* Product Input */}
-      <Card>
+      {/* ## Updated Card Style ## */}
+      <Card className="bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg transition-all duration-300 hover:border-amber-300/80">
         <CardHeader>
-          <CardTitle>Product Ideas</CardTitle>
-          <CardDescription>
-            Enter your product name to get AI-powered enhancement ideas with real images.
+          {/* ## Updated Text Colors ## */}
+          <CardTitle className="text-stone-900">Product Ideas</CardTitle>
+          <CardDescription className="text-stone-600">
+            Enter your product name to get AI-powered enhancement ideas with
+            real images.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="flex items-end gap-2">
             <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="product-name">Product Name / Type</Label>
+              <Label htmlFor="product-name" className="text-stone-700">
+                Product Name / Type
+              </Label>
+              {/* ## Updated Input Style ## */}
               <Input
                 id="product-name"
                 placeholder="e.g., Handmade Ceramic Mugs"
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleGetEnhancementIdeas()}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && handleGetEnhancementIdeas()
+                }
+                className="bg-white/50 border-stone-300 focus:border-amber-500 focus:ring-amber-500"
               />
             </div>
-            <Button onClick={handleGetEnhancementIdeas} disabled={isGeneratingIdeas}>
-              {isGeneratingIdeas ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+            {/* ## Updated Button Style ## */}
+            <Button
+              onClick={handleGetEnhancementIdeas}
+              disabled={isGeneratingIdeas}
+              className="bg-gradient-to-r from-amber-500 to-rose-600 text-white hover:opacity-95 shadow-md hover:shadow-lg transition-all"
+            >
+              {isGeneratingIdeas ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Sparkles className="mr-2 h-4 w-4" />
+              )}
               Get Ideas
             </Button>
           </div>
@@ -162,13 +191,19 @@ export default function InspirationCornerPage() {
       {isGeneratingIdeas && enhancementIdeas.length === 0 && (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {[...Array(3)].map((_, i) => (
-            <Card key={i} className="overflow-hidden">
-              <Skeleton className="h-48 w-full" />
-              <CardHeader><Skeleton className="h-6 w-3/4" /></CardHeader>
+            // ## Updated Skeleton Card ##
+            <Card
+              key={i}
+              className="overflow-hidden bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg"
+            >
+              <Skeleton className="h-48 w-full bg-stone-200/80" />
+              <CardHeader>
+                <Skeleton className="h-6 w-3/4 bg-stone-200/80" />
+              </CardHeader>
               <CardContent className="grid gap-2">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-5/6" />
-                <Skeleton className="h-10 w-48 mt-2" />
+                <Skeleton className="h-4 w-full bg-stone-200/80" />
+                <Skeleton className="h-4 w-5/6 bg-stone-200/80" />
+                <Skeleton className="h-10 w-48 mt-2 bg-stone-200/80" />
               </CardContent>
             </Card>
           ))}
@@ -178,15 +213,24 @@ export default function InspirationCornerPage() {
       {/* Enhancement Ideas */}
       {enhancementIdeas.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold mb-4">Enhancement ideas for "{productName}":</h3>
+          <h3 className="text-xl font-bold text-stone-900 mb-4">
+            Enhancement ideas for "{productName}":
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {enhancementIdeas.map((idea, idx) => (
-              <Card key={idx} className="overflow-hidden flex flex-col">
-                {/* image grid: up to 3 images */}
-                <div className="w-full p-2 grid grid-cols-3 gap-2 bg-white">
+              // ## Updated Idea Card ##
+              <Card
+                key={idx}
+                className="overflow-hidden flex flex-col bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg transition-all duration-300 hover:border-amber-300/80"
+              >
+                {/* image grid */}
+                <div className="w-full p-2 grid grid-cols-3 gap-2 bg-stone-50/50">
                   {idea.imageResults && idea.imageResults.length > 0 ? (
                     idea.imageResults.slice(0, 3).map((img: any, i: number) => (
-                      <div key={i} className="relative w-full h-24 bg-gray-100 overflow-hidden rounded">
+                      <div
+                        key={i}
+                        className="relative w-full h-24 bg-stone-100 overflow-hidden rounded"
+                      >
                         <Image
                           src={img.link}
                           alt={img.title || idea.title || `image-${i}`}
@@ -197,36 +241,64 @@ export default function InspirationCornerPage() {
                       </div>
                     ))
                   ) : (
-                    <div className="col-span-3 h-24 flex items-center justify-center text-gray-400">No image found</div>
+                    <div className="col-span-3 h-24 flex items-center justify-center text-stone-500">
+                      No image found
+                    </div>
                   )}
                 </div>
 
                 <div className="flex flex-col flex-grow">
                   <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Lightbulb className="text-primary h-5 w-5" />
+                    <CardTitle className="text-lg flex items-center gap-2 text-stone-800">
+                      {/* ## Updated Icon Color ## */}
+                      <Lightbulb className="text-amber-600 h-5 w-5" />
                       {idea.title}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-col gap-4 flex-grow">
-                    <p className="text-muted-foreground text-sm flex-grow">{idea.description}</p>
-
+                    <p className="text-stone-600 text-sm flex-grow">
+                      {idea.description}
+                    </p>
+                    {/* ## Updated Link Buttons ## */}
                     <div className="flex gap-2 flex-wrap">
-                      <Button variant="outline" size="sm" asChild className="w-fit">
-                        <a href={`https://www.google.com/search?tbm=isch&q=${encodeURIComponent(idea.googleSearchQuery)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        asChild
+                        className="w-fit border-amber-500 text-amber-600 hover:bg-amber-100 hover:text-amber-700"
+                      >
+                        <a
+                          href={`https://www.google.com/search?tbm=isch&q=${encodeURIComponent(
+                            idea.googleSearchQuery
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5"
+                        >
                           <ExternalLink className="h-3.5 w-3.5" />
                           Google
                         </a>
                       </Button>
 
-                      <Button variant="outline" size="sm" asChild className="w-fit">
-                        <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(idea.googleSearchQuery + " tutorial")}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        asChild
+                        className="w-fit border-amber-500 text-amber-600 hover:bg-amber-100 hover:text-amber-700"
+                      >
+                        <a
+                          href={`https://www.youtube.com/results?search_query=${encodeURIComponent(
+                            idea.googleSearchQuery + " tutorial"
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5"
+                        >
                           <ExternalLink className="h-3.5 w-3.5" />
                           YouTube
                         </a>
                       </Button>
                     </div>
-
                   </CardContent>
                 </div>
               </Card>
@@ -235,41 +307,70 @@ export default function InspirationCornerPage() {
         </div>
       )}
 
-      {/* AR + Trending Products (similar approach) */}
-      <Card>
+      {/* AR Card */}
+      <Card className="bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg transition-all duration-300 hover:border-amber-300/80">
         <CardHeader>
-          <CardTitle>AR Visualization</CardTitle>
-          <CardDescription>Visualize your creations in augmented reality.</CardDescription>
+          <CardTitle className="text-stone-900">AR Visualization</CardTitle>
+          <CardDescription className="text-stone-600">
+            Visualize your creations in augmented reality.
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button onClick={() => toast({ title: "Feature Not Available", description: "AR not supported here." })}>
+          {/* ## Updated Button Style ## */}
+          <Button
+            onClick={() =>
+              toast({
+                title: "Feature Not Available",
+                description: "AR not supported here.",
+              })
+            }
+            className="bg-gradient-to-r from-amber-500 to-rose-600 text-white hover:opacity-95 shadow-md hover:shadow-lg transition-all"
+          >
             <Camera className="mr-2 h-4 w-4" />
             Launch AR Viewer
           </Button>
         </CardContent>
       </Card>
 
-      <Card className="flex flex-col flex-grow">
+      {/* Trending Products Card */}
+      <Card className="flex flex-col flex-grow bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg transition-all duration-300 hover:border-amber-300/80">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            <div className="flex items-center gap-2"><TrendingUp /> Trending Artisan Products</div>
-            <Button variant="ghost" size="icon" onClick={handleFetchTrends} disabled={isFetchingTrends}>
-              <RefreshCw className={`h-4 w-4 ${isFetchingTrends ? "animate-spin" : ""}`} />
+            {/* ## Updated Text/Icon Color ## */}
+            <div className="flex items-center gap-2 text-stone-900">
+              <TrendingUp className="text-amber-600" /> Trending Artisan
+              Products
+            </div>
+            {/* ## Updated Ghost Button ## */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleFetchTrends}
+              disabled={isFetchingTrends}
+              className="hover:bg-amber-100 text-stone-600 hover:text-amber-700"
+            >
+              <RefreshCw
+                className={`h-4 w-4 ${isFetchingTrends ? "animate-spin" : ""}`}
+              />
             </Button>
           </CardTitle>
-          <CardDescription>Discover what's currently popular in the handmade and artisan market.</CardDescription>
+          <CardDescription className="text-stone-600">
+            Discover what's currently popular in the handmade and artisan
+            market.
+          </CardDescription>
         </CardHeader>
 
         <CardContent className="flex-grow flex flex-col">
-          <ScrollArea className="flex-grow">
+          <ScrollArea className="flex-grow h-[500px]">
             <div className="pr-4">
               {isFetchingTrends && (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {[...Array(6)].map((_, i) => (
                     <div key={i} className="space-y-3">
-                      <Skeleton className="h-[200px] w-full rounded-lg" />
-                      <Skeleton className="h-5 w-2/3" />
-                      <Skeleton className="h-4 w-full" />
+                      {/* ## Updated Skeletons ## */}
+                      <Skeleton className="h-[200px] w-full rounded-lg bg-stone-200/80" />
+                      <Skeleton className="h-5 w-2/3 bg-stone-200/80" />
+                      <Skeleton className="h-4 w-full bg-stone-200/80" />
                     </div>
                   ))}
                 </div>
@@ -278,22 +379,44 @@ export default function InspirationCornerPage() {
               {!isFetchingTrends && trendingProducts.length > 0 && (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {trendingProducts.map((product, i) => (
-                    <Card key={i} className="flex flex-col overflow-hidden">
-                      <div className="w-full p-2 grid grid-cols-3 gap-2 bg-white">
-                        {product.imageResults && product.imageResults.length > 0 ? (
-                          product.imageResults.slice(0, 3).map((img: any, j: number) => (
-                            <div key={j} className="relative w-full h-24 bg-gray-100 overflow-hidden rounded">
-                              <Image src={img.link} alt={img.title || product.name} fill style={{ objectFit: "cover" }} unoptimized />
-                            </div>
-                          ))
+                    // ## Updated Nested Card ##
+                    <Card
+                      key={i}
+                      className="flex flex-col overflow-hidden bg-white/50 border-stone-200/80 shadow-md hover:shadow-lg transition-shadow"
+                    >
+                      <div className="w-full p-2 grid grid-cols-3 gap-2 bg-stone-50/50">
+                        {product.imageResults &&
+                        product.imageResults.length > 0 ? (
+                          product.imageResults
+                            .slice(0, 3)
+                            .map((img: any, j: number) => (
+                              <div
+                                key={j}
+                                className="relative w-full h-24 bg-stone-100 overflow-hidden rounded"
+                              >
+                                <Image
+                                  src={img.link}
+                                  alt={img.title || product.name}
+                                  fill
+                                  style={{ objectFit: "cover" }}
+                                  unoptimized
+                                />
+                              </div>
+                            ))
                         ) : (
-                          <div className="col-span-3 h-24 flex items-center justify-center text-gray-400">No image</div>
+                          <div className="col-span-3 h-24 flex items-center justify-center text-stone-500">
+                            No image
+                          </div>
                         )}
                       </div>
 
                       <div className="p-4 flex-grow">
-                        <h4 className="font-semibold text-base mb-1">{product.name}</h4>
-                        <p className="text-sm text-muted-foreground">{product.description}</p>
+                        <h4 className="font-semibold text-base mb-1 text-stone-800">
+                          {product.name}
+                        </h4>
+                        <p className="text-sm text-stone-600">
+                          {product.description}
+                        </p>
                       </div>
                     </Card>
                   ))}
@@ -302,7 +425,9 @@ export default function InspirationCornerPage() {
 
               {!isFetchingTrends && trendingProducts.length === 0 && (
                 <div className="text-center h-40 flex flex-col justify-center items-center">
-                  <p className="text-muted-foreground">Click refresh to fetch trending products.</p>
+                  <p className="text-stone-500">
+                    Click refresh to fetch trending products.
+                  </p>
                 </div>
               )}
             </div>
