@@ -147,7 +147,9 @@ export default function OutputDisplay({ data, onReset }: OutputDisplayProps) {
 
   const getShareButtonForPlatform = (platform: SocialPlatform) => {
     const commonProps = {
-      className: "font-headline w-full",
+      // ## Updated Share Button Style ##
+      className:
+        "font-headline w-full bg-gradient-to-r from-amber-500 to-rose-600 text-white hover:opacity-95 shadow-md hover:shadow-lg transition-all",
       onClick: () => handleShare(platform),
     };
     switch (platform) {
@@ -177,10 +179,11 @@ export default function OutputDisplay({ data, onReset }: OutputDisplayProps) {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="font-headline text-3xl text-accent">
+        {/* ## Updated Header Colors ## */}
+        <h2 className="font-headline text-3xl text-amber-700">
           Your Post is Ready!
         </h2>
-        <p className="font-body text-muted-foreground mt-1">
+        <p className="font-body text-stone-600 mt-1">
           Choose a design, copy the text, and share your creation.
         </p>
       </div>
@@ -189,9 +192,11 @@ export default function OutputDisplay({ data, onReset }: OutputDisplayProps) {
         <CarouselContent>
           {data.designSets.map((designSet, index) => (
             <CarouselItem key={index}>
-              <Card className="overflow-hidden bg-card/80 backdrop-blur-sm">
+              {/* ## Updated Card Style ## */}
+              <Card className="overflow-hidden bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg">
                 <CardContent className="p-4 md:p-6">
-                  <h3 className="font-headline text-2xl text-primary mb-4">
+                  {/* ## Updated Title Color ## */}
+                  <h3 className="font-headline text-2xl text-stone-900 mb-4">
                     {designSet.theme}
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -218,47 +223,61 @@ export default function OutputDisplay({ data, onReset }: OutputDisplayProps) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="hidden md:flex -left-12" />
-        <CarouselNext className="hidden md:flex -right-12" />
+        {/* ## Updated Carousel Buttons ## */}
+        <CarouselPrevious className="hidden md:flex -left-12 bg-white/70 hover:bg-white border-amber-300 text-amber-600 hover:text-amber-700" />
+        <CarouselNext className="hidden md:flex -right-12 bg-white/70 hover:bg-white border-amber-300 text-amber-600 hover:text-amber-700" />
       </Carousel>
 
-      <Card className="shadow-lg">
+      {/* ## Updated Card Style ## */}
+      <Card className="shadow-lg bg-white/70 backdrop-blur-lg border border-stone-200/80">
         <CardContent className="p-4 md:p-6">
           <Tabs
             value={activeTab}
             onValueChange={(v) => setActiveTab(v as SocialPlatform)}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-3 bg-secondary">
-              <TabsTrigger value="instagram" className="font-headline">
+            {/* ## Updated Tabs Style ## */}
+            <TabsList className="grid w-full grid-cols-3 bg-stone-100 h-12">
+              <TabsTrigger
+                value="instagram"
+                className="font-headline text-stone-600 data-[state=active]:bg-white data-[state=active]:text-amber-700 data-[state=active]:shadow-md h-10"
+              >
                 <Instagram className="w-4 h-4 mr-2" />
                 Instagram
               </TabsTrigger>
-              <TabsTrigger value="facebook" className="font-headline">
+              <TabsTrigger
+                value="facebook"
+                className="font-headline text-stone-600 data-[state=active]:bg-white data-[state=active]:text-amber-700 data-[state=active]:shadow-md h-10"
+              >
                 <Facebook className="w-4 h-4 mr-2" />
                 Facebook
               </TabsTrigger>
-              <TabsTrigger value="whatsapp" className="font-headline">
+              <TabsTrigger
+                value="whatsapp"
+                className="font-headline text-stone-600 data-[state=active]:bg-white data-[state=active]:text-amber-700 data-[state=active]:shadow-md h-10"
+              >
                 <MessageSquare className="w-4 h-4 mr-2" />
                 WhatsApp
               </TabsTrigger>
             </TabsList>
 
-            <div className="mt-4 p-4 min-h-[200px] bg-background rounded-md border">
+            {/* ## Updated Tabs Content Box ## */}
+            <div className="mt-4 p-4 min-h-[200px] bg-stone-50/50 rounded-md border border-stone-200/80">
               <TabsContent
                 value="instagram"
-                className="font-body text-foreground space-y-4"
+                className="font-body text-stone-700 space-y-4"
               >
                 <p className="whitespace-pre-wrap">
                   {socialContent.instagram.caption}
                 </p>
-                <p className="text-sm text-primary">
+                {/* ## Updated Hashtag Color ## */}
+                <p className="text-sm text-amber-600">
                   {socialContent.instagram.hashtags.join(" ")}
                 </p>
               </TabsContent>
               <TabsContent
                 value="facebook"
-                className="font-body text-foreground"
+                className="font-body text-stone-700"
               >
                 <p className="whitespace-pre-wrap">
                   {socialContent.facebook?.post}
@@ -266,7 +285,7 @@ export default function OutputDisplay({ data, onReset }: OutputDisplayProps) {
               </TabsContent>
               <TabsContent
                 value="whatsapp"
-                className="font-body text-foreground"
+                className="font-body text-stone-700"
               >
                 <p className="whitespace-pre-wrap">
                   {socialContent.whatsapp?.message}
@@ -279,25 +298,27 @@ export default function OutputDisplay({ data, onReset }: OutputDisplayProps) {
             <div className="lg:col-span-1 sm:col-span-2">
               {getShareButtonForPlatform(activeTab)}
             </div>
+            {/* ## Updated Outline Buttons ## */}
             <Button
               variant="outline"
               onClick={handleCopy}
-              className="font-headline"
+              className="font-headline border-amber-500 text-amber-600 hover:bg-amber-100 hover:text-amber-700"
             >
               <Copy className="mr-2" /> Copy Text
             </Button>
             <Button
               variant="outline"
               onClick={handleDownload}
-              className="font-headline"
+              className="font-headline border-amber-500 text-amber-600 hover:bg-amber-100 hover:text-amber-700"
             >
               <Download className="mr-2" /> Save Design Set
             </Button>
           </div>
           <div className="mt-4">
+            {/* ## Updated General Share Button ## */}
             <Button
               onClick={() => handleShare("general")}
-              className="font-headline w-full"
+              className="font-headline w-full bg-gradient-to-r from-amber-500 to-rose-600 text-white hover:opacity-95 shadow-md hover:shadow-lg transition-all"
             >
               <Share2 className="mr-2" /> General Share (Copy Text)
             </Button>
@@ -306,10 +327,11 @@ export default function OutputDisplay({ data, onReset }: OutputDisplayProps) {
       </Card>
 
       <div className="text-center mt-8">
+        {/* ## Updated Ghost Button ## */}
         <Button
           variant="ghost"
           onClick={onReset}
-          className="font-headline text-muted-foreground"
+          className="font-headline text-stone-500 hover:text-amber-700 hover:bg-amber-100"
         >
           <RotateCcw className="mr-2 w-4 h-4" />
           Start Over

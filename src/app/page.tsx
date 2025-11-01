@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 
 // Helper component for SVG icons to keep the main code clean.
-// You can find simple, free-to-use SVG icons from sites like heroicons.com or feathericons.com.
+// I've updated the colors to match the new, warmer palette.
 const Icon = ({ name }: { name: string }) => {
   const icons: { [key: string]: JSX.Element } = {
     scheme: (
@@ -12,7 +12,6 @@ const Icon = ({ name }: { name: string }) => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-8 h-8 mb-4 text-orange-600"
       >
         <path
           strokeLinecap="round"
@@ -28,7 +27,6 @@ const Icon = ({ name }: { name: string }) => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-8 h-8 mb-4 text-orange-600"
       >
         <path
           strokeLinecap="round"
@@ -44,7 +42,6 @@ const Icon = ({ name }: { name: string }) => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-8 h-8 mb-4 text-orange-600"
       >
         <path
           strokeLinecap="round"
@@ -60,7 +57,6 @@ const Icon = ({ name }: { name: string }) => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-8 h-8 mb-4 text-orange-600"
       >
         <path
           strokeLinecap="round"
@@ -76,7 +72,6 @@ const Icon = ({ name }: { name: string }) => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-8 h-8 mb-4 text-orange-600"
       >
         <path
           strokeLinecap="round"
@@ -92,7 +87,6 @@ const Icon = ({ name }: { name: string }) => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-8 h-8 mb-4 text-orange-600"
       >
         <path
           strokeLinecap="round"
@@ -101,19 +95,18 @@ const Icon = ({ name }: { name: string }) => {
         />
       </svg>
     ),
-    profile: (
+    communityPost: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-8 h-8 mb-4 text-orange-600"
       >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+          d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"
         />
       </svg>
     ),
@@ -140,7 +133,7 @@ const Icon = ({ name }: { name: string }) => {
       >
         <path
           fillRule="evenodd"
-          d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.345 2.525c.636-.247 1.363-.416 2.427-.465C9.793 2.013 10.147 2 12.315 2zm-1.162 1.905c-1.468.007-2.827.01-3.238.01s-.47.003-1.048.022c-.89.034-1.424.195-1.828.345-.48.18-.844.444-1.212.812-.368.368-.632.732-.812 1.212-.15.404-.31.938-.345 1.828-.02.578-.022.69-.022 1.048s.002.47.022 1.048c.034.89.195 1.424.345 1.828.18.48.444.844.812 1.212.368.368.732.632 1.212.812.404.15.938.31 1.828.345.578.02.69.022 1.048.022s.47-.002 1.048-.022c.89-.034 1.424-.195 1.828-.345.48-.18.844-.444 1.212-.812.368-.368.632-.732.812-1.212.15-.404.31-.938.345-1.828.02-.578.022-.69.022-1.048s-.002-.47-.022-1.048c-.034-.89-.195-1.424-.345-1.828-.18-.48-.444-.844-.812-1.212-.368-.368-.732-.632-1.212-.812-.404-.15-.938-.31-1.828-.345-.578-.02-.69-.022-1.048-.022s-.47.002-1.048.022zm2.328 1.977a4.402 4.402 0 100 8.804 4.402 4.402 0 000-8.804zm-3.008 4.402a3.008 3.008 0 116.016 0 3.008 3.008 0 01-6.016 0zm6.536-4.87a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"
+          d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.345 2.525c.636-.247 1.363-.416 2.427-.465C9.793 2.013 10.147 2 12.315 2zm-1.162 1.905c-1.468.007-2.827.01-3.238.01s-.47.003-1.048.022c-.89.034-1.424.195-1.828.345-.48.18-.844.444-1.212.812-.368.368-.632.732-.812 1.212-.15.404-.31.938-.345 1.828-.02.578-.022.69-.022 1.048s.002.47.022 1.048c.034.89.195 1.424.345 1.828.18.48.444.844.812 1.212.368.368.732.632 1.212.812.404.15.938.31 1.828.345.578.02.69.022 1.048.022s.47-.002 1.048-.022c.89-.034 1.424-.195 1.828-.345.48-.18.844.444 1.212.812.368.368.632-.732.812-1.212.15-.404.31-.938.345-1.828.02-.578.022-.69.022-1.048s-.002-.47-.022-1.048c-.034-.89-.195-1.424-.345-1.828-.18-.48-.444-.844-.812-1.212-.368-.368-.732-.632-1.212-.812-.404-.15-.938-.31-1.828-.345-.578-.02-.69-.022-1.048-.022s-.47.002-1.048.022zm2.328 1.977a4.402 4.402 0 100 8.804 4.402 4.402 0 000-8.804zm-3.008 4.402a3.008 3.008 0 116.016 0 3.008 3.008 0 01-6.016 0zm6.536-4.87a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"
           clipRule="evenodd"
         ></path>
       </svg>
@@ -155,29 +148,36 @@ const Icon = ({ name }: { name: string }) => {
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
       </svg>
     ),
-    communityPost: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="w-8 h-8 mb-4 text-orange-600"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"
-        />
-      </svg>
-    ),
   };
   return icons[name] || null;
 };
 
+// Re-styled Feature Card component for a cleaner and more modern look.
+const FeatureCard = ({ iconName, title, description, link, linkText }: any) => (
+  <div className="bg-white/50 backdrop-blur-lg p-8 rounded-2xl border border-stone-200/80 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group">
+    <div className="w-16 h-16 mb-6 flex items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-rose-200 text-amber-700 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg">
+      <div className="w-8 h-8">
+        <Icon name={iconName} />
+      </div>
+    </div>
+    <h3 className="text-xl font-bold text-stone-800 mb-2">{title}</h3>
+    <p className="text-stone-600 mb-6">{description}</p>
+    <a
+      href={link}
+      className="font-bold text-amber-600 hover:text-rose-600 transition-colors duration-300 flex items-center group"
+    >
+      {linkText}
+      <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">
+        &rarr;
+      </span>
+    </a>
+  </div>
+);
+
 const HomePage: NextPage = () => {
   return (
-    <div className="bg-stone-50 text-stone-800 font-sans">
+    // NEW: Using a soft, warm background color for an earthy, artisanal feel.
+    <div className="bg-[#FBF9F6] text-stone-800 font-sans">
       <Head>
         <title>Artisan Gully - Empowering Local Artisans</title>
         <meta
@@ -187,9 +187,8 @@ const HomePage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* --- Main Content --- */}
       <main>
-        {/* ## Hero Section (Professional and Image-Centric) */}
+        {/* ## Hero Section (More vibrant and engaging) */}
         <section
           className="relative w-full h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
           style={{
@@ -197,173 +196,123 @@ const HomePage: NextPage = () => {
               "url('/images/Gemini_Generated_Image_ihmocyihmocyihmo.png')",
           }}
         >
-          <div className="absolute inset-0 bg-black opacity-50"></div>
+          {/* NEW: Replaced the harsh black overlay with a subtle, multi-colored gradient for a more artistic feel. */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
           <div className="relative z-10 text-center text-white p-6 max-w-4xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold leading-tight mb-4 drop-shadow-lg">
+            {/* NEW: Enhanced typography with a gradient on the accent text for a unique, eye-catching effect. */}
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight mb-4 drop-shadow-lg tracking-tight">
               Empowering Local Artisans,{" "}
-              <span className="text-orange-400">One Creation</span> at a Time.
+              <span className="bg-gradient-to-r from-amber-400 to-rose-500 bg-clip-text text-transparent">
+                One Creation
+              </span>{" "}
+              at a Time.
             </h1>
-            <p className="text-lg md:text-xl text-stone-200 max-w-2xl mx-auto mb-8 drop-shadow-md">
+            <p className="text-lg md:text-xl text-stone-200 max-w-2xl mx-auto mb-10 drop-shadow-md">
               Discover opportunities, connect with communities, and grow with
               the right tools.
             </p>
+            {/* NEW: Updated the button with a gradient and more engaging hover animation. */}
             <a
               href="#features"
-              className="inline-flex items-center justify-center bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-lg 
-                         hover:bg-orange-700 transition-all duration-300 shadow-xl hover:scale-105 hover:shadow-2xl group"
+              className="inline-flex items-center justify-center bg-gradient-to-r from-amber-500 to-rose-600 text-white font-bold py-4 px-10 rounded-full text-lg 
+                         hover:shadow-xl hover:scale-105 transition-all duration-300 shadow-lg group"
             >
-              Get Started
+              Explore Your Tools
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth={2}
+                strokeWidth={2.5}
                 stroke="currentColor"
-                className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300"
+                className="w-5 h-5 ml-2 group-hover:translate-x-1.5 transition-transform duration-300"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                  d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"
                 />
               </svg>
             </a>
           </div>
         </section>
 
-        {/* ## Features Section */}
-        <section id="features" className="py-20 md:py-32 bg-stone-50">
+        {/* ## Features Section (Cleaner layout with unique glassmorphism cards) */}
+        <section
+          id="features"
+          className="py-24 md:py-32 bg-gradient-to-b from-[#FBF9F6] to-amber-50"
+        >
           <div className="container mx-auto px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-stone-900">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-stone-900 tracking-tight">
                 Your Artisan Toolkit
               </h2>
-              <p className="text-stone-600 mt-2">
-                Everything you need to thrive and showcase your craft.
+              <p className="text-stone-600 mt-3 text-lg max-w-2xl mx-auto">
+                Everything you need to thrive, from securing grants to
+                showcasing your craft with style.
               </p>
             </div>
-
+            {/* NEW: Replaced the repeated divs with a reusable FeatureCard component for cleaner code. */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Card 4: Social Media Posts */}
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                <Icon name="social" />
-                <h3 className="text-xl font-bold mb-2">Create Social Posts</h3>
-                <p className="text-stone-600 mb-4">
-                  Design beautiful posts for your social media with our simple
-                  tool.
-                </p>
-                <a
-                  href="/postCreator"
-                  className="font-semibold text-orange-600 hover:text-orange-700"
-                >
-                  Start Designing &rarr;
-                </a>
-              </div>
-              {/* Card 6: Market Insights - NEWLY ADDED */}
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                <Icon name="insights" />
-                <h3 className="text-xl font-bold mb-2">Market Insights</h3>
-                <p className="text-stone-600 mb-4">
-                  Get AI-powered insights on trending products, pricing
-                  strategies, and customer demands.
-                </p>
-                <a
-                  href="/artisan-assist"
-                  className="font-semibold text-orange-600 hover:text-orange-700"
-                >
-                  Discover Trends &rarr;
-                </a>
-              </div>
-              {/* Card 1: Government Schemes */}
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                <Icon name="scheme" />
-                <h3 className="text-xl font-bold mb-2">Government Schemes</h3>
-                <p className="text-stone-600 mb-4">
-                  Easily find and apply for grants and schemes that support your
-                  craft.
-                </p>
-                <a
-                  href="/schemes"
-                  className="font-semibold text-orange-600 hover:text-orange-700"
-                >
-                  Learn More &rarr;
-                </a>
-              </div>
-
-              {/* Card 2: Challenges */}
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                <Icon name="challenge" />
-                <h3 className="text-xl font-bold mb-2">Creative Challenges</h3>
-                <p className="text-stone-600 mb-4">
-                  Participate in themed challenges to spark creativity and win
-                  rewards.
-                </p>
-                <a
-                  href="/artconnect/challenges"
-                  className="font-semibold text-orange-600 hover:text-orange-700"
-                >
-                  View Challenges &rarr;
-                </a>
-              </div>
-
-              {/* Card 3: Community */}
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                <Icon name="community" />
-                <h3 className="text-xl font-bold mb-2">Artisan Community</h3>
-                <p className="text-stone-600 mb-4">
-                  Join groups, share knowledge, and collaborate with fellow
-                  artisans.
-                </p>
-                <a
-                  href="/community"
-                  className="font-semibold text-orange-600 hover:text-orange-700"
-                >
-                  Connect Now &rarr;
-                </a>
-              </div>
-
-              {/* Card 4: Post to Community - NEWLY ADDED */}
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                <Icon name="communityPost" />
-                <h3 className="text-xl font-bold mb-2">Post to Community</h3>
-                <p className="text-stone-600 mb-4">
-                  Share your latest work, ask questions, or start a discussion
-                  with fellow artisans.
-                </p>
-                <a
-                  href="/inspiration-corner"
-                  className="font-semibold text-orange-600 hover:text-orange-700"
-                >
-                  Create a Post &rarr;
-                </a>
-              </div>
-
-              {/* Card 5: Journal */}
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                <Icon name="journal" />
-                <h3 className="text-xl font-bold mb-2">Artisan's Journal</h3>
-                <p className="text-stone-600 mb-4">
-                  Track your progress, document your creations, and tell your
-                  story.
-                </p>
-                <a
-                  href="/artconnect/stories"
-                  className="font-semibold text-orange-600 hover:text-orange-700"
-                >
-                  Open Journal &rarr;
-                </a>
-              </div>
+              <FeatureCard
+                iconName="insights"
+                title="Market Insights"
+                description="Get AI-powered insights on trending products, pricing strategies, and customer demands."
+                link="/artisan-assist"
+                linkText="Discover Trends"
+              />
+              <FeatureCard
+                iconName="scheme"
+                title="Government Schemes"
+                description="Easily find and apply for grants and schemes that support your craft and help you grow."
+                link="/schemes"
+                linkText="Learn More"
+              />
+              <FeatureCard
+                iconName="social"
+                title="Create Social Posts"
+                description="Design beautiful, eye-catching posts for your social media with our simple yet powerful tool."
+                link="/postCreator"
+                linkText="Start Designing"
+              />
+              <FeatureCard
+                iconName="community"
+                title="Artisan Community"
+                description="Join groups, share knowledge, and collaborate with a vibrant community of fellow artisans."
+                link="/community"
+                linkText="Connect Now"
+              />
+              <FeatureCard
+                iconName="challenge"
+                title="Creative Challenges"
+                description="Participate in themed challenges to spark creativity, gain exposure, and win rewards."
+                link="/artconnect/challenges"
+                linkText="View Challenges"
+              />
+              <FeatureCard
+                iconName="communityPost"
+                title="Post to Community"
+                description="Share your latest work, ask questions, or start a discussion with fellow artisans."
+                link="/inspiration-corner"
+                linkText="Create a Post"
+              />
+              <FeatureCard
+                iconName="journal"
+                title="Artisan's Journal"
+                description="Track your progress, document your creations, and tell your story."
+                link="/artconnect/stories"
+                linkText="Open Journal"
+              />
             </div>
           </div>
         </section>
 
-        {/* ## About Section */}
-        <section className="py-20 bg-amber-50">
+        {/* ## About Section (More focused and visually separated) */}
+        <section className="py-24 bg-rose-50">
           <div className="container mx-auto px-6 text-center max-w-3xl">
-            <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-4 tracking-tight">
               Our Mission
             </h2>
-            <p className="text-lg text-stone-700">
+            <p className="text-xl text-stone-700 leading-relaxed">
               Artisan Gully is dedicated to bridging the gap between local
               artisans and the digital world. We believe in preserving
               traditional crafts by providing modern tools and a supportive
@@ -374,24 +323,24 @@ const HomePage: NextPage = () => {
         </section>
       </main>
 
-      {/* ## Footer */}
-      <footer className="bg-stone-100 text-stone-600">
-        <div className="container mx-auto px-6 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-center md:text-left mb-4 md:mb-0">
+      {/* ## Footer (Darker, more distinct footer for a clean finish) */}
+      <footer className="bg-stone-800 text-stone-400">
+        <div className="container mx-auto px-6 py-10">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+            <div className="text-center md:text-left">
               <p>
                 &copy; {new Date().getFullYear()} Artisan Gully. All rights
                 reserved.
               </p>
             </div>
-            <div className="flex space-x-6 mb-4 md:mb-0">
-              <a href="#" className="hover:text-orange-600">
+            <div className="flex space-x-6">
+              <a href="#" className="hover:text-amber-400 transition-colors">
                 Privacy Policy
               </a>
-              <a href="#" className="hover:text-orange-600">
+              <a href="#" className="hover:text-amber-400 transition-colors">
                 Terms of Service
               </a>
-              <a href="#" className="hover:text-orange-600">
+              <a href="#" className="hover:text-amber-400 transition-colors">
                 Contact
               </a>
             </div>
@@ -399,21 +348,21 @@ const HomePage: NextPage = () => {
               <a
                 href="#"
                 aria-label="Facebook"
-                className="hover:text-orange-600"
+                className="hover:text-white transition-colors"
               >
                 <Icon name="facebook" />
               </a>
               <a
                 href="#"
                 aria-label="Instagram"
-                className="hover:text-orange-600"
+                className="hover:text-white transition-colors"
               >
                 <Icon name="instagram" />
               </a>
               <a
                 href="#"
                 aria-label="Twitter"
-                className="hover:text-orange-600"
+                className="hover:text-white transition-colors"
               >
                 <Icon name="twitter" />
               </a>
