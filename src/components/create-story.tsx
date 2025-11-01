@@ -24,7 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { PenSquare, Sparkles, Image as ImageIcon, Upload } from "lucide-react"; // 'Upload' is already imported
+import { PenSquare, Sparkles, Image as ImageIcon, Upload } from "lucide-react";
 import { Textarea } from "./ui/textarea";
 import { useFirestore, useUser } from "@/firebase";
 import { collection, serverTimestamp, addDoc } from "firebase/firestore";
@@ -364,18 +364,6 @@ export function CreateStory() {
             <DialogFooter className="sticky bottom-0 bg-white/90 backdrop-blur-lg pt-4 -mx-1 -mb-1 pb-1">
               {step === "write" && (
                 <>
-                  {/* ## NEW Upload Button ## */}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={isSubmitting || isGeneratingImage}
-                    className="border-amber-500 text-amber-600 hover:bg-amber-100 hover:text-amber-700"
-                  >
-                    <Upload className="mr-2" />
-                    Upload Image
-                  </Button>
-
                   {/* ## Updated Outline Button ## */}
                   <Button
                     type="button"

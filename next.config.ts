@@ -15,7 +15,6 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'i.ibb.co', port: '', pathname: '/**' },
       { protocol: 'https', hostname: 'i.etsystatic.com', port: '', pathname: '/**' },
       { protocol: 'https', hostname: 'source.unsplash.com', port: '', pathname: '/**' },
-      { protocol: 'https', hostname: 'image.pollinations.ai', pathname: '/**' },
     ],
   },
   // cast the whole experimental object to 'any'
