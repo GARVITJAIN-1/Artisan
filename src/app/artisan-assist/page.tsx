@@ -1,66 +1,47 @@
-// artisan-assist/page.tsx
 
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BadgeDollarSign, Lightbulb, Calendar } from "lucide-react";
-import React from "react";
+import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { BadgeDollarSign, Lightbulb, Calendar, CheckSquare } from 'lucide-react';
 
 export default function ArtisanAssistPage() {
   const services = [
     {
-      title: "Sourcing & Pricing",
-      description: "Find materials, sell products, and get price suggestions.",
-      href: "/artisan-assist/sourcing-pricing",
-      // Icon color is now controlled by the gradient bubble
-      icon: <BadgeDollarSign className="h-8 w-8" />,
+      title: 'Sourcing & Pricing',
+      description: 'Find materials, sell products, and get price suggestions.',
+      href: '/artisan-assist/sourcing-pricing',
+      icon: <BadgeDollarSign className="h-8 w-8 text-primary" />,
     },
     {
-      title: "Events",
-      description: "Find local and national events to showcase your work.",
-      href: "/artisan-assist/events",
-      icon: <Calendar className="h-8 w-8" />,
+      title: 'Ideas & Trends',
+      description: 'Get AI-powered ideas and discover trending products.',
+      href: '/artisan-assist/ideas-trends',
+      icon: <Lightbulb className="h-8 w-8 text-primary" />,
     },
+    {
+      title: 'Events',
+      description: 'Find local and national events to showcase your work.',
+      href: '/artisan-assist/events',
+      icon: <Calendar className="h-8 w-8 text-primary" />,
+    }
   ];
 
   return (
-    // Updated page background and padding
-    <div className="flex flex-col flex-grow p-4 h-screen md:p-8 bg-gradient-to-b from-[#FBF9F6] to-amber-50 text-stone-800">
-      {/* Updated title style */}
-      <h1 className="text-5xl font-bold text-stone-900 mb-[8vh]">
-        Artisan Assistance
-      </h1>
-      <div className="gap-6 flex items-center">
+    <div className="flex flex-col flex-grow p-4 md:p-6">
+      <h1 className="text-2xl font-bold mb-6">Artisan Assistance</h1>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {services.map((service) => (
-          // Added 'group' for hover effects on the icon bubble
-          <Link href={service.href} key={service.title} className="group">
-            {/* Updated Card: New layout (flex-col), new style, and h-full for grid alignment */}
-            <Card className="bg-white/50 backdrop-blur-lg border border-stone-200/80 shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 h-full flex flex-col">
-              <CardHeader className="pb-4">
-                {/* 1. New Icon Bubble (matches homepage) */}
-                <div className="w-16 h-16 mb-2 flex items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-rose-200 text-amber-700 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg">
-                  {service.icon}
-                </div>
-              </CardHeader>
-
-              {/* flex-grow pushes the link to the bottom */}
-              <CardContent className="flex flex-col flex-grow">
-                {/* 2. Title */}
-                <CardTitle className="text-xl font-bold text-stone-800 mb-2">
+          <Link href={service.href} key={service.title}>
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-lg font-medium">
                   {service.title}
                 </CardTitle>
-
-                {/* 3. Description (flex-grow pushes link) */}
-                <p className="text-stone-600 flex-grow">
+                {service.icon}
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
                   {service.description}
                 </p>
-
-                {/* 4. New "Open Tool" Link */}
-                <div className="font-bold text-amber-600 hover:text-rose-600 transition-colors duration-300 flex items-center group mt-4">
-                  Open Tool
-                  <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">
-                    &rarr;
-                  </span>
-                </div>
               </CardContent>
             </Card>
           </Link>
