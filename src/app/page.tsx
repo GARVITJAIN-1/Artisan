@@ -111,6 +111,21 @@ const Icon = ({ name }: { name: string }) => {
         />
       </svg>
     ),
+    todolist: (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          ),
     facebook: (
       <svg
         className="w-6 h-6"
@@ -289,6 +304,13 @@ const HomePage: NextPage = () => {
                 description={t("home.features.artisanConnect.description")}
                 link="/artconnect/stories"
                 linkText={t("home.features.artisanConnect.link")}
+              />
+              <FeatureCard
+                iconName="todolist"
+                title={t("home.features.todolist.title")}
+                description={t("home.features.todolist.description")}
+                link="/todo"
+                linkText={t("home.features.todolist.link")}
               />
             </div>
           </div>

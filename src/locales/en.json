@@ -189,6 +189,11 @@
             "title": "Artisan Connect",
             "description": "Tell your creative journey and let others discover the story behind your craft.",
             "link": "Share Your Story"
+          },
+          "todolist": {
+            "title": "Todo List",
+            "description": "Manage your orders and daily tasks with ease. Our smart to-do list helps you organize tasks.",
+            "link": "Make your list"
           }
         },
         "mission": {

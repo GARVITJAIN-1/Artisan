@@ -28,7 +28,7 @@ const formSchema = z.object({
 
 type TaskFormValues = z.infer<typeof formSchema>;
 
-const initialState: TaskFormState = { message: '' };
+const initialState: TaskFormState = { message: '', type: 'idle' };
 
 interface NewTaskFormProps {
   onTaskCreated: (task: Todo) => void;
