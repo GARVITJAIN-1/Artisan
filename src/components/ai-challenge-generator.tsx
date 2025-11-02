@@ -42,6 +42,7 @@ import { Calendar } from "./ui/calendar";
 import { cn, compressImage } from "@/lib/utils";
 import { format } from "date-fns";
 import { Label } from "@/components/ui/label";
+import { ScrollArea } from './ui/scroll-area';
 
 const formSchema = z.object({
   topic: z.string().min(2, "Theme must be at least 2 characters."),
@@ -171,7 +172,7 @@ export function AIChallengeGenerator() {
         title: "Challenge Posted!",
         description: "Your new challenge is live for the community.",
       });
-      router.push(`artconnect/challenges/${docRef.id}`);
+      router.push(`challenges/${docRef.id}`);
     } catch (error) {
       console.error("Failed to post challenge:", error);
       if (!(error instanceof FirestorePermissionError)) {
@@ -247,9 +248,11 @@ export function AIChallengeGenerator() {
             <h3 className="font-headline text-xl font-bold text-stone-900">
               {generatedChallenge.title}
             </h3>
+            <ScrollArea className="h-32 pr-4">
             <p className="whitespace-pre-wrap text-stone-700">
               {generatedChallenge.description}
             </p>
+            </ScrollArea>
 
             <div className="space-y-4">
               <div className="space-y-2">

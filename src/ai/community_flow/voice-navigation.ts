@@ -1,59 +1,83 @@
-
 'use server';
+
 /**
- * @fileOverview A voice navigation AI agent.
- *
- * - navigateWithVoice - A function that handles voice-based navigation.
+ * @fileOverview This file defines a Genkit flow for voice-based navigation. It transcribes an audio
+ * input, determines the desired page based on the user's request, and returns the corresponding path.
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
-import { googleAI } from '@genkit-ai/googleai';
+import { speechToText } from '@/ai/community_flow/speech-to-text';
+import { z } from 'genkit';
+
+// Defines all valid navigation paths and a description for the AI model.
+const PagePathsSchema = z.enum([
+  '/',
+  '/artconnect/stories',
+  '/artconnect/challenges',
+  '/artisan-assist/sourcing-pricing',
+  '/artisan-assist/events',
+  '/create',
+  '/inspiration-corner',
+  '/journal',
+  '/login',
+  '/postCreator',
+  '/schemes',
+  '/profile',
+  'unknown'
+]);
 
 export async function navigateWithVoice(audioDataUri: string): Promise<{ path: string }> {
-  return voiceNavigationFlow(audioDataUri);
+  const result = await voiceNavigationFlow(audioDataUri);
+  // Ensure the output is a plain object for the client.
+  return { path: result.path };
 }
 
 const voiceNavigationFlow = ai.defineFlow(
   {
     name: 'voiceNavigationFlow',
     inputSchema: z.string(),
-    outputSchema: z.object({ path: z.string().describe("The URL path to navigate to, e.g., '/journal'. Should be one of: '/', '/challenges', '/journal', '/profile', or 'unknown'.") }),
+    outputSchema: z.object({ path: PagePathsSchema }),
   },
   async (audioDataUri) => {
     
-    const { text } = await ai.generate({
-      model: googleAI.model('gemini-1.5-flash'),
-      prompt: [
-        { media: { url: audioDataUri } },
-        { text: 'Transcribe the spoken words in this audio file. Only return the transcribed text.' },
-      ],
+    const transcribedText = await speechToText(audioDataUri);
+
+    // If transcription fails or is empty, return 'unknown'.
+    if (!transcribedText) {
+      return { path: 'unknown' };
+    }
+
+    const { output } = await ai.generate({
+      model: 'googleai/gemini-2.5-flash',
+      prompt: `You are an intelligent website navigation assistant. Your task is to understand the user's request and map it to the most relevant page on the website.
+
+      Analyze the semantic meaning of the user's request: "${transcribedText}"
+      
+      Based on your analysis, choose the most appropriate page from the following list. Respond with ONLY the corresponding path.
+      
+      Available Pages:
+      - Path: '/' (For general requests like "go home", "main page")
+      - Path: '/artconnect/stories' (For requests about community stories, seeing what others have made, community posts)
+      - Path: '/artconnect/challenges' (For requests about competitions, creative contests, or artisan challenges)
+      - Path: '/artisan-assist/sourcing-pricing' (For requests about finding materials, sourcing supplies, or pricing products)
+      - Path: '/artisan-assist/events' (For requests about upcoming events, workshops, or exhibitions)
+      
+      - Path: '/inspiration-corner' (For requests about finding ideas, creative inspiration, or looking for new concepts)
+     
+      
+      - Path: '/postCreator' (For requests about creating social media posts, content marketing, or promotion)
+      - Path: '/schemes' (For requests about government support, financial aid, or official artisan schemes)
+      - Path: '/profile' (For requests about the user's own profile, account details, or personal settings)
+      - Path: 'unknown' (Use this if the user's request does not clearly match any of the pages)
+      `,
+      output: {
+          schema: z.object({ path: PagePathsSchema })
+      },
       config: {
-        temperature: 0.1, 
+          temperature: 0.1
       }
     });
 
-    const transcribedText = text.trim().toLowerCase();
-
-    const { output } = await ai.generate({
-        prompt: `You are a website navigation assistant. Based on the user's request, determine which page they want to go to. The available pages are Home, Challenges, Journal, and Profile. Respond with the corresponding URL path. For example, if the user says "Go to my journal", you should respond with "/journal". If you can't determine the page, respond with "unknown". User request: "${transcribedText}"`,
-        output: {
-            schema: z.object({ path: z.string() })
-        },
-        model: googleAI.model('gemini-1.5-flash'),
-        config: {
-            temperature: 0.1
-        }
-    });
-
-    if (output) {
-      const path = output.path.toLowerCase();
-      if (path.includes('journal')) return { path: '/journal' };
-      if (path.includes('challenge')) return { path: '/challenges' };
-      if (path.includes('profile')) return { path: '/profile' };
-      if (path.includes('home')) return { path: '/' };
-    }
-
-    return { path: 'unknown' };
+    return output ?? { path: 'unknown' };
   }
 );

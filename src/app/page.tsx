@@ -274,13 +274,7 @@ const HomePage: NextPage = () => {
                 link="/postCreator"
                 linkText="Start Designing"
               />
-              <FeatureCard
-                iconName="community"
-                title="Artisan Community"
-                description="Join groups, share knowledge, and collaborate with a vibrant community of fellow artisans."
-                link="/community"
-                linkText="Connect Now"
-              />
+              
               <FeatureCard
                 iconName="challenge"
                 title="Creative Challenges"
@@ -290,17 +284,17 @@ const HomePage: NextPage = () => {
               />
               <FeatureCard
                 iconName="communityPost"
-                title="Post to Community"
-                description="Share your latest work, ask questions, or start a discussion with fellow artisans."
+                title="Inspiration Corner"
+                description="Discover fresh ideas, explore related product inspirations, and spark your next creation with help from the artisan community."
                 link="/inspiration-corner"
-                linkText="Create a Post"
+                linkText="Explore Ideas "
               />
               <FeatureCard
                 iconName="journal"
-                title="Artisan's Journal"
-                description="Track your progress, document your creations, and tell your story."
+                title="Artisan Connect"
+                description="Tell your creative journey and let others discover the story behind your craft."
                 link="/artconnect/stories"
-                linkText="Open Journal"
+                linkText="Share Your Story"
               />
             </div>
           </div>

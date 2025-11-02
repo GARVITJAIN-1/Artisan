@@ -21,7 +21,6 @@ export type ChecklistItem = {
 
 export const initialChecklist: ChecklistItem[] = [
     { text: 'provideAadhaar', status: 'upcoming' },
-    { text: 'uploadLandRecords', status: 'upcoming' },
     { text: 'appAutofilled', status: 'upcoming' },
     { text: 'undergoingVerification', status: 'upcoming' },
     { text: 'awaitingInclusion', status: 'upcoming' },

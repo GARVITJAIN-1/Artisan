@@ -8,8 +8,8 @@
  * - GenerateImageSetsOutput - The return type for the generateImageSets function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 
 const GenerateImageSetsInputSchema = z.object({
   userImage: z
@@ -19,23 +19,31 @@ const GenerateImageSetsInputSchema = z.object({
     ),
   theme1: z.string().describe('The first design theme (e.g., Earthy & Rustic).'),
   theme2: z.string().describe('The second design theme (e.g., Clean & Modern).'),
-  optionalPrompt: z.string().optional().describe('Optional prompt for more details about the item.'),
+  optionalPrompt: z
+    .string()
+    .optional()
+    .describe('Optional prompt for more details about the item.'),
 });
 export type GenerateImageSetsInput = z.infer<typeof GenerateImageSetsInputSchema>;
 
 const GenerateImageSetsOutputSchema = z.object({
   imageSet1: z.array(z.string()).describe('URLs for the first set of 3 images.').length(3),
-  imageSet2: z.array(z.string()).describe('URLs for the second set of 3 images.').length(3),
+  imageSet2: z.array(z.string()).describe('URLs for the first set of 3 images.').length(3),
 });
-export type GenerateImageSetsOutput = z.infer<typeof GenerateImageSetsOutputSchema>;
+export type GenerateImageSetsOutput = z.infer<
+  typeof GenerateImageSetsOutputSchema
+>;
 
-export async function generateImageSets(input: GenerateImageSetsInput): Promise<GenerateImageSetsOutput> {
+export async function generateImageSets(
+  input: GenerateImageSetsInput
+): Promise<GenerateImageSetsOutput> {
   return generateImageSetsFlow(input);
 }
 
+// This prompt (for text) is perfect as-is.
 const generateImagePrompts = ai.definePrompt({
   name: 'generateImagePrompts',
-  input: {schema: GenerateImageSetsInputSchema},
+  input: { schema: GenerateImageSetsInputSchema },
   output: {
     schema: z.object({
       prompts1: z.array(z.string()).length(3),
@@ -65,12 +73,48 @@ Image 3: A prompt for a text-based graphic with a phrase relevant to the theme.
 Provide ONLY the JSON object in your response.`,
 });
 
-async function generateImagesFromPrompts(prompts: string[]): Promise<string[]> {
-  // Use a free image generation service.
-  return prompts.map(
-    (prompt) => `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}`
-  );
+// --- START OF CHANGES ---
+
+/**
+ * UPDATED: This function now uses Genkit's ai.generate() to call the
+ * image model you configured in genkit.config.ts.
+ */
+async function generateImagesFromPrompts(
+  prompts: string[]
+): Promise<string[]> {
+  // Run all 3 image generation requests in parallel
+  const imagePromises = prompts.map(async (prompt) => {
+    try {
+      // Step 2: Generate the image using the specified image model
+      const { media } = await ai.generate({
+        // The model name MUST match what you defined in genkit.config.ts
+        model: 'googleai/imagen-4.0-fast-generate-001',
+        prompt: prompt,
+        config: {
+          // Add specific config for the image model here
+          aspectRatio: '1:1',
+        },
+      });
+
+      // Genkit returns a media array. We need the first image's URL.
+      // The Vertex AI plugin will return a data URI string.
+      if (media ) {
+        return media.url;
+      } else {
+        throw new Error('No media returned from AI.');
+      }
+    } catch (error) {
+      console.error(`Failed to generate image for prompt: "${prompt}", error`);
+      // Return a placeholder so one error doesn't break the whole set
+      return 'https://via.placeholder.com/1080.png?text=Error';
+    }
+  });
+
+  // Wait for all 3 promises to resolve
+  return Promise.all(imagePromises);
 }
+
+// --- END OF CHANGES ---
 
 const generateImageSetsFlow = ai.defineFlow(
   {
@@ -79,16 +123,20 @@ const generateImageSetsFlow = ai.defineFlow(
     outputSchema: GenerateImageSetsOutputSchema,
   },
   async (input) => {
-    const {output: promptOutput} = await generateImagePrompts(input);
+    // Step 1: Call the AI text prompt to get the 6 prompt strings
+    const { output: promptOutput } = await generateImagePrompts(input);
     if (!promptOutput) {
       throw new Error('Failed to generate image prompts.');
     }
 
+    // Step 2: Call the new AI image generator function
+    // This will run 2 parallel batches (one for each theme),
+    // and each batch will run 3 parallel image requests.
     const [imageSet1, imageSet2] = await Promise.all([
       generateImagesFromPrompts(promptOutput.prompts1),
       generateImagesFromPrompts(promptOutput.prompts2),
     ]);
 
-    return {imageSet1, imageSet2};
+    return { imageSet1, imageSet2 };
   }
 );

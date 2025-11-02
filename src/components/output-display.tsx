@@ -90,7 +90,7 @@ export default function OutputDisplay({ data, onReset }: OutputDisplayProps) {
         const blob = await response.blob();
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `${currentDesignSet.theme.replace(/\s/g, "_")}_${
+        link.download = `${currentDesignSet.theme.replace(/\s/g, "")}${
           index + 1
         }.png`;
         document.body.appendChild(link);
@@ -109,22 +109,11 @@ export default function OutputDisplay({ data, onReset }: OutputDisplayProps) {
   };
 
   const handleShare = (platform: SocialPlatform) => {
-    const textToShare = `${currentText}\n\n${currentHashtags}`.trim();
+    const textToShare = `${currentText}\n\n${currentHashtags}.trim()`;
 
     if (platform === "instagram" || platform === "general") {
-      navigator.clipboard.writeText(textToShare);
-      const title =
-        platform === "instagram"
-          ? "Text copied for Instagram!"
-          : "Content copied!";
-      const description =
-        platform === "instagram"
-          ? "Paste this into your new post after saving your images."
-          : "Your content is ready to be shared.";
-      toast({
-        title: title,
-        description: description,
-      });
+      const shareUrl = "https://www.instagram.com/";
+      window.open(shareUrl, "_blank", "noopener,noreferrer");
       return;
     }
 
@@ -314,15 +303,7 @@ export default function OutputDisplay({ data, onReset }: OutputDisplayProps) {
               <Download className="mr-2" /> Save Design Set
             </Button>
           </div>
-          <div className="mt-4">
-            {/* ## Updated General Share Button ## */}
-            <Button
-              onClick={() => handleShare("general")}
-              className="font-headline w-full bg-gradient-to-r from-amber-500 to-rose-600 text-white hover:opacity-95 shadow-md hover:shadow-lg transition-all"
-            >
-              <Share2 className="mr-2" /> General Share (Copy Text)
-            </Button>
-          </div>
+          
         </CardContent>
       </Card>
 
