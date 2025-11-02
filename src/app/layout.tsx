@@ -26,6 +26,10 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Source+Code+Pro:wght@400;600&display=swap"
           rel="stylesheet"
         />
+        <script
+          type="module"
+          src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"
+        ></script>
       </head>
       <body className={"font-body antialiased"} suppressHydrationWarning>
         <LanguageProvider>

@@ -9,9 +9,11 @@ import { collection, query, orderBy, Timestamp } from "firebase/firestore";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMemo } from "react";
 import { GalleryVertical } from "lucide-react"; // Icon for empty state
+import { useLanguage } from "@/context/language-context";
 
 export default function ChallengesPage() {
   const firestore = useFirestore();
+  const { t } = useLanguage();
 
   const challengesQuery = useMemoFirebase(
     () =>
@@ -68,12 +70,12 @@ export default function ChallengesPage() {
   }, [allChallenges]);
 
   // Helper for a "beautiful empty state"
-  const EmptyState = ({ message }: { message: string }) => (
+  const EmptyState = ({ message, subMessage }: { message: string, subMessage: string }) => (
     <div className="flex flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed border-stone-300/80 p-12 text-center">
       <GalleryVertical className="h-12 w-12 text-stone-400" />
       <p className="font-medium text-stone-700">{message}</p>
       <p className="text-sm text-stone-500">
-        Check back soon or create your own!
+        {subMessage}
       </p>
     </div>
   );
@@ -84,11 +86,10 @@ export default function ChallengesPage() {
       <div className="text-center">
         {/* ## Updated Typography ## */}
         <h1 className="mb-4 font-headline text-4xl font-bold tracking-tight text-stone-900 md:text-5xl">
-          Creative Challenges
+          {t("challengesPage.title")}
         </h1>
         <p className="mx-auto mb-8 max-w-2xl text-lg text-stone-600">
-          Spark your imagination with our community challenges. Submit your
-          work, see what others have created, and grow as an artist.
+          {t("challengesPage.description")}
         </p>
         <AIChallengeGenerator />
       </div>
@@ -98,7 +99,7 @@ export default function ChallengesPage() {
 
       <div>
         <h2 className="mb-8 font-headline text-3xl font-bold text-stone-900">
-          Active Challenges
+          {t("challengesPage.activeTitle")}
         </h2>
         {isLoading && (
           <div className="grid gap-8 md:grid-cols-2">
@@ -114,7 +115,7 @@ export default function ChallengesPage() {
             ))}
           </div>
         ) : (
-          !isLoading && <EmptyState message="No active challenges right now." />
+          !isLoading && <EmptyState message={t("challengesPage.noActive")} subMessage={t("challengesPage.checkBack")} />
         )}
       </div>
 
@@ -122,7 +123,7 @@ export default function ChallengesPage() {
 
       <div>
         <h2 className="mb-8 font-headline text-3xl font-bold text-stone-900">
-          Past Challenges
+          {t("challengesPage.pastTitle")}
         </h2>
         {isLoading && (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -138,7 +139,7 @@ export default function ChallengesPage() {
             ))}
           </div>
         ) : (
-          !isLoading && <EmptyState message="No past challenges yet." />
+          !isLoading && <EmptyState message={t("challengesPage.noPast")} subMessage={t("challengesPage.checkBack")} />
         )}
       </div>
     </div>

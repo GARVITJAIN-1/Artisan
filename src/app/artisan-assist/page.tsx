@@ -1,22 +1,24 @@
 // artisan-assist/page.tsx
-
+"use client";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BadgeDollarSign, Lightbulb, Calendar } from "lucide-react";
 import React from "react";
+import { useLanguage } from "@/context/language-context";
 
 export default function ArtisanAssistPage() {
+  const { t } = useLanguage();
   const services = [
     {
-      title: "Sourcing & Pricing",
-      description: "Find materials, sell products, and get price suggestions.",
+      title: t("artisanAssistPage.sourcingPricing.title"),
+      description: t("artisanAssistPage.sourcingPricing.description"),
       href: "/artisan-assist/sourcing-pricing",
       // Icon color is now controlled by the gradient bubble
       icon: <BadgeDollarSign className="h-8 w-8" />,
     },
     {
-      title: "Events",
-      description: "Find local and national events to showcase your work.",
+      title: t("artisanAssistPage.events.title"),
+      description: t("artisanAssistPage.events.description"),
       href: "/artisan-assist/events",
       icon: <Calendar className="h-8 w-8" />,
     },
@@ -27,7 +29,7 @@ export default function ArtisanAssistPage() {
     <div className="flex flex-col flex-grow p-4 h-screen md:p-8 bg-gradient-to-b from-[#FBF9F6] to-amber-50 text-stone-800">
       {/* Updated title style */}
       <h1 className="text-5xl font-bold text-stone-900 mb-[8vh]">
-        Artisan Assistance
+        {t("artisanAssistPage.title")}
       </h1>
       <div className="gap-6 flex items-center">
         {services.map((service) => (
@@ -56,7 +58,7 @@ export default function ArtisanAssistPage() {
 
                 {/* 4. New "Open Tool" Link */}
                 <div className="font-bold text-amber-600 hover:text-rose-600 transition-colors duration-300 flex items-center group mt-4">
-                  Open Tool
+                  {t("artisanAssistPage.openTool")}
                   <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">
                     &rarr;
                   </span>
