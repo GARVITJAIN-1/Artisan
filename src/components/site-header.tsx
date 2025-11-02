@@ -19,7 +19,12 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 max-w-screen-2xl items-center justify-end">
+      <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
+      <Link href="/" className="text-3xl font-extrabold bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent tracking-wide drop-shadow-md">
+  ArtisanGully
+</Link>
+
+
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
           <VoiceNavigation />
