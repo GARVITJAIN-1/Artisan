@@ -1,53 +1,45 @@
 'use client';
 
-import { useMemo } from 'react';
-import type { Todo, TodoStatus } from '@/lib/definitions';
+import { useState, useEffect } from 'react';
+import type { Order, Todo, TodoStatus } from '@/lib/definitions';
 import NewOrderForm from './NewOrderForm';
 import TodoList from './ToDoList';
 import { useToast } from '@/hooks/use-toast';
-import { updateTodoStatus as updateStatusAction } from '@/lib/actions';
 import NewTaskForm from './NewTaskForm';
-import { useCollection, useFirebase, useMemoFirebase } from '@/firebase';
-import { collection, query, orderBy } from 'firebase/firestore';
 
 export default function Dashboard() {
   const { toast } = useToast();
-  const { firestore, user } = useFirebase();
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [isLoadingTodos, setIsLoadingTodos] = useState(true);
 
-  const todosQuery = useMemoFirebase(
-    () =>
-      firestore && user
-        ? query(collection(firestore, 'artisans', user.uid, 'todos'), orderBy('createdAt', 'desc'))
-        : null,
-    [firestore, user]
-  );
-  const { data: todos, isLoading: isLoadingTodos } = useCollection<Todo>(todosQuery);
-  
-  const handleNewOrder = () => {
-    // Data is now handled by useCollection, revalidation happens in the server action.
-    // This function can be used for client-side feedback if needed.
+  useEffect(() => {
+    const storedTodos = localStorage.getItem('todos');
+    if (storedTodos) {
+      setTodos(JSON.parse(storedTodos));
+    }
+    setIsLoadingTodos(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoadingTodos) {
+      localStorage.setItem('todos', JSON.stringify(todos));
+    }
+  }, [todos, isLoadingTodos]);
+
+  const handleNewOrder = (order: Order, newTodos: Todo[]) => {
+    setTodos((prevTodos) => [...newTodos, ...prevTodos]);
   };
 
-  const handleNewTodo = () => {
-    // Data is now handled by useCollection, revalidation happens in the server action.
+  const handleNewTodo = (newTodo: Todo) => {
+    setTodos((prevTodos) => [newTodo, ...prevTodos]);
   };
 
   const handleStatusChange = async (todoId: string, status: TodoStatus) => {
-    // Optimistic update could be implemented here if desired, but for now we rely on server action revalidation.
-    const result = await updateStatusAction(todoId, status);
-    
-    if (!result.success) {
-      toast({
-        variant: 'destructive',
-        title: 'Update Failed',
-        description: result.message,
-      });
-    } else {
-        toast({
-            title: 'Task Updated',
-            description: `Task marked as ${status}.`
-        })
-    }
+    setTodos(todos.map(todo => todo.id === todoId ? { ...todo, status } : todo));
+    toast({
+        title: 'Task Updated',
+        description: `Task marked as ${status}.`
+    });
   };
 
   return (
