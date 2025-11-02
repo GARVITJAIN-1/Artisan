@@ -7,6 +7,7 @@ import { SessionProvider } from "@/context/session-context";
 import { ProtectedLayout } from "@/components/protected-layout";
 import { FirebaseClientProvider } from "@/firebase/client-provider";
 import "./globals.css";
+import { Chatbot } from "@/components/chatbot";
 
 export default function RootLayout({
   children,
@@ -37,6 +38,7 @@ export default function RootLayout({
             <FirebaseClientProvider>
               <SessionProvider>
                 <ProtectedLayout>{children}</ProtectedLayout>
+                <Chatbot /> 
               </SessionProvider>
             </FirebaseClientProvider>
             <Toaster />
