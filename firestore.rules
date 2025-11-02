@@ -1,55 +1,73 @@
-
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper function to check if a user is an authenticated artisan
     function isArtisan(userId) {
       return request.auth != null && request.auth.uid == userId;
     }
 
-    // Rules for the 'stories' collection
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Artisans collection
+    match /artisans/{artisanId} {
+      // An artisan can read, update, or delete their own profile.
+      allow read, update, delete: if isOwner(artisanId);
+      // A newly signed-in user can create their own profile document.
+      allow create: if request.auth.uid == artisanId;
+      // No one can list all artisans for privacy reasons.
+      allow list: if false;
+    }
+
+    // Orders subcollection
+    match /artisans/{artisanId}/orders/{orderId} {
+      // The owner artisan can perform any operation on their own orders.
+      allow read, write: if isOwner(artisanId);
+    }
+    
+    // Todos subcollection
+    match /artisans/{artisanId}/todos/{todoId} {
+        // The owner artisan can perform any operation on their own todos.
+        allow read, write: if isOwner(artisanId);
+    }
+ 
+    // Stories
     match /stories/{storyId} {
-      // Anyone can read a story
       allow read: if true;
-
-      // Only authenticated artisans can create stories
       allow create: if request.auth != null;
-
-      // Only the author of the story can update or delete it
       allow update, delete: if isArtisan(resource.data.authorId);
 
-      // Rules for comments on a story
       match /comments/{commentId} {
         allow read: if true;
         allow create: if request.auth != null;
         allow update, delete: if isArtisan(resource.data.authorId);
       }
 
-      // Rules for reactions to a story
       match /reactions/{reactionId} {
         allow read: if true;
         allow create, update, delete: if request.auth != null;
       }
     }
 
-    // Rules for the 'creativeChallenges' collection
+    // Creative Challenges
     match /creativeChallenges/{challengeId} {
       allow read: if true;
-      allow create: if request.auth != null; // Or a more specific admin/moderator role
-      allow update, delete: if request.auth != null; // Or a more specific admin/moderator role
+      allow create, update, delete: if request.auth != null;
 
-      // Rules for submissions to a challenge
       match /submissions/{submissionId} {
         allow read: if true;
         allow create: if request.auth != null;
         allow update, delete: if isArtisan(resource.data.authorId);
 
-        // Rules for votes on a submission
         match /votes/{voteId} {
           allow read: if true;
-          // Users can only manage their own vote
           allow create, update, delete: if isArtisan(voteId);
         }
       }
