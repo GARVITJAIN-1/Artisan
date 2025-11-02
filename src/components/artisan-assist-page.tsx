@@ -87,7 +87,7 @@ export default function ArtisanAssistPage() {
       <header className="text-center mb-8 md:mb-12">
         {/* ## Updated Header Colors ## */}
         <h1 className="font-headline text-4xl md:text-6xl font-bold text-amber-700">
-          Artisan Assist
+          Marketing Studio
         </h1>
         <p className="font-body text-stone-600 text-lg md:text-xl mt-2">
           Create beautiful social media posts in seconds

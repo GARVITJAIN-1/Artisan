@@ -29,6 +29,7 @@ import {
   Lightbulb,
   TrendingUp,
   GitCompareArrows,
+  Leaf,
 } from "lucide-react";
 import { useAppState } from "@/context/app-state-context";
 import { userData } from "@/lib/schema";
@@ -121,6 +122,7 @@ export default function Dashboard() {
       {/* --- Scheme Selection Card --- */}
       <Card className="bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg transition-all duration-300 hover:border-amber-300/80">
         <CardHeader>
+        
           <CardTitle className="font-headline text-3xl text-stone-900">
             {t("schemeSelection")}
           </CardTitle>
@@ -191,7 +193,12 @@ export default function Dashboard() {
           {stage < 2 && !isFormSubmitted && (
             // ## Updated CTA Card Style ##
             <Card className="bg-gradient-to-br from-amber-100 to-rose-200 text-center border border-amber-200/80 shadow-lg">
+              {/* <Leaf className="h-6 w-6 text-amber-700" /> */}
+              
               <CardHeader>
+              <h1 className="font-headline text-3xl font-bold text-amber-700">
+                {t("title")}
+              </h1>
                 <CardTitle className="font-headline text-2xl flex items-center justify-center gap-2 text-stone-900">
                   {t("readyToStart")}
                 </CardTitle>
