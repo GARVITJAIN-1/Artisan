@@ -36,7 +36,9 @@ import {
   MapPin,
   Search,
   BadgeDollarSign,
-  Store, // Using Store icon for empty state
+  Store,
+  BadgeIndianRupee,
+  BadgeIndianRupeeIcon, // Using Store icon for empty state
 } from "lucide-react";
 import { getPriceSuggestionAction, findPlacesAction } from "@/lib/actions";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -302,15 +304,15 @@ export default function SourcingPricingPage() {
             <Card className="bg-amber-50/70 border border-amber-200 shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-amber-700">
-                  <BadgeDollarSign /> {t("sourcingPricingPage.suggestedSellingPrice")}
+                  {t("sourcingPricingPage.suggestedSellingPrice")}
                 </CardTitle>
                 <CardDescription className="text-amber-900/80">
                   {priceSuggestion.justification}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold text-amber-800">
-                  {priceSuggestion.priceRange}
+                <p className="text-2xl font-bold text-amber-800 flex item-center">
+                {<BadgeIndianRupee/>} {priceSuggestion.priceRange}
                 </p>
               </CardContent>
             </Card>

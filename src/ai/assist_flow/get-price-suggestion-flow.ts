@@ -35,10 +35,10 @@ const prompt = ai.definePrompt({
 Your task is to research the market and suggest a realistic selling price range for a given product.
 
 Product: {{{product}}}
-Currency: {{{currency}}}
+Currency: Indian Rupees
 
 Based on your research of similar products online, provide:
-1.  A suggested price range in the specified currency. The format should be like "MIN - MAX" (e.g., "$25 - $40").
+1.  A suggested price range in the Indian rupess(₹) currency. The format should be like "MIN - MAX" (e.g., "25 - 40") and give just text without any currency sign with that.
 2.  A one-sentence justification explaining the price range, considering factors like materials, craftsmanship, and market demand.
 `,
 });
