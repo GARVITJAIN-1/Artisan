@@ -33,7 +33,7 @@ const prompt = ai.definePrompt({
   input: {schema: SummarizeTaskQuantitiesInputSchema},
   output: {schema: SummarizeTaskQuantitiesOutputSchema},
   config: {
-    model: 'gemini-1.5-flash-latest',
+    model: 'gemini-2.5-flash',
   },
   prompt: `You are an assistant to an artisan. Your job is to summarize the total quantities of each item type required based on the provided to-do items.\n\nTo-Do Items:\n{{#each this}}\n- {{taskDescription}} (Quantity: {{quantity}})\n{{/each}}\n\nProvide a concise summary of the total quantities for each item type.  For example, if there were two todo items, one for "make 3 chairs" and one for "make 4 chairs", the summary would be "Total chairs needed: 7".  If there were also a todo item for "make 5 tables", the summary would be "Total chairs needed: 7, Total tables needed: 5".`,
 });
