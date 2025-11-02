@@ -55,7 +55,8 @@
         const formatResponse = (text: string) => {
           const boldedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
           const withLineBreaks = boldedText.replace(/\n/g, '<br />');
-          return withLineBreaks;
+          const withLinks = withLineBreaks.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">$1</a>');
+          return withLinks;
         };
       
         return (
@@ -65,7 +66,7 @@
                 <BotIcon className="h-6 w-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="sm:max-w-lg">
               <SheetHeader>
                 <SheetTitle>Artisan Assistant</SheetTitle>
               </SheetHeader>
