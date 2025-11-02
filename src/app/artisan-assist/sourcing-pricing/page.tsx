@@ -41,11 +41,13 @@ import {
 import { getPriceSuggestionAction, findPlacesAction } from "@/lib/actions";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator"; // Import Separator
+import { useLanguage } from "@/context/language-context";
 
 const defaultProductToSell = "handmade ceramic mugs";
 const defaultMaterialToBuy = "pottery clay";
 
 export default function SourcingPricingPage() {
+  const { t } = useLanguage();
   const { toast } = useToast();
 
   const [isFindingPlaces, startFindingPlaces] = useTransition();
@@ -82,8 +84,8 @@ export default function SourcingPricingPage() {
     if (!query) {
       toast({
         variant: "destructive",
-        title: "Input missing",
-        description: "Please specify what you want to sell or buy.",
+        title: t("sourcingPricingPage.errorInputMissing"),
+        description: t("sourcingPricingPage.errorInputMissingDesc"),
       });
       return;
     }
@@ -104,7 +106,7 @@ export default function SourcingPricingPage() {
           if (priceResult.error) {
             toast({
               variant: "destructive",
-              title: "Pricing Error",
+              title: t("sourcingPricingPage.errorPricing"),
               description: priceResult.error,
             });
           } else if (priceResult.suggestion) {
@@ -118,7 +120,7 @@ export default function SourcingPricingPage() {
       if (placesResult.error) {
         toast({
           variant: "destructive",
-          title: "Error finding places",
+          title: t("sourcingPricingPage.errorFindingPlaces"),
           description: placesResult.error,
         });
       } else if (placesResult.places) {
@@ -136,14 +138,14 @@ export default function SourcingPricingPage() {
             <>
               <Loader2 className="h-10 w-10 animate-spin text-amber-600" />
               <p className="font-medium text-stone-600">
-                Searching for relevant places in {city}...
+                {t("sourcingPricingPage.searchingPlaces", { city })}
               </p>
             </>
           ) : (
             <>
               <Store className="h-12 w-12" />
-              <p className="font-medium">No relevant places found.</p>
-              <p className="text-sm">Try a different search or city.</p>
+              <p className="font-medium">{t("sourcingPricingPage.noPlacesFound")}</p>
+              <p className="text-sm">{t("sourcingPricingPage.tryDifferentSearch")}</p>
             </>
           )}
         </div>
@@ -158,11 +160,10 @@ export default function SourcingPricingPage() {
       <Card className="flex-grow flex flex-col bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg transition-all duration-300 hover:border-amber-300/80">
         <CardHeader>
           <CardTitle className="text-stone-900">
-            Find Shops & Get Price Insights
+            {t("sourcingPricingPage.title")}
           </CardTitle>
           <CardDescription className="text-stone-600">
-            Select whether you want to find places to sell your products or buy
-            raw materials.
+            {t("sourcingPricingPage.description")}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-6 flex-grow">
@@ -171,7 +172,7 @@ export default function SourcingPricingPage() {
             {/* Group 1: Mode & City */}
             <div className="flex flex-wrap items-center gap-4">
               <div className="grid gap-1.5">
-                <Label className="text-stone-700">I want to...</Label>
+                <Label className="text-stone-700">{t("sourcingPricingPage.iWantTo")}</Label>
                 <RadioGroup
                   defaultValue="sell"
                   value={sourcingMode}
@@ -187,7 +188,7 @@ export default function SourcingPricingPage() {
                       className="text-amber-600 focus:ring-amber-500"
                     />
                     <Label htmlFor="r1" className="text-stone-700 font-normal">
-                      Sell Products
+                      {t("sourcingPricingPage.sellProducts")}
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -197,14 +198,14 @@ export default function SourcingPricingPage() {
                       className="text-amber-600 focus:ring-amber-500"
                     />
                     <Label htmlFor="r2" className="text-stone-700 font-normal">
-                      Buy Materials
+                      {t("sourcingPricingPage.buyMaterials")}
                     </Label>
                   </div>
                 </RadioGroup>
               </div>
               <div className="grid w-full max-w-xs items-center gap-1.5">
                 <Label htmlFor="city" className="text-stone-700">
-                  In City
+                  {t("sourcingPricingPage.inCity")}
                 </Label>
                 <Input
                   id="city"
@@ -222,7 +223,7 @@ export default function SourcingPricingPage() {
                 <>
                   <div className="grid w-full flex-1 min-w-[250px] items-center gap-1.5">
                     <Label htmlFor="product-to-sell" className="text-stone-700">
-                      Product to Sell
+                      {t("sourcingPricingPage.productToSell")}
                     </Label>
                     <Input
                       id="product-to-sell"
@@ -234,7 +235,7 @@ export default function SourcingPricingPage() {
                   </div>
                   <div className="grid items-center gap-1.5">
                     <Label htmlFor="currency" className="text-stone-700">
-                      Currency
+                      {t("sourcingPricingPage.currency")}
                     </Label>
                     <Select value={currency} onValueChange={setCurrency}>
                       <SelectTrigger
@@ -256,7 +257,7 @@ export default function SourcingPricingPage() {
               ) : (
                 <div className="grid w-full flex-1 min-w-[250px] items-center gap-1.5">
                   <Label htmlFor="material-to-buy" className="text-stone-700">
-                    Raw Material to Buy
+                    {t("sourcingPricingPage.rawMaterialToBuy")}
                   </Label>
                   <Input
                     id="material-to-buy"
@@ -281,7 +282,7 @@ export default function SourcingPricingPage() {
                 ) : (
                   <Search className="mr-2 h-4 w-4" />
                 )}
-                Find
+                {t("sourcingPricingPage.find")}
               </Button>
             </div>
           </div>
@@ -292,7 +293,7 @@ export default function SourcingPricingPage() {
           {isSuggestingPrice && sourcingMode === "sell" && (
             <div className="flex items-center text-stone-500 p-2">
               <Loader2 className="mr-2 h-5 w-5 animate-spin text-amber-600" />
-              <span>Analyzing market prices for your product...</span>
+              <span>{t("sourcingPricingPage.analyzingMarketPrices")}</span>
             </div>
           )}
 
@@ -301,7 +302,7 @@ export default function SourcingPricingPage() {
             <Card className="bg-amber-50/70 border border-amber-200 shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-amber-700">
-                  <BadgeDollarSign /> Suggested Selling Price
+                  <BadgeDollarSign /> {t("sourcingPricingPage.suggestedSellingPrice")}
                 </CardTitle>
                 <CardDescription className="text-amber-900/80">
                   {priceSuggestion.justification}
@@ -321,13 +322,13 @@ export default function SourcingPricingPage() {
               <TableHeader className="bg-stone-50/50 sticky top-0 backdrop-blur-sm">
                 <TableRow>
                   <TableHead className="text-stone-700 font-semibold">
-                    Name
+                    {t("sourcingPricingPage.name")}
                   </TableHead>
                   <TableHead className="text-stone-700 font-semibold">
-                    Address
+                    {t("sourcingPricingPage.address")}
                   </TableHead>
                   <TableHead className="text-right text-stone-700 font-semibold">
-                    View on Map
+                    {t("sourcingPricingPage.viewOnMap")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -364,7 +365,7 @@ export default function SourcingPricingPage() {
                             rel="noopener noreferrer"
                           >
                             <MapPin className="mr-2 h-4 w-4" />
-                            Map
+                            {t("sourcingPricingPage.map")}
                           </a>
                         </Button>
                       </TableCell>

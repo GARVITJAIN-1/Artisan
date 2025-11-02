@@ -1,8 +1,9 @@
+"use client";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useLanguage } from "@/context/language-context";
 
 // Helper component for SVG icons to keep the main code clean.
-// I've updated the colors to match the new, warmer palette.
 const Icon = ({ name }: { name: string }) => {
   const icons: { [key: string]: JSX.Element } = {
     scheme: (
@@ -175,15 +176,14 @@ const FeatureCard = ({ iconName, title, description, link, linkText }: any) => (
 );
 
 const HomePage: NextPage = () => {
+  const { t } = useLanguage();
+
   return (
     // NEW: Using a soft, warm background color for an earthy, artisanal feel.
     <div className="bg-[#FBF9F6] text-stone-800 font-sans">
       <Head>
-        <title>Artisan Gully - Empowering Local Artisans</title>
-        <meta
-          name="description"
-          content="Discover opportunities, connect with communities, and grow with the right tools."
-        />
+        <title>{t("home.title")}</title>
+        <meta name="description" content={t("home.metaDescription")} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -201,15 +201,10 @@ const HomePage: NextPage = () => {
           <div className="relative z-10 text-center text-white p-6 max-w-4xl mx-auto">
             {/* NEW: Enhanced typography with a gradient on the accent text for a unique, eye-catching effect. */}
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight mb-4 drop-shadow-lg tracking-tight">
-              Empowering Local Artisans,{" "}
-              <span className="bg-gradient-to-r from-amber-400 to-rose-500 bg-clip-text text-transparent">
-                One Creation
-              </span>{" "}
-              at a Time.
+              {t("home.hero.title")}
             </h1>
             <p className="text-lg md:text-xl text-stone-200 max-w-2xl mx-auto mb-10 drop-shadow-md">
-              Discover opportunities, connect with communities, and grow with
-              the right tools.
+              {t("home.hero.subtitle")}
             </p>
             {/* NEW: Updated the button with a gradient and more engaging hover animation. */}
             <a
@@ -217,7 +212,7 @@ const HomePage: NextPage = () => {
               className="inline-flex items-center justify-center bg-gradient-to-r from-amber-500 to-rose-600 text-white font-bold py-4 px-10 rounded-full text-lg 
                          hover:shadow-xl hover:scale-105 transition-all duration-300 shadow-lg group"
             >
-              Explore Your Tools
+              {t("home.hero.cta")}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -244,57 +239,56 @@ const HomePage: NextPage = () => {
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-stone-900 tracking-tight">
-                Your Artisan Toolkit
+                {t("home.features.title")}
               </h2>
               <p className="text-stone-600 mt-3 text-lg max-w-2xl mx-auto">
-                Everything you need to thrive, from securing grants to
-                showcasing your craft with style.
+                {t("home.features.subtitle")}
               </p>
             </div>
             {/* NEW: Replaced the repeated divs with a reusable FeatureCard component for cleaner code. */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <FeatureCard
                 iconName="insights"
-                title="Market Insights"
-                description="Get AI-powered insights on trending products, pricing strategies, and customer demands."
+                title={t("home.features.marketInsights.title")}
+                description={t("home.features.marketInsights.description")}
                 link="/artisan-assist"
-                linkText="Discover Trends"
+                linkText={t("home.features.marketInsights.link")}
               />
               <FeatureCard
                 iconName="scheme"
-                title="Government Schemes"
-                description="Easily find and apply for grants and schemes that support your craft and help you grow."
+                title={t("home.features.governmentSchemes.title")}
+                description={t("home.features.governmentSchemes.description")}
                 link="/schemes"
-                linkText="Learn More"
+                linkText={t("home.features.governmentSchemes.link")}
               />
               <FeatureCard
                 iconName="social"
-                title="Create Social Posts"
-                description="Design beautiful, eye-catching posts for your social media with our simple yet powerful tool."
+                title={t("home.features.createSocialPosts.title")}
+                description={t("home.features.createSocialPosts.description")}
                 link="/postCreator"
-                linkText="Start Designing"
+                linkText={t("home.features.createSocialPosts.link")}
               />
-              
+
               <FeatureCard
                 iconName="challenge"
-                title="Creative Challenges"
-                description="Participate in themed challenges to spark creativity, gain exposure, and win rewards."
+                title={t("home.features.creativeChallenges.title")}
+                description={t("home.features.creativeChallenges.description")}
                 link="/artconnect/challenges"
-                linkText="View Challenges"
+                linkText={t("home.features.creativeChallenges.link")}
               />
               <FeatureCard
                 iconName="communityPost"
-                title="Inspiration Corner"
-                description="Discover fresh ideas, explore related product inspirations, and spark your next creation with help from the artisan community."
+                title={t("home.features.inspirationCorner.title")}
+                description={t("home.features.inspirationCorner.description")}
                 link="/inspiration-corner"
-                linkText="Explore Ideas "
+                linkText={t("home.features.inspirationCorner.link")}
               />
               <FeatureCard
                 iconName="journal"
-                title="Artisan Connect"
-                description="Tell your creative journey and let others discover the story behind your craft."
+                title={t("home.features.artisanConnect.title")}
+                description={t("home.features.artisanConnect.description")}
                 link="/artconnect/stories"
-                linkText="Share Your Story"
+                linkText={t("home.features.artisanConnect.link")}
               />
             </div>
           </div>
@@ -304,14 +298,10 @@ const HomePage: NextPage = () => {
         <section className="py-24 bg-rose-50">
           <div className="container mx-auto px-6 text-center max-w-3xl">
             <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-4 tracking-tight">
-              Our Mission
+              {t("home.mission.title")}
             </h2>
             <p className="text-xl text-stone-700 leading-relaxed">
-              Artisan Gully is dedicated to bridging the gap between local
-              artisans and the digital world. We believe in preserving
-              traditional crafts by providing modern tools and a supportive
-              community, ensuring that every artisan has the opportunity to
-              shine and sustain their livelihood.
+              {t("home.mission.text")}
             </p>
           </div>
         </section>
@@ -323,19 +313,21 @@ const HomePage: NextPage = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="text-center md:text-left">
               <p>
-                &copy; {new Date().getFullYear()} Artisan Gully. All rights
-                reserved.
+                {t("home.footer.copyright").replace(
+                  "{year}",
+                  new Date().getFullYear().toString()
+                )}
               </p>
             </div>
             <div className="flex space-x-6">
               <a href="#" className="hover:text-amber-400 transition-colors">
-                Privacy Policy
+                {t("home.footer.privacy")}
               </a>
               <a href="#" className="hover:text-amber-400 transition-colors">
-                Terms of Service
+                {t("home.footer.terms")}
               </a>
               <a href="#" className="hover:text-amber-400 transition-colors">
-                Contact
+                {t("home.footer.contact")}
               </a>
             </div>
             <div className="flex space-x-6">

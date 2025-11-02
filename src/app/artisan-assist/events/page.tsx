@@ -26,8 +26,10 @@ import {
 import { Loader2, Search } from "lucide-react";
 import { findEventsAction } from "@/lib/actions";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useLanguage } from "@/context/language-context";
 
 export default function EventsPage() {
+  const { t } = useLanguage();
   const { toast } = useToast();
 
   const [isFindingEvents, startFindingEvents] = useTransition();
@@ -47,7 +49,7 @@ export default function EventsPage() {
       if (result.error) {
         toast({
           variant: "destructive",
-          title: "Error",
+          title: t("eventsPage.error"),
           description: result.error,
         });
       } else if (result.events) {
@@ -63,7 +65,7 @@ export default function EventsPage() {
       if (result.error) {
         toast({
           variant: "destructive",
-          title: "Error",
+          title: t("eventsPage.error"),
           description: result.error,
         });
       } else if (result.events) {
@@ -81,9 +83,9 @@ export default function EventsPage() {
       {/* Updated Card style to be semi-transparent */}
       <Card className="flex flex-col bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg">
         <CardHeader>
-          <CardTitle className="text-stone-900">Find Local Events</CardTitle>
+          <CardTitle className="text-stone-900">{t("eventsPage.findLocalEvents")}</CardTitle>
           <CardDescription className="text-stone-600">
-            Discover upcoming events in your specific state or region.
+            {t("eventsPage.findLocalEventsDesc")}
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col flex-grow">
@@ -91,7 +93,7 @@ export default function EventsPage() {
           <div className="flex flex-wrap items-end gap-2 mb-4">
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="local-event-state" className="text-stone-700">
-                State / Region
+                {t("eventsPage.stateRegion")}
               </Label>
               {/* Updated Input style */}
               <Input
@@ -104,7 +106,7 @@ export default function EventsPage() {
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="local-event-country" className="text-stone-700">
-                Country
+                {t("eventsPage.country")}
               </Label>
               {/* Updated Input style */}
               <Input
@@ -126,18 +128,18 @@ export default function EventsPage() {
               ) : (
                 <Search className="mr-2 h-4 w-4" />
               )}
-              Find Local Events
+              {t("eventsPage.findLocalEventsButton")}
             </Button>
           </div>
           <ScrollArea className="flex-grow">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="text-stone-700">Event</TableHead>
-                  <TableHead className="text-stone-700">Date</TableHead>
-                  <TableHead className="text-stone-700">Location</TableHead>
+                  <TableHead className="text-stone-700">{t("eventsPage.event")}</TableHead>
+                  <TableHead className="text-stone-700">{t("eventsPage.date")}</TableHead>
+                  <TableHead className="text-stone-700">{t("eventsPage.location")}</TableHead>
                   <TableHead className="text-right text-stone-700">
-                    Link
+                    {t("eventsPage.link")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -174,7 +176,7 @@ export default function EventsPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            Register
+                            {t("eventsPage.register")}
                           </a>
                         </Button>
                       </TableCell>
@@ -186,7 +188,7 @@ export default function EventsPage() {
                       colSpan={4}
                       className="text-center h-24 text-stone-500"
                     >
-                      No upcoming local events found.
+                      {t("eventsPage.noLocalEvents")}
                     </TableCell>
                   </TableRow>
                 )}
@@ -199,16 +201,16 @@ export default function EventsPage() {
       {/* ## Card 2: National Events ## */}
       <Card className="flex flex-col bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg">
         <CardHeader>
-          <CardTitle className="text-stone-900">Find National Events</CardTitle>
+          <CardTitle className="text-stone-900">{t("eventsPage.findNationalEvents")}</CardTitle>
           <CardDescription className="text-stone-600">
-            Discover events across the entire country to showcase your work.
+            {t("eventsPage.findNationalEventsDesc")}
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col flex-grow">
           <div className="flex flex-wrap items-end gap-2 mb-4">
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="event-country" className="text-stone-700">
-                Country
+                {t("eventsPage.country")}
               </Label>
               <Input
                 id="event-country"
@@ -228,18 +230,18 @@ export default function EventsPage() {
               ) : (
                 <Search className="mr-2 h-4 w-4" />
               )}
-              Find National Events
+              {t("eventsPage.findNationalEventsButton")}
             </Button>
           </div>
           <ScrollArea className="flex-grow">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="text-stone-700">Event</TableHead>
-                  <TableHead className="text-stone-700">Date</TableHead>
-                  <TableHead className="text-stone-700">Location</TableHead>
+                  <TableHead className="text-stone-700">{t("eventsPage.event")}</TableHead>
+                  <TableHead className="text-stone-700">{t("eventsPage.date")}</TableHead>
+                  <TableHead className="text-stone-700">{t("eventsPage.location")}</TableHead>
                   <TableHead className="text-right text-stone-700">
-                    Link
+                    {t("eventsPage.link")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -274,7 +276,7 @@ export default function EventsPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            Register
+                            {t("eventsPage.register")}
                           </a>
                         </Button>
                       </TableCell>
@@ -286,8 +288,7 @@ export default function EventsPage() {
                       colSpan={4}
                       className="text-center h-24 text-stone-500"
                     >
-                      No upcoming national events found. Try a different
-                      country.
+                      {t("eventsPage.noNationalEvents")}
                     </TableCell>
                   </TableRow>
                 )}

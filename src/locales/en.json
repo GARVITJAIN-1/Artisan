@@ -1,4 +1,3 @@
-
 {
     "title": "Artisan Saathi",
     "userDashboard": "User Dashboard",
@@ -148,5 +147,173 @@
     "selectScheme2": "Select Second Scheme",
     "feature": "Feature",
     "description": "Description",
-    "benefits": "Benefits"
+    "benefits": "Benefits",
+
+    "home": {
+        "title": "Artisan Gully - Empowering Local Artisans",
+        "metaDescription": "Discover opportunities, connect with communities, and grow with the right tools.",
+        "hero": {
+          "title": "Empowering Local Artisans, One Creation at a Time.",
+          "subtitle": "Discover opportunities, connect with communities, and grow with the right tools.",
+          "cta": "Explore Your Tools"
+        },
+        "features": {
+          "title": "Your Artisan Toolkit",
+          "subtitle": "Everything you need to thrive, from securing grants to showcasing your craft with style.",
+          "marketInsights": {
+            "title": "Market Insights",
+            "description": "Get AI-powered insights on trending products, pricing strategies, and customer demands.",
+            "link": "Discover Trends"
+          },
+          "governmentSchemes": {
+            "title": "Government Schemes",
+            "description": "Easily find and apply for grants and schemes that support your craft and help you grow.",
+            "link": "Learn More"
+          },
+          "createSocialPosts": {
+            "title": "Marketing Studio",
+            "description": "Design beautiful, eye-catching posts for your social media with our simple yet powerful tool.",
+            "link": "Start Designing"
+          },
+          "creativeChallenges": {
+            "title": "Creative Challenges",
+            "description": "Participate in themed challenges to spark creativity, gain exposure, and win rewards.",
+            "link": "View Challenges"
+          },
+          "inspirationCorner": {
+            "title": "Inspiration Corner",
+            "description": "Discover fresh ideas, explore related product inspirations, and spark your next creation with help from the artisan community.",
+            "link": "Explore Ideas"
+          },
+          "artisanConnect": {
+            "title": "Artisan Connect",
+            "description": "Tell your creative journey and let others discover the story behind your craft.",
+            "link": "Share Your Story"
+          }
+        },
+        "mission": {
+          "title": "Our Mission",
+          "text": "Artisan Gully is dedicated to bridging the gap between local artisans and the digital world. We believe in preserving traditional crafts by providing modern tools and a supportive community, ensuring that every artisan has the opportunity to shine and sustain their livelihood."
+        },
+        "footer": {
+          "copyright": "© {year} Artisan Gully. All rights reserved.",
+          "privacy": "Privacy Policy",
+          "terms": "Terms of Service",
+          "contact": "Contact"
+        }
+    },
+    "arCreator": {
+        "title": "AR and VR Model Viewer",
+        "description": "Upload an image to generate a 3D model and view it in Augmented or Virtual Reality."
+    },
+    "challengesPage": {
+        "title": "Creative Challenges",
+        "description": "Spark your imagination with our community challenges. Submit your work, see what others have created, and grow as an artist.",
+        "activeTitle": "Active Challenges",
+        "noActive": "No active challenges right now.",
+        "checkBack": "Check back soon or create your own!",
+        "pastTitle": "Past Challenges",
+        "noPast": "No past challenges yet."
+    },
+    "storiesPage": {
+        "title": "Artisan Stories",
+        "writeStory": "Write a Story",
+        "loginToPost": "Log in to Write",
+        "shareYourStory": "Share Your Story",
+        "shareYourStoryDesc": "What have you been creating? Share your process, inspiration, or latest work.",
+        "titleLabel": "Title",
+        "titlePlaceholder": "e.g., 'The Art of Imperfection'",
+        "storyLabel": "Your Story",
+        "storyPlaceholder": "Tell us about your work, your inspiration, or a recent breakthrough...",
+        "uploadImage": "Upload Image",
+        "generateImage": "Generate Image",
+        "generatingImage": "Generating...",
+        "publishStory": "Publish Story",
+        "publishingStory": "Publishing your story...",
+        "storyPublished": "Story Published!",
+        "storyPublishedDesc": "Your story is now live for the community to see.",
+        "errorShortStory": "Story is too short",
+        "errorShortStoryDesc": "Please write at least 20 characters to generate an image.",
+        "errorImageGeneration": "Image Generation Failed",
+        "errorImageGenerationDesc": "Could not generate an image for the story. Please try again.",
+        "errorPublishing": "Publishing Failed",
+        "errorPublishingDesc": "Could not publish the story. Please try again."
+    },
+    "inspirationCornerPage": {
+        "productIdeas": "Product Ideas",
+        "productIdeasDesc": "Enter your product name to get AI-powered enhancement ideas with real images.",
+        "productNameLabel": "Product Name / Type",
+        "productNamePlaceholder": "e.g., Handmade Ceramic Mugs",
+        "getIdeas": "Get Ideas",
+        "enhancementIdeasFor": "Enhancement ideas for \"{productName}\":",
+        "noImageFound": "No image found",
+        "google": "Google",
+        "youtube": "YouTube",
+        "arVisualization": "AR Visualization",
+        "arVisualizationDesc": "Visualize your creations in augmented reality.",
+        "launchArViewer": "Launch AR Viewer",
+        "trendingArtisanProducts": "Trending Artisan Products",
+        "trendingArtisanProductsDesc": "Discover what's currently popular in the handmade and artisan market.",
+        "refreshTrends": "Click refresh to fetch trending products.",
+        "errorInputMissing": "Input Missing",
+        "errorInputMissingDesc": "Please provide a product name.",
+        "errorFetchingTrends": "Error fetching trends",
+        "errorFeatureNotAvailable": "Feature Not Available",
+        "errorFeatureNotAvailableDesc": "AR not supported here."
+    },
+    "artisanAssistPage": {
+        "title": "Artisan Assistance",
+        "openTool": "Open Tool",
+        "sourcingPricing": {
+            "title": "Sourcing & Pricing",
+            "description": "Find materials, sell products, and get price suggestions."
+        },
+        "events": {
+            "title": "Events",
+            "description": "Find local and national events to showcase your work."
+        }
+    },
+    "sourcingPricingPage": {
+        "title": "Find Shops & Get Price Insights",
+        "description": "Select whether you want to find places to sell your products or buy raw materials.",
+        "iWantTo": "I want to...",
+        "sellProducts": "Sell Products",
+        "buyMaterials": "Buy Materials",
+        "inCity": "In City",
+        "productToSell": "Product to Sell",
+        "rawMaterialToBuy": "Raw Material to Buy",
+        "currency": "Currency",
+        "find": "Find",
+        "searchingPlaces": "Searching for relevant places in {city}...",
+        "noPlacesFound": "No relevant places found.",
+        "tryDifferentSearch": "Try a different search or city.",
+        "analyzingMarketPrices": "Analyzing market prices for your product...",
+        "suggestedSellingPrice": "Suggested Selling Price",
+        "name": "Name",
+        "address": "Address",
+        "viewOnMap": "View on Map",
+        "map": "Map",
+        "errorInputMissing": "Input missing",
+        "errorInputMissingDesc": "Please specify what you want to sell or buy.",
+        "errorPricing": "Pricing Error",
+        "errorFindingPlaces": "Error finding places"
+    },
+    "eventsPage": {
+        "findLocalEvents": "Find Local Events",
+        "findLocalEventsDesc": "Discover upcoming events in your specific state or region.",
+        "stateRegion": "State / Region",
+        "country": "Country",
+        "findLocalEventsButton": "Find Local Events",
+        "event": "Event",
+        "date": "Date",
+        "location": "Location",
+        "link": "Link",
+        "register": "Register",
+        "noLocalEvents": "No upcoming local events found.",
+        "findNationalEvents": "Find National Events",
+        "findNationalEventsDesc": "Discover events across the entire country to showcase your work.",
+        "findNationalEventsButton": "Find National Events",
+        "noNationalEvents": "No upcoming national events found. Try a different country.",
+        "error": "Error"
+    }
 }

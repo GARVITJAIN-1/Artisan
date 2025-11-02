@@ -29,9 +29,11 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
+import { useLanguage } from "@/context/language-context";
 
 export default function InspirationCornerPage() {
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const [isGeneratingIdeas, startGeneratingIdeas] = useTransition();
   const [isFetchingTrends, startFetchingTrends] = useTransition();
@@ -71,8 +73,8 @@ export default function InspirationCornerPage() {
     if (!productName) {
       toast({
         variant: "destructive",
-        title: "Input Missing",
-        description: "Please provide a product name.",
+        title: t("inspirationCornerPage.errorInputMissing"),
+        description: t("inspirationCornerPage.errorInputMissingDesc"),
       });
       return;
     }
@@ -112,7 +114,7 @@ export default function InspirationCornerPage() {
       if (result.error) {
         toast({
           variant: "destructive",
-          title: "Error fetching trends",
+          title: t("inspirationCornerPage.errorFetchingTrends"),
           description: result.error,
         });
         return;
@@ -135,7 +137,7 @@ export default function InspirationCornerPage() {
   useEffect(() => {
     handleFetchTrends();
     handleGetEnhancementIdeas();
-    // eslint-disable-next-line react-hooks-exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -146,22 +148,21 @@ export default function InspirationCornerPage() {
       <Card className="bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg transition-all duration-300 hover:border-amber-300/80">
         <CardHeader>
           {/* ## Updated Text Colors ## */}
-          <CardTitle className="text-stone-900">Product Ideas</CardTitle>
+          <CardTitle className="text-stone-900">{t("inspirationCornerPage.productIdeas")}</CardTitle>
           <CardDescription className="text-stone-600">
-            Enter your product name to get AI-powered enhancement ideas with
-            real images.
+            {t("inspirationCornerPage.productIdeasDesc")}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="flex items-end gap-2">
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="product-name" className="text-stone-700">
-                Product Name / Type
+                {t("inspirationCornerPage.productNameLabel")}
               </Label>
               {/* ## Updated Input Style ## */}
               <Input
                 id="product-name"
-                placeholder="e.g., Handmade Ceramic Mugs"
+                placeholder={t("inspirationCornerPage.productNamePlaceholder")}
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
                 onKeyDown={(e) =>
@@ -181,7 +182,7 @@ export default function InspirationCornerPage() {
               ) : (
                 <Sparkles className="mr-2 h-4 w-4" />
               )}
-              Get Ideas
+              {t("inspirationCornerPage.getIdeas")}
             </Button>
           </div>
         </CardContent>
@@ -214,7 +215,7 @@ export default function InspirationCornerPage() {
       {enhancementIdeas.length > 0 && (
         <div>
           <h3 className="text-xl font-bold text-stone-900 mb-4">
-            Enhancement ideas for "{productName}":
+            {t("inspirationCornerPage.enhancementIdeasFor", { productName })}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {enhancementIdeas.map((idea, idx) => (
@@ -242,7 +243,7 @@ export default function InspirationCornerPage() {
                     ))
                   ) : (
                     <div className="col-span-3 h-24 flex items-center justify-center text-stone-500">
-                      No image found
+                      {t("inspirationCornerPage.noImageFound")}
                     </div>
                   )}
                 </div>
@@ -276,7 +277,7 @@ export default function InspirationCornerPage() {
                           className="flex items-center gap-1.5"
                         >
                           <ExternalLink className="h-3.5 w-3.5" />
-                          Google
+                          {t("inspirationCornerPage.google")}
                         </a>
                       </Button>
 
@@ -295,7 +296,7 @@ export default function InspirationCornerPage() {
                           className="flex items-center gap-1.5"
                         >
                           <ExternalLink className="h-3.5 w-3.5" />
-                          YouTube
+                          {t("inspirationCornerPage.youtube")}
                         </a>
                       </Button>
                     </div>
@@ -310,9 +311,9 @@ export default function InspirationCornerPage() {
       {/* AR Card */}
       <Card className="bg-white/70 backdrop-blur-lg border border-stone-200/80 shadow-lg transition-all duration-300 hover:border-amber-300/80">
         <CardHeader>
-          <CardTitle className="text-stone-900">AR Visualization</CardTitle>
+          <CardTitle className="text-stone-900">{t("inspirationCornerPage.arVisualization")}</CardTitle>
           <CardDescription className="text-stone-600">
-            Visualize your creations in augmented reality.
+            {t("inspirationCornerPage.arVisualizationDesc")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -320,14 +321,16 @@ export default function InspirationCornerPage() {
           <Button
             onClick={() =>
               toast({
-                title: "Feature Not Available",
-                description: "AR not supported here.",
+                title: t("inspirationCornerPage.errorFeatureNotAvailable"),
+                description: t(
+                  "inspirationCornerPage.errorFeatureNotAvailableDesc"
+                ),
               })
             }
             className="bg-gradient-to-r from-amber-500 to-rose-600 text-white hover:opacity-95 shadow-md hover:shadow-lg transition-all"
           >
             <Camera className="mr-2 h-4 w-4" />
-            Launch AR Viewer
+            {t("inspirationCornerPage.launchArViewer")}
           </Button>
         </CardContent>
       </Card>
@@ -338,8 +341,7 @@ export default function InspirationCornerPage() {
           <CardTitle className="flex items-center justify-between">
             {/* ## Updated Text/Icon Color ## */}
             <div className="flex items-center gap-2 text-stone-900">
-              <TrendingUp className="text-amber-600" /> Trending Artisan
-              Products
+              <TrendingUp className="text-amber-600" /> {t("inspirationCornerPage.trendingArtisanProducts")}
             </div>
             {/* ## Updated Ghost Button ## */}
             <Button
@@ -355,8 +357,7 @@ export default function InspirationCornerPage() {
             </Button>
           </CardTitle>
           <CardDescription className="text-stone-600">
-            Discover what's currently popular in the handmade and artisan
-            market.
+            {t("inspirationCornerPage.trendingArtisanProductsDesc")}
           </CardDescription>
         </CardHeader>
 
@@ -405,7 +406,7 @@ export default function InspirationCornerPage() {
                             ))
                         ) : (
                           <div className="col-span-3 h-24 flex items-center justify-center text-stone-500">
-                            No image
+                            {t("inspirationCornerPage.noImageFound")}
                           </div>
                         )}
                       </div>
@@ -426,7 +427,7 @@ export default function InspirationCornerPage() {
               {!isFetchingTrends && trendingProducts.length === 0 && (
                 <div className="text-center h-40 flex flex-col justify-center items-center">
                   <p className="text-stone-500">
-                    Click refresh to fetch trending products.
+                    {t("inspirationCornerPage.refreshTrends")}
                   </p>
                 </div>
               )}

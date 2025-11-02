@@ -33,6 +33,7 @@ import { FirestorePermissionError } from "@/firebase/errors";
 import { useSession } from "@/context/session-context";
 import { generateStoryImage } from "@/ai/artcommunity_flow/generate-story-image-flow";
 import Image from "next/image";
+import { useLanguage } from "@/context/language-context";
 
 const MAX_IMAGE_SIZE_MB = 1;
 
@@ -115,6 +116,7 @@ export function CreateStory() {
   const { session } = useSession();
   const { user } = useUser();
   const firestore = useFirestore();
+  const { t } = useLanguage();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -145,9 +147,8 @@ export function CreateStory() {
     if (content.length < 20) {
       toast({
         variant: "destructive",
-        title: "Story is too short",
-        description:
-          "Please write at least 20 characters to generate an image.",
+        title: t("storiesPage.errorShortStory"),
+        description: t("storiesPage.errorShortStoryDesc"),
       });
       return;
     }
@@ -164,9 +165,8 @@ export function CreateStory() {
       console.error("Failed to generate image:", error);
       toast({
         variant: "destructive",
-        title: "Image Generation Failed",
-        description:
-          "Could not generate an image for the story. Please try again.",
+        title: t("storiesPage.errorImageGeneration"),
+        description: t("storiesPage.errorImageGenerationDesc"),
       });
     } finally {
       setIsGeneratingImage(false);
@@ -221,8 +221,8 @@ export function CreateStory() {
       });
 
       toast({
-        title: "Story Published!",
-        description: "Your story is now live for the community to see.",
+        title: t("storiesPage.storyPublished"),
+        description: t("storiesPage.storyPublishedDesc"),
       });
       closeDialog();
     } catch (error) {
@@ -230,8 +230,8 @@ export function CreateStory() {
       if (!(error instanceof FirestorePermissionError)) {
         toast({
           variant: "destructive",
-          title: "Publishing Failed",
-          description: "Could not publish the story. Please try again.",
+          title: t("storiesPage.errorPublishing"),
+          description: t("storiesPage.errorPublishingDesc"),
         });
       }
       setStep("write"); // Go back to write on failure
@@ -268,7 +268,7 @@ export function CreateStory() {
           className="bg-gradient-to-r from-amber-500 to-rose-600 text-white hover:opacity-95 shadow-md hover:shadow-lg transition-all"
         >
           <PenSquare className="mr-2" />
-          {session.isLoggedIn ? "Write a Story" : "Log in to Write"}
+          {session.isLoggedIn ? t("storiesPage.writeStory") : t("storiesPage.loginToPost")}
         </Button>
       </DialogTrigger>
       {/* ## Updated Dialog Content ## */}
@@ -281,12 +281,10 @@ export function CreateStory() {
         <DialogHeader>
           {/* ## Updated Header Text ## */}
           <DialogTitle className="font-headline text-2xl text-amber-700">
-            Share Your Story
+            {t("storiesPage.shareYourStory")}
           </DialogTitle>
           <DialogDescription className="text-stone-600">
-            {
-              "What have you been creating? Share your process, inspiration, or latest work."
-            }
+            {t("storiesPage.shareYourStoryDesc")}
           </DialogDescription>
         </DialogHeader>
 
@@ -305,11 +303,11 @@ export function CreateStory() {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-stone-700">Title</FormLabel>
+                    <FormLabel className="text-stone-700">{t("storiesPage.titleLabel")}</FormLabel>
                     <FormControl>
                       {/* ## Updated Input ## */}
                       <Input
-                        placeholder="e.g., 'The Art of Imperfection'"
+                        placeholder={t("storiesPage.titlePlaceholder")}
                         {...field}
                         className="bg-white/50 border-stone-300 focus:border-amber-500 focus:ring-amber-500"
                       />
@@ -325,11 +323,11 @@ export function CreateStory() {
                 name="content"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-stone-700">Your Story</FormLabel>
+                    <FormLabel className="text-stone-700">{t("storiesPage.storyLabel")}</FormLabel>
                     <FormControl>
                       {/* ## Updated Textarea ## */}
                       <Textarea
-                        placeholder="Tell us about your work, your inspiration, or a recent breakthrough..."
+                        placeholder={t("storiesPage.storyPlaceholder")}
                         {...field}
                         rows={10}
                         className="bg-white/50 border-stone-300 focus:border-amber-500 focus:ring-amber-500"
@@ -373,7 +371,7 @@ export function CreateStory() {
                     className="border-amber-500 text-amber-600 hover:bg-amber-100 hover:text-amber-700"
                   >
                     <Upload className="mr-2" />
-                    Upload Image
+                    {t("storiesPage.uploadImage")}
                   </Button>
 
                   {/* ## Updated Outline Button ## */}
@@ -385,7 +383,7 @@ export function CreateStory() {
                     className="border-amber-500 text-amber-600 hover:bg-amber-100 hover:text-amber-700"
                   >
                     <ImageIcon className="mr-2" />
-                    {isGeneratingImage ? "Generating..." : "Generate Image"}
+                    {isGeneratingImage ? t("storiesPage.generatingImage") : t("storiesPage.generateImage")}
                   </Button>
                   {/* ## Updated Ghost Button ## */}
                   <Button
@@ -394,7 +392,7 @@ export function CreateStory() {
                     onClick={closeDialog}
                     className="hover:bg-amber-100 text-stone-600 hover:text-amber-700"
                   >
-                    Cancel
+                    {t("cancel")}
                   </Button>
                   {/* ## Updated CTA Button ## */}
                   <Button
@@ -402,13 +400,13 @@ export function CreateStory() {
                     disabled={isSubmitting || isGeneratingImage}
                     className="bg-gradient-to-r from-amber-500 to-rose-600 text-white hover:opacity-95 shadow-md hover:shadow-lg transition-all"
                   >
-                    <Sparkles className="mr-2" /> Publish Story
+                    <Sparkles className="mr-2" /> {t("storiesPage.publishStory")}
                   </Button>
                 </>
               )}
               {step === "publishing" && (
                 <p className="text-sm text-stone-500 animate-pulse">
-                  Publishing your story...
+                  {t("storiesPage.publishingStory")}
                 </p>
               )}
             </DialogFooter>

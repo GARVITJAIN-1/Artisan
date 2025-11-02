@@ -7,9 +7,11 @@ import { collection, query, orderBy } from "firebase/firestore";
 import { CreateStory } from "@/components/create-story";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card"; // Import Card for the skeleton wrapper
+import { useLanguage } from "@/context/language-context";
 
 export default function Home() {
   const firestore = useFirestore();
+  const { t } = useLanguage();
 
   const storiesQuery = useMemoFirebase(
     () =>
@@ -26,7 +28,7 @@ export default function Home() {
       <div className="flex items-center justify-between mb-8">
         {/* ## Updated Title Color ## */}
         <h1 className="text-center font-headline text-4xl font-bold tracking-tight md:text-5xl text-stone-900">
-          Artisan Stories
+          {t("storiesPage.title")}
         </h1>
         <CreateStory />
       </div>
