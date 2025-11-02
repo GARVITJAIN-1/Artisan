@@ -35,7 +35,7 @@ const formSchema = z.object({
 
 type OrderFormValues = z.infer<typeof formSchema>;
 
-const initialState: FormState = { message: '' };
+const initialState: FormState = { message: '', type: 'idle' };
 
 interface NewOrderFormProps {
   onOrderCreated: (order: Order, todos: Todo[]) => void;

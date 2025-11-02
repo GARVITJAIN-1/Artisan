@@ -53,7 +53,15 @@ export default function TodoList({ todos, onStatusChange, isLoading }: TodoListP
 
   const handleSummary = async () => {
     setIsSummarizing(true);
-    const result = await getAiSummary(todos);
+    const tasksToSummarize = todos.map(t => ({
+      taskDescription: t.description,
+      quantity: t.quantity
+    }));
+
+    console.log(tasksToSummarize)
+  
+    const result = await getAiSummary(tasksToSummarize);
+  
     setSummary(result);
     setIsSummarizing(false);
     setIsSummaryOpen(true);
